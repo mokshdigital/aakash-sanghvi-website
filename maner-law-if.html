@@ -355,18 +355,10 @@
     </form>
   </div>
 
-  <!-- Load Supabase Client from CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Load Supabase Configuration (shared with portfolio) -->
+  <script src="config.js"></script>
 
   <script>
-    // ---- CONFIGURE THESE VALUES ----
-    // Replace with your actual Supabase credentials
-    const SUPABASE_URL = 'YOUR_SUPABASE_URL_HERE'; // e.g., https://xxxxx.supabase.co
-    const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY_HERE'; // Your anon/public key
-
-    // Initialize Supabase client
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
     const form = document.getElementById('requirements-form');
     const statusEl = document.getElementById('status');
 
@@ -374,6 +366,14 @@
       e.preventDefault();
       statusEl.textContent = 'Submitting...';
       statusEl.className = 'status muted';
+
+      // Wait for Supabase client to be ready (from config.js)
+      if (!window.supabase) {
+        await new Promise(resolve => {
+          window.addEventListener('supabase-ready', resolve, { once: true });
+        });
+      }
+
 
       const formData = new FormData(form);
 
