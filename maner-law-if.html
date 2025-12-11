@@ -355,18 +355,24 @@
     </form>
   </div>
 
+  <!-- Load Supabase Client from CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <script>
     // ---- CONFIGURE THESE VALUES ----
-    const RESEND_API_KEY = 're_TMELqS7x_B2btpQet3W6Rzr9PXkiVeCUU'; // Replace with your Resend API key
-    const TO_EMAIL = 'aakash@mokshdigital.com'; // Where you want to receive submissions
-    const FROM_EMAIL = 'aakash@mokshdigital.com'; // Must be a verified domain/sender in Resend
+    // Replace with your actual Supabase credentials
+    const SUPABASE_URL = 'YOUR_SUPABASE_URL_HERE'; // e.g., https://xxxxx.supabase.co
+    const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY_HERE'; // Your anon/public key
+
+    // Initialize Supabase client
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const form = document.getElementById('requirements-form');
     const statusEl = document.getElementById('status');
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      statusEl.textContent = 'Sending...';
+      statusEl.textContent = 'Submitting...';
       statusEl.className = 'status muted';
 
       const formData = new FormData(form);
@@ -378,24 +384,25 @@
           .join(', ');
       };
 
+      // Prepare data for Supabase (using snake_case to match database columns)
       const payload = {
-        firmName: formData.get('firmName'),
+        firm_name: formData.get('firmName'),
         location: formData.get('location'),
         website: formData.get('website'),
-        contactName: formData.get('contactName'),
-        contactRole: formData.get('contactRole'),
-        contactEmail: formData.get('contactEmail'),
-        contactPhone: formData.get('contactPhone'),
-        lawyer1Name: formData.get('lawyer1Name'),
-        lawyer1Titles: formData.get('lawyer1Titles'),
-        lawyer1Email: formData.get('lawyer1Email'),
-        lawyer1Bio: formData.get('lawyer1Bio'),
-        lawyer2Name: formData.get('lawyer2Name'),
-        lawyer2Titles: formData.get('lawyer2Titles'),
-        lawyer2Email: formData.get('lawyer2Email'),
-        lawyer2Bio: formData.get('lawyer2Bio'),
-        practiceAreas: collectMulti('practiceAreas'),
-        practiceAreasOther: formData.get('practiceAreasOther'),
+        contact_name: formData.get('contactName'),
+        contact_role: formData.get('contactRole'),
+        contact_email: formData.get('contactEmail'),
+        contact_phone: formData.get('contactPhone'),
+        lawyer1_name: formData.get('lawyer1Name'),
+        lawyer1_titles: formData.get('lawyer1Titles'),
+        lawyer1_email: formData.get('lawyer1Email'),
+        lawyer1_bio: formData.get('lawyer1Bio'),
+        lawyer2_name: formData.get('lawyer2Name'),
+        lawyer2_titles: formData.get('lawyer2Titles'),
+        lawyer2_email: formData.get('lawyer2Email'),
+        lawyer2_bio: formData.get('lawyer2Bio'),
+        practice_areas: collectMulti('practiceAreas'),
+        practice_areas_other: formData.get('practiceAreasOther'),
         goals: collectMulti('goals'),
         style: formData.get('style'),
         features: collectMulti('features'),
@@ -405,36 +412,24 @@
         notes: formData.get('notes')
       };
 
-      // Build a readable text or HTML body for the email
-      const lines = Object.entries(payload).map(([key, value]) => `${key}: ${value || ''}`);
-      const textBody = lines.join('\n');
-
       try {
-        const res = await fetch('https://api.resend.com/emails', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${RESEND_API_KEY}`
-          },
-          body: JSON.stringify({
-            from: FROM_EMAIL,
-            to: TO_EMAIL,
-            subject: 'New Website Requirements Submission - Maner Law',
-            text: textBody
-          })
-        });
+        // Insert into Supabase
+        const { data, error } = await supabase
+          .from('maner_law_submissions')
+          .insert([payload]);
 
-        if (!res.ok) {
-          const errText = await res.text();
-          throw new Error(errText || 'Request failed');
+        if (error) {
+          throw error;
         }
 
-        statusEl.textContent = 'Thank you! Your answers have been submitted.';
+        // Success!
+        statusEl.textContent = 'Thank you! Your requirements have been submitted successfully.';
         statusEl.className = 'status success';
         form.reset();
+
       } catch (err) {
-        console.error(err);
-        statusEl.textContent = 'There was a problem submitting the form. Please email us directly if this continues.';
+        console.error('Submission error:', err);
+        statusEl.textContent = 'There was a problem submitting the form. Please email us directly at contact@manerlaw.ca if this continues.';
         statusEl.className = 'status error';
       }
     });
