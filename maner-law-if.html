@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Maner Law – Website Requirements Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f6fa;
+      color: #222;
+    }
+
+    .page {
+      max-width: 900px;
+      margin: 32px auto;
+      padding: 24px;
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    }
+
+    .brand-header {
+      border-bottom: 4px solid #17358f;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      gap: 8px 16px;
+      justify-content: space-between;
+    }
+
+    .brand-header h1 {
+      margin: 0;
+      font-size: 28px;
+      letter-spacing: 0.08em;
+      color: #17358f;
+    }
+
+    .brand-header span {
+      color: #d11f2a;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    h2 {
+      font-size: 20px;
+      margin: 24px 0 12px;
+      color: #17358f;
+    }
+
+    p.section-hint {
+      margin: 0 0 12px;
+      font-size: 13px;
+      color: #555;
+    }
+
+    form {
+      width: 100%;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="url"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 4px;
+      border: 1px solid #ccd1e0;
+      font-size: 14px;
+      outline: none;
+      transition: border 0.15s ease, box-shadow 0.15s ease;
+      background: #fff;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #17358f;
+      box-shadow: 0 0 0 2px rgba(23, 53, 143, 0.12);
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .checkbox-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 4px 16px;
+      margin-bottom: 4px;
+    }
+
+    .checkbox-group label {
+      font-weight: 400;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 14px;
+      height: 14px;
+    }
+
+    .muted {
+      font-size: 12px;
+      color: #777;
+    }
+
+    .button-row {
+      margin-top: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    button[type="submit"] {
+      border: none;
+      background: #17358f;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: 999px;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    button[type="submit"]:hover {
+      opacity: 0.92;
+    }
+
+    .status {
+      font-size: 13px;
+    }
+
+    .status.error {
+      color: #b00020;
+    }
+
+    .status.success {
+      color: #1a7f37;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <header class="brand-header">
+      <div>
+        <h1>MANER LAW</h1>
+        <span>Professional Corporation &mdash; Website Requirements Form</span>
+      </div>
+      <div style="font-size: 12px; text-align: right; color:#555;">
+        www.manerlaw.ca<br />contact@manerlaw.ca
+      </div>
+    </header>
+
+    <form id="requirements-form">
+      <!-- 1. Firm & primary contact info -->
+      <h2>1. Firm &amp; Primary Contact</h2>
+      <p class="section-hint">Basic details to reference in the project and in the website footer/contact sections.</p>
+      <div class="grid-2">
+        <div>
+          <label for="firmName">Firm name</label>
+          <input id="firmName" name="firmName" type="text" value="Maner Law Professional Corporation" />
+        </div>
+        <div>
+          <label for="location">Office location (city, province)</label>
+          <input id="location" name="location" type="text" value="Toronto, Ontario" />
+        </div>
+        <div>
+          <label for="website">Website domain</label>
+          <input id="website" name="website" type="url" value="https://www.manerlaw.ca" />
+        </div>
+        <div>
+          <label for="contactName">Primary contact name</label>
+          <input id="contactName" name="contactName" type="text" required />
+        </div>
+        <div>
+          <label for="contactRole">Primary contact role</label>
+          <input id="contactRole" name="contactRole" type="text" />
+        </div>
+        <div>
+          <label for="contactEmail">Primary contact email</label>
+          <input id="contactEmail" name="contactEmail" type="email" required />
+        </div>
+        <div>
+          <label for="contactPhone">Primary contact phone</label>
+          <input id="contactPhone" name="contactPhone" type="tel" />
+        </div>
+      </div>
+
+      <!-- 2. Lawyers -->
+      <h2>2. Lawyer Profiles</h2>
+      <p class="section-hint">Information for the lawyer bio pages. You can keep this high level now and refine later.
+      </p>
+      <div class="grid-2">
+        <div>
+          <label for="lawyer1Name">Lawyer 1 &mdash; full name</label>
+          <input id="lawyer1Name" name="lawyer1Name" type="text" />
+        </div>
+        <div>
+          <label for="lawyer1Titles">Lawyer 1 &mdash; titles</label>
+          <input id="lawyer1Titles" name="lawyer1Titles" type="text"
+            placeholder="e.g. Barrister, Solicitor &amp; Notary Public" />
+        </div>
+        <div>
+          <label for="lawyer1Email">Lawyer 1 &mdash; email (optional)</label>
+          <input id="lawyer1Email" name="lawyer1Email" type="email" />
+        </div>
+        <div>
+          <label for="lawyer1Bio">Lawyer 1 &mdash; short bio</label>
+          <textarea id="lawyer1Bio" name="lawyer1Bio" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div>
+          <label for="lawyer2Name">Lawyer 2 &mdash; full name</label>
+          <input id="lawyer2Name" name="lawyer2Name" type="text" />
+        </div>
+        <div>
+          <label for="lawyer2Titles">Lawyer 2 &mdash; titles</label>
+          <input id="lawyer2Titles" name="lawyer2Titles" type="text" />
+        </div>
+        <div>
+          <label for="lawyer2Email">Lawyer 2 &mdash; email (optional)</label>
+          <input id="lawyer2Email" name="lawyer2Email" type="email" />
+        </div>
+        <div>
+          <label for="lawyer2Bio">Lawyer 2 &mdash; short bio</label>
+          <textarea id="lawyer2Bio" name="lawyer2Bio" rows="3"></textarea>
+        </div>
+      </div>
+
+      <!-- 3. Practice areas -->
+      <h2>3. Practice Areas</h2>
+      <p class="section-hint">Select the areas you want highlighted and list any others.</p>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="practiceAreas" value="Family Law" /> Family Law</label>
+        <label><input type="checkbox" name="practiceAreas" value="Criminal Defence" /> Criminal Defence</label>
+        <label><input type="checkbox" name="practiceAreas" value="Real Estate" /> Real Estate</label>
+        <label><input type="checkbox" name="practiceAreas" value="Wills & Estates" /> Wills &amp; Estates</label>
+        <label><input type="checkbox" name="practiceAreas" value="Immigration" /> Immigration</label>
+        <label><input type="checkbox" name="practiceAreas" value="Civil Litigation" /> Civil Litigation</label>
+        <label><input type="checkbox" name="practiceAreas" value="Corporate / Business" /> Corporate / Business</label>
+        <label><input type="checkbox" name="practiceAreas" value="Employment Law" /> Employment Law</label>
+        <label><input type="checkbox" name="practiceAreas" value="Landlord / Tenant" /> Landlord / Tenant</label>
+        <label><input type="checkbox" name="practiceAreas" value="Personal Injury" /> Personal Injury</label>
+      </div>
+      <label for="practiceAreasOther">Other practice areas</label>
+      <input id="practiceAreasOther" name="practiceAreasOther" type="text" />
+
+      <!-- 4. Goals & style -->
+      <h2>4. Website Goals &amp; Style</h2>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="goals" value="Establish professional credibility" /> Establish professional
+          credibility</label>
+        <label><input type="checkbox" name="goals" value="Attract new clients" /> Attract new clients</label>
+        <label><input type="checkbox" name="goals" value="Showcase practice areas" /> Showcase practice areas</label>
+        <label><input type="checkbox" name="goals" value="Provide online intake and scheduling" /> Online intake &amp;
+          scheduling</label>
+        <label><input type="checkbox" name="goals" value="Improve SEO visibility" /> Improve SEO visibility</label>
+      </div>
+      <label for="style">How should the site feel?</label>
+      <input id="style" name="style" type="text" placeholder="e.g. Traditional, formal, trustworthy, approachable" />
+
+      <!-- 5. Features & compliance -->
+      <h2>5. Features &amp; Compliance</h2>
+      <p class="section-hint">Tick what you know you need. We can refine later in our strategy call.</p>
+      <label>Core pages & sections</label>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="features" value="Home" /> Home</label>
+        <label><input type="checkbox" name="features" value="About the Firm" /> About the Firm</label>
+        <label><input type="checkbox" name="features" value="Lawyer Bios" /> Lawyer Bios</label>
+        <label><input type="checkbox" name="features" value="Practice Area Pages" /> Practice Area Pages</label>
+        <label><input type="checkbox" name="features" value="Testimonials" /> Testimonials</label>
+        <label><input type="checkbox" name="features" value="FAQ" /> FAQ</label>
+        <label><input type="checkbox" name="features" value="Contact Page" /> Contact Page</label>
+        <label><input type="checkbox" name="features" value="Blog / Articles" /> Blog / Articles</label>
+      </div>
+
+      <label>Tools & integrations</label>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="features" value="Contact form" /> Contact form</label>
+        <label><input type="checkbox" name="features" value="Appointment booking" /> Appointment booking</label>
+        <label><input type="checkbox" name="features" value="Document upload" /> Secure document upload</label>
+        <label><input type="checkbox" name="features" value="Online intake forms" /> Online intake forms</label>
+        <label><input type="checkbox" name="features" value="Client portal" /> Client portal integration</label>
+        <label><input type="checkbox" name="features" value="Newsletter" /> Newsletter signup</label>
+      </div>
+
+      <label>Compliance items</label>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="compliance" value="LSO disclaimer" /> LSO disclaimer</label>
+        <label><input type="checkbox" name="compliance" value="PIPEDA privacy policy" /> PIPEDA privacy policy</label>
+        <label><input type="checkbox" name="compliance" value="Terms of Use" /> Terms of Use</label>
+        <label><input type="checkbox" name="compliance" value="No-legal-advice disclaimer" /> No-legal-advice
+          disclaimer</label>
+        <label><input type="checkbox" name="compliance" value="Accessibility (AODA/WCAG)" /> Accessibility
+          (AODA/WCAG)</label>
+        <label><input type="checkbox" name="compliance" value="Cookie banner" /> Cookie / tracking banner</label>
+      </div>
+
+      <!-- 6. Timeline, budget, notes -->
+      <h2>6. Timeline, Budget &amp; Notes</h2>
+      <div class="grid-2">
+        <div>
+          <label for="timeline">Preferred go-live timeline</label>
+          <input id="timeline" name="timeline" type="text" placeholder="e.g. 6–8 weeks, ASAP, Q2 2026" />
+        </div>
+        <div>
+          <label for="budget">Estimated budget range (optional)</label>
+          <input id="budget" name="budget" type="text" placeholder="e.g. $3–5k" />
+        </div>
+      </div>
+      <label for="notes">Anything else we should know?</label>
+      <textarea id="notes" name="notes" rows="4"></textarea>
+
+      <div class="button-row">
+        <button type="submit">Submit requirements</button>
+        <span class="status muted" id="status"></span>
+      </div>
+
+      <p class="muted" style="margin-top:12px;">This form sends your answers securely to the web developer. Please avoid
+        including highly sensitive personal information or confidential client details.</p>
+    </form>
+  </div>
+
+  <script>
+    // ---- CONFIGURE THESE VALUES ----
+    const RESEND_API_KEY = 're_TMELqS7x_B2btpQet3W6Rzr9PXkiVeCUU'; // Replace with your Resend API key
+    const TO_EMAIL = 'aakash@mokshdigital.com'; // Where you want to receive submissions
+    const FROM_EMAIL = 'aakash@mokshdigital.com'; // Must be a verified domain/sender in Resend
+
+    const form = document.getElementById('requirements-form');
+    const statusEl = document.getElementById('status');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      statusEl.textContent = 'Sending...';
+      statusEl.className = 'status muted';
+
+      const formData = new FormData(form);
+
+      // Helper to collect multiple checkbox values into a comma-separated list
+      const collectMulti = (name) => {
+        return Array.from(document.querySelectorAll('input[name="' + name + '"]:checked'))
+          .map((el) => el.value)
+          .join(', ');
+      };
+
+      const payload = {
+        firmName: formData.get('firmName'),
+        location: formData.get('location'),
+        website: formData.get('website'),
+        contactName: formData.get('contactName'),
+        contactRole: formData.get('contactRole'),
+        contactEmail: formData.get('contactEmail'),
+        contactPhone: formData.get('contactPhone'),
+        lawyer1Name: formData.get('lawyer1Name'),
+        lawyer1Titles: formData.get('lawyer1Titles'),
+        lawyer1Email: formData.get('lawyer1Email'),
+        lawyer1Bio: formData.get('lawyer1Bio'),
+        lawyer2Name: formData.get('lawyer2Name'),
+        lawyer2Titles: formData.get('lawyer2Titles'),
+        lawyer2Email: formData.get('lawyer2Email'),
+        lawyer2Bio: formData.get('lawyer2Bio'),
+        practiceAreas: collectMulti('practiceAreas'),
+        practiceAreasOther: formData.get('practiceAreasOther'),
+        goals: collectMulti('goals'),
+        style: formData.get('style'),
+        features: collectMulti('features'),
+        compliance: collectMulti('compliance'),
+        timeline: formData.get('timeline'),
+        budget: formData.get('budget'),
+        notes: formData.get('notes')
+      };
+
+      // Build a readable text or HTML body for the email
+      const lines = Object.entries(payload).map(([key, value]) => `${key}: ${value || ''}`);
+      const textBody = lines.join('\n');
+
+      try {
+        const res = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${RESEND_API_KEY}`
+          },
+          body: JSON.stringify({
+            from: FROM_EMAIL,
+            to: TO_EMAIL,
+            subject: 'New Website Requirements Submission - Maner Law',
+            text: textBody
+          })
+        });
+
+        if (!res.ok) {
+          const errText = await res.text();
+          throw new Error(errText || 'Request failed');
+        }
+
+        statusEl.textContent = 'Thank you! Your answers have been submitted.';
+        statusEl.className = 'status success';
+        form.reset();
+      } catch (err) {
+        console.error(err);
+        statusEl.textContent = 'There was a problem submitting the form. Please email us directly if this continues.';
+        statusEl.className = 'status error';
+      }
+    });
+  </script>
+</body>
+
+</html>

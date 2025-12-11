@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Aakash Sanghvi</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo">Aakash Sanghvi</a>
+            <ul class="nav-links">
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="work-with-me.html">Work With Me</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="password-section">
+            <div class="password-container" id="passwordForm">
+                <h2>Protected Projects</h2>
+                <p class="subtitle">Enter password to view my projects</p>
+                <form id="passwordFormElement" onsubmit="checkPassword(event)">
+                    <div class="form-group">
+                        <input 
+                            type="password" 
+                            id="passwordInput" 
+                            placeholder="Enter password" 
+                            required
+                            autocomplete="off"
+                        >
+                    </div>
+                    <button type="submit" class="btn-primary">Access Projects</button>
+                    <p id="errorMessage" class="error-message"></p>
+                </form>
+                <p class="mock-notice">This is a mock password feature. The complete workflow will be developed later.</p>
+            </div>
+
+            <div class="projects-content" id="projectsContent" style="display: none;">
+                <h2>My Projects</h2>
+                <p class="coming-soon">Project portfolio coming soon. Currently being developed with exciting new work!</p>
+                <div class="project-grid">
+                    <div class="project-card">
+                        <h3>Portfolio Website</h3>
+                        <p>This responsive portfolio site built with vanilla HTML, CSS, and JavaScript.</p>
+                        <span class="tech-tag">HTML</span>
+                        <span class="tech-tag">CSS</span>
+                        <span class="tech-tag">JavaScript</span>
+                    </div>
+                    <div class="project-card">
+                        <h3>More Projects Coming</h3>
+                        <p>Additional projects will be showcased here as they are completed and deployed.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Aakash Sanghvi. Building cool stuff, one project at a time 🚀</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
