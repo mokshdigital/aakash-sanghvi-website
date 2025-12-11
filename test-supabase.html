@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase Connection Test</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        .test-box {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+
+        button:hover {
+            background: #1e40af;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+
+        .success {
+            background: #d1fae5;
+            border: 1px solid #10b981;
+            color: #065f46;
+        }
+
+        .error {
+            background: #fee2e2;
+            border: 1px solid #ef4444;
+            color: #991b1b;
+        }
+
+        .info {
+            background: #dbeafe;
+            border: 1px solid #3b82f6;
+            color: #1e40af;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="test-box">
+        <h1>🔍 Supabase Connection Test</h1>
+        <p>This page will test your Supabase connection and help diagnose issues.</p>
+
+        <button onclick="testConnection()">Test Connection</button>
+        <button onclick="testTableExists()">Check if Table Exists</button>
+        <button onclick="testInsert()">Test Insert</button>
+
+        <div id="result"></div>
+    </div>
+
+    <!-- Load Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+        // Your Supabase credentials
+        const SUPABASE_URL = 'https://knwwqshrneeyaxjnmyvi.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtud3dxc2hybmVleWF4am5teXZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU0NjYzNjYsImV4cCI6MjA4MTA0MjM2Nn0.CyJEYaLIdaexm1kk-YHrrCBXw1Ur3r97bhthc8JvpPg';
+
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const resultDiv = document.getElementById('result');
+
+        function showResult(message, type = 'info') {
+            resultDiv.className = `result ${type}`;
+            resultDiv.textContent = message;
+        }
+
+        async function testConnection() {
+            showResult('Testing connection...', 'info');
+            try {
+                // Try to query a system table
+                const { data, error } = await supabase
+                    .from('_supabase_migrations')
+                    .select('*')
+                    .limit(1);
+
+                if (error) {
+                    showResult(`❌ Connection Error:\n${error.message}\n\nThis might be normal if the table doesn't exist.`, 'error');
+                } else {
+                    showResult('✅ Connection successful!\nSupabase client is working.', 'success');
+                }
+            } catch (err) {
+                showResult(`❌ Error:\n${err.message}`, 'error');
+            }
+        }
+
+        async function testTableExists() {
+            showResult('Checking if maner_law_submissions table exists...', 'info');
+            try {
+                const { data, error, count } = await supabase
+                    .from('maner_law_submissions')
+                    .select('*', { count: 'exact', head: true });
+
+                if (error) {
+                    if (error.code === '42P01') {
+                        showResult(`❌ Table does NOT exist!\n\nError: ${error.message}\n\nSOLUTION: Run maner-law-form-schema.sql in Supabase SQL Editor`, 'error');
+                    } else if (error.code === 'PGRST116') {
+                        showResult(`❌ RLS Policy Error!\n\nThe table exists but RLS policies are blocking access.\n\nError: ${error.message}\n\nSOLUTION: Check RLS policies in Supabase`, 'error');
+                    } else {
+                        showResult(`❌ Error:\n${error.message}\nCode: ${error.code}`, 'error');
+                    }
+                } else {
+                    showResult(`✅ Table exists!\nCurrent row count: ${count || 0}`, 'success');
+                }
+            } catch (err) {
+                showResult(`❌ Unexpected error:\n${err.message}`, 'error');
+            }
+        }
+
+        async function testInsert() {
+            showResult('Testing insert into maner_law_submissions...', 'info');
+            try {
+                const testData = {
+                    firm_name: 'Test Firm',
+                    contact_name: 'Test User',
+                    contact_email: 'test@example.com',
+                    notes: 'This is a test submission'
+                };
+
+                const { data, error } = await supabase
+                    .from('maner_law_submissions')
+                    .insert([testData])
+                    .select();
+
+                if (error) {
+                    showResult(`❌ Insert failed!\n\nError: ${error.message}\nCode: ${error.code}\n\nPossible causes:\n1. Table doesn't exist (run SQL schema)\n2. RLS policy blocking insert\n3. Required fields missing`, 'error');
+                } else {
+                    showResult(`✅ Insert successful!\n\nData inserted:\n${JSON.stringify(data, null, 2)}`, 'success');
+                }
+            } catch (err) {
+                showResult(`❌ Unexpected error:\n${err.message}`, 'error');
+            }
+        }
+
+        // Auto-test connection on load
+        window.addEventListener('load', () => {
+            setTimeout(testConnection, 500);
+        });
+    </script>
+</body>
+
+</html>

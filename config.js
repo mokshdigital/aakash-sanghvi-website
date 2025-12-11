@@ -5,7 +5,7 @@
 // For Vercel deployment, these will be replaced by environment variables automatically
 
 const SUPABASE_URL = window.ENV?.SUPABASE_URL || 'https://knwwqshrneeyaxjnmyvi.supabase.co';
-const SUPABASE_ANON_KEY = window.ENV?.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtud3dxc2hybmVleWF4am5teXZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzM5MzM4MjgsImV4cCI6MjA0OTUwOTgyOH0.kBPBJgpKwsJvlcPqRGzCTjVfFVUKWZhRjDDEqxXpJvg';
+const SUPABASE_ANON_KEY = window.ENV?.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtud3dxc2hybmVleWF4am5teXZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU0NjYzNjYsImV4cCI6MjA4MTA0MjM2Nn0.CyJEYaLIdaexm1kk-YHrrCBXw1Ur3r97bhthc8JvpPg';
 
 // Initialize Supabase client
 // This will be available globally as 'supabase'
