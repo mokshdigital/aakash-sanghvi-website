@@ -1,51 +1,76 @@
 # Aakash Sanghvi - Portfolio Website
 
-A clean, modern portfolio website showcasing AI-powered web development skills and projects.
+A modern, dynamic portfolio website showcasing AI-powered web development skills and projects, powered by **Supabase** backend and deployed on **Vercel**.
 
-## Features
+## ✨ Features
 
 - **Home Page**: Interactive resume with smooth-scrolling navigation chips
-- **Projects Page**: Password-protected mock page (password: `portfolio2024`)
-- **Work With Me Page**: Embedded Google Calendar booking system
+- **Projects Page**: Password-protected projects showcase (password: `portfolio2024`)
+- **Work With Me Page**: 
+  - Contact form with Supabase database integration
+  - Embedded Google Calendar booking system
+- **Backend Integration**: Supabase for contact form submissions and project management
+- **Auto-Deployment**: GitHub → Vercel continuous deployment
 
-## Quick Deployment
+## 🚀 Quick Start
 
-This is a static website that can be deployed to any static hosting service:
+### Prerequisites
+- GitHub account
+- Vercel account (free)
+- Supabase account (free)
 
-### Option 1: Netlify (Recommended - Fastest)
-1. Drag and drop the entire folder to [Netlify Drop](https://app.netlify.com/drop)
-2. Your site is live immediately!
+### Deployment Instructions
 
-### Option 2: Vercel
-1. Install Vercel CLI: `npm i -g vercel`
-2. Run `vercel` in the project directory
-3. Follow the prompts
+**📋 See [CHECKLIST.md](./CHECKLIST.md) for complete step-by-step deployment guide!**
 
-### Option 3: GitHub Pages
-1. Push files to a GitHub repository
-2. Go to Settings > Pages
-3. Select main branch and deploy
+Quick overview:
+1. Push code to GitHub
+2. Create Supabase project and run `supabase-setup.sql`
+3. Deploy to Vercel with environment variables
+4. Update `config.js` with your Supabase credentials
 
-### Option 4: Any Static Host
-Upload all files via FTP or file manager to any web hosting service.
-
-## Files Structure
+## 📁 Files Structure
 
 ```
-├── index.html          # Home/Resume page
-├── projects.html       # Projects page with password
-├── work-with-me.html   # Calendar booking page
-├── styles.css          # Shared styles
-├── script.js           # Navigation and password logic
-└── README.md           # This file
+├── index.html              # Home/Resume page
+├── projects.html           # Projects page with password protection
+├── work-with-me.html       # Contact form + Calendar booking
+├── styles.css              # Shared styles with modern design system
+├── script.js               # Navigation and interactions
+├── config.js               # Supabase client configuration
+├── package.json            # Dependencies
+├── supabase-setup.sql      # Database schema for Supabase
+├── .gitignore              # Git ignore rules
+├── .env.example            # Environment variables template
+├── DEPLOYMENT.md           # Detailed deployment guide
+├── CHECKLIST.md            # Step-by-step deployment checklist
+└── README.md               # This file
 ```
 
-## Technologies Used
+## 🛠️ Technologies Used
 
-- Vanilla HTML5
-- CSS3 (with CSS Variables)
-- Vanilla JavaScript
-- Google Calendar Integration
+- **Frontend**: Vanilla HTML5, CSS3, JavaScript
+- **Backend**: Supabase (PostgreSQL database, Auth, Storage)
+- **Deployment**: Vercel (auto-deploy from GitHub)
+- **Integrations**: Google Calendar API
+- **Version Control**: Git + GitHub
+
+## 🗄️ Database Schema
+
+The Supabase database includes:
+- **projects**: Portfolio projects with tech stack, images, links
+- **contacts**: Contact form submissions
+- **page_views**: Analytics tracking (optional)
+
+See `supabase-setup.sql` for complete schema.
+
+## 🔐 Environment Variables
+
+Required for Vercel deployment:
+- `SUPABASE_URL`: Your Supabase project URL
+- `SUPABASE_ANON_KEY`: Your Supabase anonymous/public key
+
+See `.env.example` for template.
 
 ## Contact
 
