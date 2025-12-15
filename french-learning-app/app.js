@@ -690,6 +690,24 @@ async function showVocabDetail(id) {
 
         let vocabHtml = '';
 
+        // Helper function to extract French word from various property names
+        const getFrench = (word) => {
+            return word.french || word.french_word || word.word_french ||
+                word.word || word.terme || word.mot ||
+                Object.values(word).find(v => typeof v === 'string' && /[éèêëàâäùûüôöîïç]/i.test(v)) || '';
+        };
+
+        // Helper function to extract English translation
+        const getEnglish = (word) => {
+            return word.english || word.english_translation || word.translation ||
+                word.meaning || word.definition || word.traduction || '';
+        };
+
+        // Helper function to extract gender
+        const getGender = (word) => {
+            return word.gender || word.genre || word.article || '-';
+        };
+
         if (data.vocab_type === 'topic' && data.content.vocabulary) {
             vocabHtml = `
                 <table style="width: 100%; border-collapse: collapse;">
@@ -703,9 +721,9 @@ async function showVocabDetail(id) {
                     <tbody>
                         ${data.content.vocabulary.map(word => `
                             <tr style="border-bottom: 1px solid var(--border-subtle);">
-                                <td style="padding: 0.75rem;">${word.french || word.word || ''}</td>
-                                <td style="padding: 0.75rem;">${word.english || word.translation || ''}</td>
-                                <td style="padding: 0.75rem;">${word.gender || '-'}</td>
+                                <td style="padding: 0.75rem;">${getFrench(word)}</td>
+                                <td style="padding: 0.75rem;">${getEnglish(word)}</td>
+                                <td style="padding: 0.75rem;">${getGender(word)}</td>
                             </tr>
                         `).join('')}
                     </tbody>
@@ -714,16 +732,38 @@ async function showVocabDetail(id) {
         } else if (data.vocab_type === 'verb' && data.content.verbs) {
             vocabHtml = data.content.verbs.map(verb => `
                 <div style="background: var(--bg-input); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                    <h4 style="color: var(--accent-blue-light); margin-bottom: 0.5rem;">${verb.infinitive || verb.verb}</h4>
-                    <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">${verb.english || verb.meaning}</p>
-                    ${verb.present || verb.conjugation ? `
-                        <p style="font-size: 0.875rem;"><strong>Present:</strong> ${JSON.stringify(verb.present || verb.conjugation)}</p>
+                    <h4 style="color: var(--accent-blue-light); margin-bottom: 0.5rem;">${verb.infinitive || verb.verb || verb.infinitif || ''}</h4>
+                    <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">${verb.english || verb.meaning || verb.translation || ''}</p>
+                    ${verb.present || verb.conjugation || verb.present_tense ? `
+                        <p style="font-size: 0.875rem;"><strong>Present:</strong> ${JSON.stringify(verb.present || verb.conjugation || verb.present_tense)}</p>
                     ` : ''}
-                    ${verb.example ? `<p style="font-style: italic; margin-top: 0.5rem;">"${verb.example}"</p>` : ''}
+                    ${verb.example || verb.example_sentence ? `<p style="font-style: italic; margin-top: 0.5rem;">"${verb.example || verb.example_sentence}"</p>` : ''}
                 </div>
             `).join('');
         } else {
-            vocabHtml = `<pre style="white-space: pre-wrap;">${JSON.stringify(data.content, null, 2)}</pre>`;
+            // Fallback: try to render as a table with whatever keys exist
+            const items = data.content.vocabulary || data.content.words || data.content.items || [];
+            if (Array.isArray(items) && items.length > 0) {
+                const keys = Object.keys(items[0]);
+                vocabHtml = `
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                ${keys.map(k => `<th style="text-align: left; padding: 0.75rem; text-transform: capitalize;">${k.replace(/_/g, ' ')}</th>`).join('')}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${items.map(item => `
+                                <tr style="border-bottom: 1px solid var(--border-subtle);">
+                                    ${keys.map(k => `<td style="padding: 0.75rem;">${typeof item[k] === 'object' ? JSON.stringify(item[k]) : (item[k] || '-')}</td>`).join('')}
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } else {
+                vocabHtml = `<pre style="white-space: pre-wrap;">${JSON.stringify(data.content, null, 2)}</pre>`;
+            }
         }
 
         content.innerHTML = `
