@@ -82,6 +82,17 @@
                         </svg>
                         <span>Grammar</span>
                     </button>
+                    <button class="nav-btn" data-section="resources">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path
+                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                            </path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                        </svg>
+                        <span>Resources</span>
+                    </button>
                 </nav>
 
                 <div class="sidebar-footer">
@@ -155,6 +166,8 @@
                                     Back to Library
                                 </button>
                                 <div class="editor-actions">
+                                    <button id="btn-delete-note" class="btn btn-secondary btn-danger"
+                                        style="margin-right: 1rem; color: #ff6b6b; border-color: #ff6b6b; display:none;">Delete</button>
                                     <span id="editor-status" class="status-msg"></span>
                                     <button id="btn-save-note" class="btn btn-primary">Save Changes</button>
                                 </div>
@@ -362,6 +375,80 @@
                         </div>
                     </div>
                 </section>
+
+                <!-- Resources Section -->
+                <section id="resources-section" class="section">
+                    <div class="section-header">
+                        <h2>🔗 Resources</h2>
+                        <p class="section-desc">Library of videos, articles, and tools.</p>
+                    </div>
+
+                    <div id="resources-action-bar" style="margin-bottom: 2rem;">
+                        <button id="btn-add-resource" class="btn btn-primary">
+                            <span>Add Resource</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M12 5v14M5 12h14" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div id="resources-filters" class="library-filters"
+                        style="margin-bottom: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <div class="search-box" style="flex: 1;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                            <input type="text" id="res-search" placeholder="Search resources...">
+                        </div>
+                        <select id="res-filter-type" class="filter-select" style="width: auto;">
+                            <option value="">All Types</option>
+                            <option value="video">Video</option>
+                            <option value="article">Article</option>
+                            <option value="tool">Tool</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div id="resource-form-container" class="card card-form hidden" style="margin-bottom: 2rem;">
+                        <h3>New Resource</h3>
+                        <form id="resource-form">
+                            <div class="form-group">
+                                <label for="res-title">Title</label>
+                                <input type="text" id="res-title" placeholder="Resource Title" required>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="res-url">URL</label>
+                                    <input type="url" id="res-url" placeholder="https://..." required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="res-type">Type</label>
+                                    <select id="res-type" required>
+                                        <option value="video">Video (YouTube)</option>
+                                        <option value="article">Article</option>
+                                        <option value="tool">Tool</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-full">
+                                <span>Save Resource</span>
+                                <svg class="spinner hidden" width="16" height="16" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none"
+                                        stroke-dasharray="30 60" />
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+
+                    <div id="resources-grid" class="notes-grid">
+                        <!-- Resources will be loaded here -->
+                    </div>
+                </section>
+
             </main>
         </div> <!-- Detail Modal for viewing entries -->
         <div id="detail-modal" class="modal-overlay hidden">

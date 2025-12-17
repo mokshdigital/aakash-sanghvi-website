@@ -84,6 +84,7 @@ function initializeAppContent() {
     initForms();
     initClassworkUI();
     initVocabulary();
+    initResources(); // New
     loadAllData();
 }
 
@@ -151,6 +152,7 @@ function initClassworkUI() {
     // Editor Actions
     document.getElementById('btn-back-library').addEventListener('click', () => toggleClassworkView('list'));
     document.getElementById('btn-save-note').addEventListener('click', saveClassworkNote);
+    document.getElementById('btn-delete-note').addEventListener('click', () => deleteItem('french_classwork', editingClassworkId, loadClasswork));
     document.getElementById('btn-ai-format').addEventListener('click', formatNotesWithAI);
 }
 
@@ -159,6 +161,7 @@ function toggleClassworkView(viewName) {
     const editorContainer = document.getElementById('classwork-editor-view');
     const filters = document.querySelector('.library-filters'); // Use class for selection
     const headerActions = document.querySelector('.section-header-row .header-actions');
+    const backBtn = document.getElementById('btn-back-library');
 
     if (viewName === 'editor') {
         listContainer.classList.add('hidden');
@@ -306,6 +309,7 @@ async function openClassworkEditor(id) {
     document.getElementById('editor-raw').value = '';
     document.getElementById('editor-formatted').value = '';
     document.getElementById('editor-status').textContent = id ? 'Loading...' : 'New Note';
+    document.getElementById('btn-delete-note').style.display = id ? 'block' : 'none';
 
     if (id) {
         try {
@@ -416,6 +420,27 @@ async function saveClassworkNote() {
         showToast('Failed to save note', 'error');
     } finally {
         setLoading(btn, false);
+    }
+}
+
+async function deleteItem(table, id, successCallback) {
+    if (!id || !confirm('Are you sure you want to delete this item? This cannot be undone.')) return;
+
+    try {
+        const { error } = await supabase
+            .from(table)
+            .delete()
+            .eq('id', id);
+
+        if (error) throw error;
+
+        showToast('Item deleted successfully', 'success');
+        if (successCallback) successCallback(); // Reload view
+        toggleClassworkView('list'); // Return to list if in editor
+
+    } catch (err) {
+        console.error(err);
+        showToast('Failed to delete item', 'error');
     }
 }
 
@@ -727,6 +752,133 @@ async function generateVerbs() {
 }
 
 // =============================================
+// Resources (New)
+// =============================================
+
+function initResources() {
+    const btnAdd = document.getElementById('btn-add-resource');
+    if (btnAdd) {
+        btnAdd.addEventListener('click', () => {
+            const formContainer = document.getElementById('resource-form-container');
+            formContainer.classList.toggle('hidden');
+        });
+    }
+
+    const resForm = document.getElementById('resource-form');
+    if (resForm) resForm.addEventListener('submit', handleResourceSubmit);
+
+    // Filters
+    document.getElementById('res-search')?.addEventListener('input', debounce(loadResources, 500));
+    document.getElementById('res-filter-type')?.addEventListener('change', loadResources);
+}
+
+async function handleResourceSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+
+    const title = document.getElementById('res-title').value;
+    const url = document.getElementById('res-url').value;
+    const type = document.getElementById('res-type').value;
+
+    try {
+        setLoading(btn, true);
+
+        const { error } = await supabase
+            .from('french_resources')
+            .insert({
+                title,
+                url,
+                type
+            });
+
+        if (error) throw error;
+
+        showToast('Resource added!', 'success');
+        e.target.reset();
+        document.getElementById('resource-form-container').classList.add('hidden');
+        loadResources();
+
+    } catch (err) {
+        console.error(err);
+        showToast('Failed to add resource', 'error');
+    } finally {
+        setLoading(btn, false);
+    }
+}
+
+async function loadResources() {
+    const grid = document.getElementById('resources-grid');
+    if (!grid) return;
+
+    const searchQuery = document.getElementById('res-search')?.value.toLowerCase();
+    const typeFilter = document.getElementById('res-filter-type')?.value;
+
+    try {
+        let query = supabase
+            .from('french_resources')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (searchQuery) query = query.ilike('title', `%${searchQuery}%`);
+        if (typeFilter) query = query.eq('type', typeFilter);
+
+        const { data, error } = await query;
+
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+            grid.innerHTML = '<p class="empty-state card-wide">No resources yet</p>';
+            return;
+        }
+
+        grid.innerHTML = data.map(item => {
+            let mediaContent = '';
+
+            if (item.type === 'video' && item.url.includes('youtu')) {
+                const videoId = getYoutubeId(item.url);
+                if (videoId) {
+                    mediaContent = `
+                        <div style="aspect-ratio: 16/9; margin-bottom: 1rem; border-radius: var(--radius-md); overflow: hidden;">
+                            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    `;
+                }
+            }
+
+            const typeIcons = {
+                video: '🎥',
+                article: '📄',
+                tool: '🛠️',
+                other: '🔗'
+            };
+            const icon = typeIcons[item.type] || '🔗';
+
+            return `
+                <div class="note-card" style="height: auto; cursor: default;">
+                    <div class="note-header">
+                        <span>${icon} ${item.type.toUpperCase()}</span>
+                        <button class="btn-text" onclick="deleteItem('french_resources', '${item.id}', loadResources)" style="color:var(--accent-red); font-size:0.8rem;">Delete</button>
+                    </div>
+                    <div class="note-title"><a href="${item.url}" target="_blank" style="color:white; text-decoration:none;">${item.title} ↗</a></div>
+                    ${mediaContent}
+                    ${item.description ? `<p class="note-preview">${item.description}</p>` : ''}
+                </div>
+            `;
+        }).join('');
+
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+function getYoutubeId(url) {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+}
+
+
+// =============================================
 // Data Loading (General)
 // =============================================
 
@@ -736,7 +888,8 @@ async function loadAllData() {
         loadClasswork(),
         loadHomework(),
         loadVocabulary(),
-        loadGrammar()
+        loadGrammar(),
+        loadResources()
     ]);
 }
 
@@ -801,7 +954,7 @@ async function loadVocabulary() {
 
         if (verbList) {
             if (verbData.length === 0) {
-                verbList.innerHTML = '<p class="empty-state">No verbs saved yet</p>';
+                verbList.innerHTML = '<p class="empty-state">No verbs yet</p>';
             } else {
                 verbList.innerHTML = verbData.map(entry => `
                     <div class="entry-item" onclick="showVocabDetail('${entry.id}')">
@@ -847,7 +1000,7 @@ async function loadGrammar() {
 }
 
 // =============================================
-// Detail Views (Legacy/Other)
+// Detail Views (Legacy Modal - optional for other sections)
 // =============================================
 
 async function showHomeworkDetail(id) {
@@ -876,6 +1029,8 @@ async function showHomeworkDetail(id) {
                 <h3>My Work</h3>
                 <div class="detail-body">${data.hw_done || 'Not completed yet'}</div>
             </div>
+
+            <button onclick="deleteItem('french_homework', '${data.id}', loadHomework)" class="btn btn-secondary btn-full" style="margin-top: 2rem; color: #ff6b6b; border-color: #ff6b6b;">Delete Homework</button>
         `;
 
         modal.classList.remove('hidden');
@@ -905,85 +1060,52 @@ async function showVocabDetail(id) {
         const getFrench = (word) => {
             return word.french || word.french_word || word.word_french ||
                 word.word || word.terme || word.mot ||
-                Object.values(word).find(v => typeof v === 'string' && /[éèêëàâäùûüôöîïç]/i.test(v)) || '';
+                (word.verb && word.verb.french) || '';
         };
 
-        // Helper function to extract English translation
         const getEnglish = (word) => {
-            return word.english || word.english_translation || word.translation ||
-                word.meaning || word.definition || word.traduction || '';
+            return word.english || word.english_word || word.word_english ||
+                word.meaning || word.traduction ||
+                (word.verb && word.verb.english) || '';
         };
 
-        // Helper function to extract gender
-        const getGender = (word) => {
-            return word.gender || word.genre || word.article || '-';
-        };
-
-        if (data.vocab_type === 'topic' && data.content.vocabulary) {
-            vocabHtml = `
-                <table style="width: 100%; border-collapse: collapse;">
-                    <thead>
-                        <tr style="border-bottom: 1px solid var(--border-color);">
-                            <th style="text-align: left; padding: 0.75rem;">French</th>
-                            <th style="text-align: left; padding: 0.75rem;">English</th>
-                            <th style="text-align: left; padding: 0.75rem;">Gender</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${data.content.vocabulary.map(word => `
-                            <tr style="border-bottom: 1px solid var(--border-subtle);">
-                                <td style="padding: 0.75rem;">${getFrench(word)}</td>
-                                <td style="padding: 0.75rem;">${getEnglish(word)}</td>
-                                <td style="padding: 0.75rem;">${getGender(word)}</td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            `;
-        } else if (data.vocab_type === 'verb' && data.content.verbs) {
-            vocabHtml = data.content.verbs.map(verb => `
-                <div style="background: var(--bg-input); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                    <h4 style="color: var(--accent-blue-light); margin-bottom: 0.5rem;">${verb.infinitive || verb.verb || verb.infinitif || ''}</h4>
-                    <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">${verb.english || verb.meaning || verb.translation || ''}</p>
-                    ${verb.present || verb.conjugation || verb.present_tense ? `
-                        <p style="font-size: 0.875rem;"><strong>Present:</strong> ${JSON.stringify(verb.present || verb.conjugation || verb.present_tense)}</p>
-                    ` : ''}
-                    ${verb.example || verb.example_sentence ? `<p style="font-style: italic; margin-top: 0.5rem;">"${verb.example || verb.example_sentence}"</p>` : ''}
+        const renderTable = (items) => {
+            return `
+                <div class="vocab-table">
+                    ${items.map(item => `
+                        <div class="vocab-row">
+                            <span class="fr">${getFrench(item)}</span>
+                            <span class="en">${getEnglish(item)}</span>
+                        </div>
+                    `).join('')}
                 </div>
-            `).join('');
-        } else {
-            // Fallback: try to render as a table with whatever keys exist
-            const items = data.content.vocabulary || data.content.words || data.content.items || [];
-            if (Array.isArray(items) && items.length > 0) {
-                const keys = Object.keys(items[0]);
-                vocabHtml = `
-                    <table style="width: 100%; border-collapse: collapse;">
-                        <thead>
-                            <tr style="border-bottom: 1px solid var(--border-color);">
-                                ${keys.map(k => `<th style="text-align: left; padding: 0.75rem; text-transform: capitalize;">${k.replace(/_/g, ' ')}</th>`).join('')}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${items.map(item => `
-                                <tr style="border-bottom: 1px solid var(--border-subtle);">
-                                    ${keys.map(k => `<td style="padding: 0.75rem;">${typeof item[k] === 'object' ? JSON.stringify(item[k]) : (item[k] || '-')}</td>`).join('')}
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                `;
+            `;
+        };
+
+        // Handle different data structures
+        if (data.content) {
+            if (data.vocab_type === 'verb' && data.content.verbs) {
+                // Verb List
+                vocabHtml = renderTable(data.content.verbs);
+            } else if (data.content.vocabulary) {
+                // Topic Vocabulary
+                vocabHtml = renderTable(data.content.vocabulary);
+            } else if (Array.isArray(data.content)) {
+                // Direct Array
+                vocabHtml = renderTable(data.content);
+            } else if (data.content.words) {
+                // Gender Quiz / Word list
+                vocabHtml = renderTable(data.content.words);
             } else {
-                vocabHtml = `<pre style="white-space: pre-wrap;">${JSON.stringify(data.content, null, 2)}</pre>`;
+                vocabHtml = '<p>Data structure not recognized</p>';
             }
         }
 
         content.innerHTML = `
             <h2>📖 ${data.topic}</h2>
             <div class="detail-date">${formatDate(data.created_at)}</div>
-            
-            <div class="detail-section">
-                <div class="detail-body">${vocabHtml}</div>
-            </div>
+            ${vocabHtml}
+            <button onclick="deleteItem('french_vocabulary', '${data.id}', loadVocabulary)" class="btn btn-secondary btn-full" style="margin-top: 2rem; color: #ff6b6b; border-color: #ff6b6b;">Delete Vocabulary</button>
         `;
 
         modal.classList.remove('hidden');
@@ -1014,6 +1136,7 @@ async function showGrammarDetail(id) {
             <div class="detail-section">
                 <div class="detail-body">${renderMarkdown(data.notes)}</div>
             </div>
+            <button onclick="deleteItem('french_grammar', '${data.id}', loadGrammar)" class="btn btn-secondary btn-full" style="margin-top: 2rem; color: #ff6b6b; border-color: #ff6b6b;">Delete Note</button>
         `;
 
         modal.classList.remove('hidden');
@@ -1029,6 +1152,7 @@ async function showGrammarDetail(id) {
 // =============================================
 
 async function callEdgeFunction(endpoint, data) {
+    // Only implemented for French AI
     const response = await fetch(`${EDGE_FUNCTION_URL}/${endpoint}`, {
         method: 'POST',
         headers: {
@@ -1051,10 +1175,8 @@ async function callEdgeFunction(endpoint, data) {
 // =============================================
 
 function setLoading(btn, loading) {
+    if (!btn) return;
     const spinner = btn.querySelector('.spinner');
-    const text = btn.innerText; // Basic fallback
-
-    // Better handling if text is in a span
     const span = btn.querySelector('span');
 
     btn.disabled = loading;
@@ -1064,13 +1186,29 @@ function setLoading(btn, loading) {
 
 function formatDate(dateStr) {
     if (!dateStr) return '';
-    const date = new Date(dateStr);
-    return date.toLocaleDateString('en-US', {
-        weekday: 'short',
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-    });
+    try {
+        // If YYYY-MM-DD
+        if (dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) {
+            const [y, m, d] = dateStr.split('-').map(Number);
+            const date = new Date(y, m - 1, d);
+            return date.toLocaleDateString('en-US', {
+                weekday: 'short',
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+
+        // Fallback for timestamps
+        return new Date(dateStr).toLocaleDateString('en-US', {
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        });
+    } catch (e) {
+        return dateStr;
+    }
 }
 
 function truncate(str, length) {
@@ -1108,6 +1246,8 @@ function debounce(func, wait) {
 
 function showToast(message, type = 'success') {
     const container = document.getElementById('toast-container');
+    if (!container) return; // Guard
+
     const toast = document.createElement('div');
     toast.className = `toast ${type}`;
 
@@ -1126,9 +1266,11 @@ function showToast(message, type = 'success') {
 }
 
 // Make functions globally available for onclick handlers
-window.showClassworkDetail = openClassworkEditor; // Remapped to editor
+window.showClassworkDetail = openClassworkEditor;
 window.showHomeworkDetail = showHomeworkDetail;
 window.showVocabDetail = showVocabDetail;
 window.showGrammarDetail = showGrammarDetail;
 window.checkGenderAnswer = checkGenderAnswer;
-window.openClassworkEditor = openClassworkEditor; // Explicit
+window.openClassworkEditor = openClassworkEditor;
+window.deleteItem = deleteItem;
+window.loadResources = loadResources;

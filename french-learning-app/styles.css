@@ -222,6 +222,16 @@ body {
     background: var(--bg-card);
 }
 
+.btn-danger {
+    color: var(--accent-red) !important;
+    border-color: var(--accent-red) !important;
+}
+
+.btn-danger:hover {
+    background: rgba(239, 65, 53, 0.1) !important;
+    border-color: var(--accent-red-light) !important;
+}
+
 .btn-full {
     width: 100%;
 }
@@ -401,6 +411,8 @@ body {
     padding: 0.75rem;
     border-radius: var(--radius-md);
     border: 1px solid var(--border-color);
+    align-items: center;
+    /* Center items vertically */
 }
 
 .search-box {
@@ -412,15 +424,24 @@ body {
 
 .search-box svg {
     position: absolute;
-    left: 0.75rem;
-    color: var(--text-muted);
+    left: 1rem;
+    color: var(--text-secondary);
+    pointer-events: none;
 }
 
 .search-box input {
     width: 100%;
-    padding-left: 2.5rem;
+    padding: 0 1rem 0 2.8rem;
     background: var(--bg-input);
     border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    height: 46px;
+    /* Explicit height */
+}
+
+.search-box input::placeholder {
+    color: var(--text-muted);
 }
 
 .library-filters select,
@@ -428,10 +449,12 @@ body {
     background: var(--bg-input);
     border: 1px solid var(--border-subtle);
     color: var(--text-primary);
-    padding: 0.6rem 1rem;
+    padding: 0 1rem;
     border-radius: var(--radius-md);
     font-family: inherit;
     outline: none;
+    height: 46px;
+    /* Match height */
 }
 
 /* ============================================= */
@@ -573,11 +596,19 @@ body {
     line-height: 1.6;
     font-family: inherit;
     border-radius: var(--radius-md);
+    background: var(--bg-input);
+    color: var(--text-primary);
+    padding: 1.5rem;
+    /* Increased Padding */
+    border: 1px solid var(--border-color);
 }
 
 #editor-formatted {
     background: var(--bg-secondary);
     border-color: var(--border-subtle);
+    color: var(--text-primary);
+    /* Bright White Text */
+    font-size: 1rem;
 }
 
 /* ============================================= */
@@ -652,6 +683,7 @@ body {
     padding: 0.875rem 1rem;
     font-size: 0.95rem;
     color: var(--text-primary);
+    /* Bright White Text */
     font-family: inherit;
     transition: var(--transition-fast);
     resize: vertical;
@@ -675,6 +707,7 @@ body {
 
 .form-group textarea {
     min-height: 100px;
+    padding: 1rem;
 }
 
 /* ============================================= */
