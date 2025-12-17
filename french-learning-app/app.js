@@ -1038,6 +1038,11 @@ async function openVocabDetail(id) {
         if (error) throw error;
         currentVocabData = data;
 
+        // Ensure content exists
+        if (!data.content || typeof data.content !== 'object') {
+            data.content = { vocabulary: [], paragraph: '', conjugations: [] };
+        }
+
         // Populate Header
         document.getElementById('vocab-detail-topic').textContent = data.topic;
         document.getElementById('vocab-detail-date').textContent = formatDate(data.created_at);
@@ -1045,7 +1050,7 @@ async function openVocabDetail(id) {
         // Populate Summary
         const summaryDiv = document.getElementById('vocab-detail-summary');
         const summarySection = document.getElementById('vocab-summary-section');
-        if (data.content.paragraph) {
+        if (data.content.paragraph && data.content.paragraph.trim()) {
             summaryDiv.textContent = data.content.paragraph;
             summarySection.classList.remove('hidden');
         } else {
@@ -1054,7 +1059,7 @@ async function openVocabDetail(id) {
 
         // Populate Word List
         const listDiv = document.getElementById('vocab-detail-list');
-        const words = data.content.vocabulary || data.content.words || data.content || [];
+        const words = data.content.vocabulary || data.content.words || [];
 
         if (Array.isArray(words) && words.length > 0) {
             listDiv.innerHTML = `
@@ -1077,16 +1082,16 @@ async function openVocabDetail(id) {
                 `).join('')}
             `;
         } else {
-            listDiv.innerHTML = '<p class="empty-state">No words found</p>';
+            listDiv.innerHTML = '<p class="empty-state">No words found. The vocabulary generation may have failed or returned no data.</p>';
         }
 
         // Populate Verbs (Default to Present)
         const conjugationsSection = document.getElementById('vocab-conjugations-section');
-        if (data.content.conjugations && data.content.conjugations.length > 0) {
+        if (data.content.conjugations && Array.isArray(data.content.conjugations) && data.content.conjugations.length > 0) {
             conjugationsSection.classList.remove('hidden');
             // Reset tab
             document.querySelectorAll('#vocab-conjugations-section .tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelector('#vocab-conjugations-section .tab-btn[data-tab="present"]').classList.add('active');
+            document.querySelector('#vocab-conjugations-section .tab-btn[data-tab="present"]')?.classList.add('active');
 
             renderConjugations(data.content.conjugations, 'present');
         } else {
@@ -1094,7 +1099,7 @@ async function openVocabDetail(id) {
         }
 
     } catch (err) {
-        console.error(err);
+        console.error('Error loading vocab detail:', err);
         showToast('Failed to load details', 'error');
         // Go back
         listView.classList.remove('hidden');
