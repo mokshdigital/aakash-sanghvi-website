@@ -99,11 +99,36 @@ function initializeAppContent() {
 
 function initNavigation() {
     const navBtns = document.querySelectorAll('.nav-btn');
+    const sidebar = document.querySelector('.app-sidebar');
+    const overlay = document.getElementById('mobile-overlay');
+    const menuBtn = document.getElementById('mobile-menu-btn');
+
+    // Mobile Menu Toggle
+    if (menuBtn) {
+        menuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('hidden');
+        });
+    }
+
+    // Close menu when clicking overlay
+    if (overlay) {
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            overlay.classList.add('hidden');
+        });
+    }
 
     navBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const section = btn.dataset.section;
             switchSection(section);
+
+            // Close mobile menu on selection
+            if (window.innerWidth <= 900) {
+                sidebar.classList.remove('open');
+                overlay.classList.add('hidden');
+            }
         });
     });
 
