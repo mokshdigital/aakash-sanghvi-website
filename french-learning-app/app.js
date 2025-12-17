@@ -83,9 +83,10 @@ function initializeAppContent() {
     initNavigation();
     initForms();
     initClassworkUI();
-    initHomeworkUI(); // New
-    initVocabulary(); // Vocab still uses old layout for now?
-    initGrammarUI(); // Enhanced
+    initHomeworkUI();
+    initVocabulary();
+    initMyVocabulary();
+    initGrammarUI();
     initResources();
     loadAllData();
 }
@@ -1006,6 +1007,194 @@ function switchVocabTab(type) {
     if (selected) selected.classList.add('active');
 }
 
+// =============================================
+// My Vocabulary Section
+// =============================================
+
+let allMyVocabWords = [];
+let currentMyVocabData = null;
+
+function initMyVocabulary() {
+    // Form submission
+    const form = document.getElementById('myvocab-form');
+    if (form) {
+        form.addEventListener('submit', handleMyVocabSubmit);
+    }
+
+    // Search input
+    const searchInput = document.getElementById('myvocab-search');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            filterMyVocabulary(e.target.value);
+        });
+    }
+
+    // Back button
+    document.getElementById('btn-back-myvocab')?.addEventListener('click', () => {
+        document.querySelector('#myvocab-section .content-grid').classList.remove('hidden');
+        document.getElementById('myvocab-detail-view').classList.add('hidden');
+        loadMyVocabulary();
+    });
+
+    // Delete button
+    document.getElementById('btn-delete-myvocab')?.addEventListener('click', () => {
+        const id = document.getElementById('btn-delete-myvocab').dataset.id;
+        if (id) deleteItem('my_vocabulary', id, () => {
+            document.querySelector('#myvocab-section .content-grid').classList.remove('hidden');
+            document.getElementById('myvocab-detail-view').classList.add('hidden');
+            loadMyVocabulary();
+        });
+    });
+}
+
+async function handleMyVocabSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    const wordInput = document.getElementById('myvocab-word-input');
+    const word = wordInput.value.trim();
+
+    if (!word) return;
+
+    try {
+        setLoading(btn, true);
+
+        // Call AI to analyze the word
+        const aiResult = await callEdgeFunction('analyze-word', { word });
+
+        // Save to database
+        const { data, error } = await supabaseClient
+            .from('my_vocabulary')
+            .insert({
+                french_word: aiResult.french_word || word,
+                gender: aiResult.gender || '',
+                english_meaning: aiResult.english_meaning || '',
+                example_sentences: aiResult.example_sentences || []
+            })
+            .select()
+            .single();
+
+        if (error) throw error;
+
+        showToast('Word added!', 'success');
+        wordInput.value = '';
+        loadMyVocabulary();
+        openMyVocabDetail(data.id);
+
+    } catch (err) {
+        console.error(err);
+        showToast('Failed to analyze word', 'error');
+    } finally {
+        setLoading(btn, false);
+    }
+}
+
+async function loadMyVocabulary() {
+    try {
+        const { data, error } = await supabaseClient
+            .from('my_vocabulary')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        allMyVocabWords = data || [];
+
+        // Clear search input
+        const searchInput = document.getElementById('myvocab-search');
+        if (searchInput) searchInput.value = '';
+
+        renderMyVocabList(allMyVocabWords);
+
+    } catch (error) {
+        console.error('Error loading my vocabulary:', error);
+    }
+}
+
+function filterMyVocabulary(query) {
+    const searchTerm = query.toLowerCase().trim();
+
+    if (!searchTerm) {
+        renderMyVocabList(allMyVocabWords);
+        return;
+    }
+
+    const filtered = allMyVocabWords.filter(entry =>
+        entry.french_word.toLowerCase().includes(searchTerm) ||
+        entry.english_meaning.toLowerCase().includes(searchTerm)
+    );
+
+    renderMyVocabList(filtered);
+}
+
+function renderMyVocabList(words) {
+    const listEl = document.getElementById('myvocab-list');
+    if (!listEl) return;
+
+    if (words.length === 0) {
+        listEl.innerHTML = '<p class="empty-state">No words found</p>';
+    } else {
+        listEl.innerHTML = words.map(entry => `
+            <div class="entry-item" onclick="openMyVocabDetail('${entry.id}')">
+                <div class="entry-date" style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span class="gender-badge ${entry.gender === 'm' ? 'masculine' : 'feminine'}">${entry.gender?.toUpperCase() || '?'}</span>
+                    ${entry.french_word}
+                </div>
+                <div class="entry-preview">${entry.english_meaning}</div>
+            </div>
+        `).join('');
+    }
+}
+
+async function openMyVocabDetail(id) {
+    const contentGrid = document.querySelector('#myvocab-section .content-grid');
+    const detailView = document.getElementById('myvocab-detail-view');
+
+    contentGrid.classList.add('hidden');
+    detailView.classList.remove('hidden');
+
+    // Store ID for delete
+    document.getElementById('btn-delete-myvocab').dataset.id = id;
+
+    try {
+        const { data, error } = await supabaseClient
+            .from('my_vocabulary')
+            .select('*')
+            .eq('id', id)
+            .single();
+
+        if (error) throw error;
+        currentMyVocabData = data;
+
+        // Populate header
+        document.getElementById('myvocab-detail-word').textContent = data.french_word;
+
+        const genderBadge = document.getElementById('myvocab-detail-gender');
+        genderBadge.textContent = data.gender?.toUpperCase() || '?';
+        genderBadge.className = `gender-badge ${data.gender === 'm' ? 'masculine' : 'feminine'}`;
+
+        document.getElementById('myvocab-detail-meaning').textContent = data.english_meaning;
+
+        // Populate sentences
+        const sentencesEl = document.getElementById('myvocab-detail-sentences');
+        const sentences = data.example_sentences || [];
+
+        if (sentences.length > 0) {
+            sentencesEl.innerHTML = sentences.map(s => `
+                <div class="sentence-item">
+                    <div class="sentence-french">${s.french}</div>
+                    <div class="sentence-english">${s.english}</div>
+                </div>
+            `).join('');
+        } else {
+            sentencesEl.innerHTML = '<p class="empty-state">No example sentences</p>';
+        }
+
+    } catch (error) {
+        console.error('Error loading word:', error);
+        showToast('Failed to load word details', 'error');
+    }
+}
+
 async function handleVocabSubmit(e) {
     e.preventDefault();
     const btn = e.target.querySelector('button');
@@ -1509,6 +1698,7 @@ async function loadAllData() {
         loadClasswork(),
         loadHomework(),
         loadVocabulary(),
+        loadMyVocabulary(),
         loadGrammar(),
         loadResources()
     ]);

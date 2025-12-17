@@ -73,6 +73,16 @@
                         </svg>
                         <span>Vocabulary</span>
                     </button>
+                    <button class="nav-btn" data-section="myvocab">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                            <line x1="12" y1="6" x2="12" y2="14" />
+                            <line x1="8" y1="10" x2="16" y2="10" />
+                        </svg>
+                        <span>My Vocabulary</span>
+                    </button>
                     <button class="nav-btn" data-section="grammar">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2">
@@ -440,6 +450,81 @@
                                 <div id="vocab-detail-verbs" class="grid-layout">
                                     <!-- Verbs Content -->
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- My Vocabulary Section -->
+                <section id="myvocab-section" class="section">
+                    <div class="section-header">
+                        <h2>📚 My Vocabulary</h2>
+                        <p class="section-desc">Build your personal vocabulary from reading</p>
+                    </div>
+
+                    <div class="content-grid">
+                        <!-- Add Word Form -->
+                        <div class="card card-form">
+                            <h3>Add New Word</h3>
+                            <form id="myvocab-form">
+                                <div class="form-group">
+                                    <label for="myvocab-word-input">French Word</label>
+                                    <input type="text" id="myvocab-word-input"
+                                        placeholder="e.g., livre, maison, voiture..." required>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-full">
+                                    <span>Analyze Word</span>
+                                    <svg class="spinner hidden" width="16" height="16" viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"
+                                            fill="none" stroke-dasharray="30 60" />
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Word List -->
+                        <div class="card card-list">
+                            <h3>My Words</h3>
+                            <input type="text" id="myvocab-search" class="search-input"
+                                placeholder="🔍 Search my words...">
+                            <div id="myvocab-list" class="entry-list">
+                                <p class="empty-state">No words added yet</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Word Detail View -->
+                    <div id="myvocab-detail-view" class="hidden">
+                        <div class="editor-toolbar">
+                            <button id="btn-back-myvocab" class="btn btn-text">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                                </svg>
+                                Back to My Words
+                            </button>
+                            <div class="editor-actions">
+                                <button id="btn-delete-myvocab" class="btn btn-secondary btn-danger"
+                                    style="color: #ff6b6b; border-color: #ff6b6b;">Delete</button>
+                            </div>
+                        </div>
+
+                        <div class="card card-wide" style="margin-top: 1rem;">
+                            <div class="detail-header"
+                                style="border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+                                <h2 id="myvocab-detail-word"
+                                    style="color: var(--accent-blue-light); margin-bottom: 0.25rem;">Word</h2>
+                                <div style="display: flex; gap: 1rem; align-items: center;">
+                                    <span id="myvocab-detail-gender" class="gender-badge">M</span>
+                                    <span id="myvocab-detail-meaning"
+                                        style="color: var(--text-secondary); font-size: 1.1rem;">English meaning</span>
+                                </div>
+                            </div>
+
+                            <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 1rem;">Example
+                                Sentences</h3>
+                            <div id="myvocab-detail-sentences" class="sentences-list">
+                                <!-- Sentences will be populated here -->
                             </div>
                         </div>
                     </div>
