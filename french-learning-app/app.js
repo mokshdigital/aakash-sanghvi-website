@@ -550,13 +550,30 @@ async function deleteItem(table, id, successCallback) {
         if (error) throw error;
 
         showToast('Item deleted successfully', 'success');
-        if (successCallback) successCallback(); // Reload view
 
-        // Determine which list view to return to based on table
-        if (table === 'french_classwork') toggleClassworkView('list');
-        else if (table === 'french_homework') toggleHomeworkView('list');
-        else if (table === 'french_grammar') toggleGrammarView('list');
-        else if (table === 'french_resources') loadResources(); // Re-render logic is inside loadResources mostly
+        // Return to list view based on table type
+        if (table === 'french_classwork') {
+            toggleClassworkView('list');
+        } else if (table === 'french_homework') {
+            toggleHomeworkView('list');
+        } else if (table === 'french_grammar') {
+            toggleGrammarView('list');
+        } else if (table === 'french_resources') {
+            loadResources();
+        } else if (table === 'french_vocabulary') {
+            // Return to vocabulary list view
+            document.getElementById('vocab-list-view').classList.remove('hidden');
+            document.getElementById('vocab-detail-view').classList.add('hidden');
+            loadVocabulary();
+        } else if (table === 'my_vocabulary') {
+            // Return to my vocabulary list view
+            document.querySelector('#myvocab-section .content-grid').classList.remove('hidden');
+            document.getElementById('myvocab-detail-view').classList.add('hidden');
+            loadMyVocabulary();
+        }
+
+        // Also run any custom callback
+        if (successCallback) successCallback();
 
     } catch (err) {
         console.error(err);
