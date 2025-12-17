@@ -83,8 +83,10 @@ function initializeAppContent() {
     initNavigation();
     initForms();
     initClassworkUI();
-    initVocabulary();
-    initResources(); // New
+    initHomeworkUI(); // New
+    initVocabulary(); // Vocab still uses old layout for now?
+    initGrammarUI(); // Enhanced
+    initResources();
     loadAllData();
 }
 
@@ -481,11 +483,96 @@ function initForms() {
     if (hwDate) hwDate.value = today;
 }
 
+// =============================================
+// Homework (Enhanced)
+// =============================================
+
+function initHomeworkUI() {
+    // Add Homework Button
+    document.getElementById('btn-new-homework')?.addEventListener('click', () => {
+        openHomeworkEditor(null);
+    });
+
+    // Back Button
+    document.getElementById('btn-back-homework')?.addEventListener('click', () => {
+        toggleHomeworkView('list');
+    });
+
+    // Delete Button
+    document.getElementById('btn-delete-homework')?.addEventListener('click', () => {
+        const id = document.getElementById('hw-id').value;
+        if (id) deleteItem('french_homework', id, loadHomework);
+    });
+
+    // Form Submit
+    const form = document.getElementById('homework-form');
+    if (form) form.addEventListener('submit', handleHomeworkSubmit);
+}
+
+function toggleHomeworkView(viewName) {
+    const listContainer = document.getElementById('homework-library-view');
+    const editorContainer = document.getElementById('homework-editor-view');
+    const headerActions = document.querySelector('#homework-section .header-actions');
+
+    if (viewName === 'editor') {
+        listContainer.classList.add('hidden');
+        editorContainer.classList.remove('hidden');
+        if (headerActions) headerActions.classList.add('hidden');
+    } else {
+        listContainer.classList.remove('hidden');
+        editorContainer.classList.add('hidden');
+        if (headerActions) headerActions.classList.remove('hidden');
+        loadHomework();
+    }
+}
+
+async function openHomeworkEditor(id) {
+    toggleHomeworkView('editor');
+
+    const form = document.getElementById('homework-form');
+    const deleteBtn = document.getElementById('btn-delete-homework');
+    const title = document.getElementById('hw-form-title');
+
+    if (!id) {
+        // New Mode
+        form.reset();
+        document.getElementById('hw-id').value = '';
+        document.getElementById('hw-date').value = new Date().toISOString().split('T')[0];
+        deleteBtn.classList.add('hidden');
+        title.textContent = 'Add Homework';
+    } else {
+        // Edit Mode
+        title.textContent = 'Edit Homework';
+        deleteBtn.classList.remove('hidden');
+
+        try {
+            const { data, error } = await supabase
+                .from('french_homework')
+                .select('*')
+                .eq('id', id)
+                .single();
+
+            if (error) throw error;
+
+            document.getElementById('hw-id').value = data.id;
+            document.getElementById('hw-date').value = data.date;
+            document.getElementById('hw-given').value = data.hw_given;
+            document.getElementById('hw-done').value = data.hw_done || '';
+
+        } catch (err) {
+            console.error(err);
+            showToast('Failed to load homework details', 'error');
+            toggleHomeworkView('list');
+        }
+    }
+}
+
 async function handleHomeworkSubmit(e) {
     e.preventDefault();
     const form = e.target;
     const btn = form.querySelector('button');
 
+    const id = document.getElementById('hw-id').value;
     const date = document.getElementById('hw-date').value;
     const hwGiven = document.getElementById('hw-given').value;
     const hwDone = document.getElementById('hw-done').value;
@@ -493,26 +580,129 @@ async function handleHomeworkSubmit(e) {
     try {
         setLoading(btn, true);
 
-        const { error } = await supabase
-            .from('french_homework')
-            .insert({
-                date,
-                hw_given: hwGiven,
-                hw_done: hwDone
-            });
+        let result;
+        if (id) {
+            // Update
+            result = await supabase
+                .from('french_homework')
+                .update({
+                    date,
+                    hw_given: hwGiven,
+                    hw_done: hwDone
+                })
+                .eq('id', id);
+        } else {
+            // Insert
+            result = await supabase
+                .from('french_homework')
+                .insert({
+                    date,
+                    hw_given: hwGiven,
+                    hw_done: hwDone
+                });
+        }
 
-        if (error) throw error;
+        if (result.error) throw result.error;
 
         showToast('Homework saved!', 'success');
-        form.reset();
-        document.getElementById('hw-date').value = new Date().toISOString().split('T')[0];
-        loadHomework();
+        toggleHomeworkView('list');
 
     } catch (error) {
         console.error('Error:', error);
         showToast(error.message || 'Failed to save homework', 'error');
     } finally {
         setLoading(btn, false);
+    }
+}
+
+// =============================================
+// Grammar (Enhanced)
+// =============================================
+
+function initGrammarUI() {
+    // New Topic Button
+    document.getElementById('btn-new-grammar')?.addEventListener('click', () => {
+        openGrammarEditor(null);
+    });
+
+    // Back Button
+    document.getElementById('btn-back-grammar')?.addEventListener('click', () => {
+        toggleGrammarView('list');
+    });
+
+    // Delete Button
+    document.getElementById('btn-delete-grammar')?.addEventListener('click', () => {
+        // ID is stored in the delete button's onclick or we can track it
+        const id = document.getElementById('btn-delete-grammar').dataset.id;
+        if (id) deleteItem('french_grammar', id, loadGrammar);
+    });
+
+    // Form Submit
+    const form = document.getElementById('grammar-form');
+    if (form) form.addEventListener('submit', handleGrammarSubmit);
+}
+
+function toggleGrammarView(viewName) {
+    const listContainer = document.getElementById('grammar-library-view');
+    const editorContainer = document.getElementById('grammar-editor-view');
+    const headerActions = document.querySelector('#grammar-section .header-actions');
+
+    if (viewName === 'editor') {
+        listContainer.classList.add('hidden');
+        editorContainer.classList.remove('hidden');
+        if (headerActions) headerActions.classList.add('hidden');
+    } else {
+        listContainer.classList.remove('hidden');
+        editorContainer.classList.add('hidden');
+        if (headerActions) headerActions.classList.remove('hidden');
+        loadGrammar();
+    }
+}
+
+async function openGrammarEditor(id) {
+    // This is actually for "New Topic" (Generator)
+    toggleGrammarView('editor');
+
+    document.getElementById('grammar-detail-content').classList.add('hidden');
+    document.getElementById('grammar-generator-content').classList.remove('hidden');
+
+    document.getElementById('btn-delete-grammar').classList.add('hidden'); // No delete for new
+
+    // Reset form
+    document.getElementById('grammar-form').reset();
+}
+
+async function openGrammarDetail(id) {
+    toggleGrammarView('editor');
+
+    const detailContent = document.getElementById('grammar-detail-content');
+    const generatorContent = document.getElementById('grammar-generator-content');
+    const deleteBtn = document.getElementById('btn-delete-grammar');
+
+    detailContent.classList.remove('hidden');
+    generatorContent.classList.add('hidden');
+
+    // Show Delete Button and store ID
+    deleteBtn.classList.remove('hidden');
+    deleteBtn.dataset.id = id;
+
+    // Load Data
+    try {
+        const { data, error } = await supabase
+            .from('french_grammar')
+            .select('*')
+            .eq('id', id)
+            .single();
+
+        if (error) throw error;
+
+        document.getElementById('grammar-detail-title').textContent = data.topic;
+        document.getElementById('grammar-detail-body').innerHTML = renderMarkdown(data.notes);
+
+    } catch (error) {
+        console.error('Error:', error);
+        showToast('Failed to load grammar notes', 'error');
+        toggleGrammarView('list');
     }
 }
 
@@ -530,18 +720,21 @@ async function handleGrammarSubmit(e) {
         const aiResult = await callEdgeFunction('generate-grammar', { topic });
 
         // Save to Supabase
-        const { error } = await supabase
+        const { data, error } = await supabase
             .from('french_grammar')
             .insert({
                 topic,
                 notes: aiResult.notes
-            });
+            })
+            .select()
+            .single();
 
         if (error) throw error;
 
         showToast('Grammar notes generated and saved!', 'success');
-        form.reset();
-        loadGrammar();
+
+        // Open the newly created note
+        openGrammarDetail(data.id);
 
     } catch (error) {
         console.error('Error:', error);
@@ -894,6 +1087,9 @@ async function loadAllData() {
 }
 
 async function loadHomework() {
+    const grid = document.getElementById('homework-grid');
+    if (!grid) return;
+
     try {
         const { data, error } = await supabase
             .from('french_homework')
@@ -902,23 +1098,29 @@ async function loadHomework() {
 
         if (error) throw error;
 
-        const list = document.getElementById('homework-list');
-        if (!list) return;
-
         if (!data || data.length === 0) {
-            list.innerHTML = '<p class="empty-state">No homework yet</p>';
+            grid.innerHTML = '<p class="empty-state card-wide">No homework yet</p>';
             return;
         }
 
-        list.innerHTML = data.map(entry => `
-            <div class="entry-item" onclick="showHomeworkDetail('${entry.id}')">
-                <div class="entry-date">${formatDate(entry.date)}</div>
-                <div class="entry-preview">${truncate(entry.hw_given, 60)}</div>
+        grid.innerHTML = data.map(entry => {
+            const isDone = entry.hw_done && entry.hw_done.length > 5;
+            return `
+            <div class="note-card" onclick="openHomeworkEditor('${entry.id}')">
+                <div class="note-header">
+                    <span>${formatDate(entry.date)}</span>
+                    <span style="color: ${isDone ? 'var(--accent-green)' : 'var(--accent-red)'}">
+                        ${isDone ? 'Done' : 'Pending'}
+                    </span>
+                </div>
+                <div class="note-title">${truncate(entry.hw_given, 50)}</div>
+                <p class="note-preview">${entry.hw_done ? truncate(entry.hw_done, 80) : 'No work recorded'}</p>
             </div>
-        `).join('');
+        `}).join('');
 
     } catch (error) {
         console.error('Error loading homework:', error);
+        grid.innerHTML = '<p class="empty-state">Error loading homework</p>';
     }
 }
 
@@ -971,6 +1173,9 @@ async function loadVocabulary() {
 }
 
 async function loadGrammar() {
+    const grid = document.getElementById('grammar-grid');
+    if (!grid) return;
+
     try {
         const { data, error } = await supabase
             .from('french_grammar')
@@ -979,23 +1184,25 @@ async function loadGrammar() {
 
         if (error) throw error;
 
-        const list = document.getElementById('grammar-list');
-        if (!list) return;
-
         if (!data || data.length === 0) {
-            list.innerHTML = '<p class="empty-state">No grammar notes yet</p>';
+            grid.innerHTML = '<p class="empty-state card-wide">No grammar notes yet</p>';
             return;
         }
 
-        list.innerHTML = data.map(entry => `
-            <div class="entry-item" onclick="showGrammarDetail('${entry.id}')">
-                <div class="entry-date">${entry.topic}</div>
-                <div class="entry-preview">${formatDate(entry.created_at)}</div>
+        grid.innerHTML = data.map(entry => `
+            <div class="note-card" onclick="openGrammarDetail('${entry.id}')">
+                <div class="note-header">
+                    <span>Grammar</span>
+                    <span>${formatDate(entry.created_at)}</span>
+                </div>
+                <div class="note-title">${entry.topic}</div>
+                <p class="note-preview">${truncate(entry.notes, 100)}</p>
             </div>
         `).join('');
 
     } catch (error) {
         console.error('Error loading grammar:', error);
+        grid.innerHTML = '<p class="empty-state">Error loading grammar</p>';
     }
 }
 
@@ -1272,5 +1479,8 @@ window.showVocabDetail = showVocabDetail;
 window.showGrammarDetail = showGrammarDetail;
 window.checkGenderAnswer = checkGenderAnswer;
 window.openClassworkEditor = openClassworkEditor;
+window.openHomeworkEditor = openHomeworkEditor;
+window.openGrammarEditor = openGrammarEditor;
+window.openGrammarDetail = openGrammarDetail;
 window.deleteItem = deleteItem;
 window.loadResources = loadResources;
