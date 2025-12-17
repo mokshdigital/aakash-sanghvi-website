@@ -23,6 +23,10 @@ let genderQuizData = [];
 let genderQuizIndex = 0;
 let genderQuizScore = 0;
 
+// Classwork Specific State
+let editingClassworkId = null;
+let sectionsList = []; // Array of section objects {id, name}
+
 // =============================================
 // Initialize App
 // =============================================
@@ -30,9 +34,6 @@ let genderQuizScore = 0;
 document.addEventListener('DOMContentLoaded', () => {
     initSupabase();
     initPasswordProtection();
-    initNavigation();
-    initForms();
-    initVocabulary();
 });
 
 function initSupabase() {
@@ -55,7 +56,7 @@ function initPasswordProtection() {
     if (sessionStorage.getItem('french-app-auth') === 'true') {
         modal.classList.add('hidden');
         app.classList.remove('hidden');
-        loadAllData();
+        initializeAppContent();
         return;
     }
 
@@ -67,7 +68,7 @@ function initPasswordProtection() {
             sessionStorage.setItem('french-app-auth', 'true');
             modal.classList.add('hidden');
             app.classList.remove('hidden');
-            loadAllData();
+            initializeAppContent();
             showToast('Bienvenue! 🇫🇷', 'success');
         } else {
             error.classList.remove('hidden');
@@ -76,6 +77,14 @@ function initPasswordProtection() {
             setTimeout(() => error.classList.add('hidden'), 3000);
         }
     });
+}
+
+function initializeAppContent() {
+    initNavigation();
+    initForms();
+    initClassworkUI();
+    initVocabulary();
+    loadAllData();
 }
 
 // =============================================
@@ -92,17 +101,23 @@ function initNavigation() {
         });
     });
 
-    // Detail modal close
-    document.getElementById('close-detail').addEventListener('click', () => {
-        document.getElementById('detail-modal').classList.add('hidden');
-    });
+    // Detail modal close (for other sections still using modal)
+    const closeDetailBtn = document.getElementById('close-detail');
+    if (closeDetailBtn) {
+        closeDetailBtn.addEventListener('click', () => {
+            document.getElementById('detail-modal').classList.add('hidden');
+        });
+    }
 
     // Close modal on overlay click
-    document.getElementById('detail-modal').addEventListener('click', (e) => {
-        if (e.target.id === 'detail-modal') {
-            document.getElementById('detail-modal').classList.add('hidden');
-        }
-    });
+    const detailModal = document.getElementById('detail-modal');
+    if (detailModal) {
+        detailModal.addEventListener('click', (e) => {
+            if (e.target.id === 'detail-modal') {
+                document.getElementById('detail-modal').classList.add('hidden');
+            }
+        });
+    }
 }
 
 function switchSection(sectionId) {
@@ -120,64 +135,325 @@ function switchSection(sectionId) {
 }
 
 // =============================================
-// Forms
+// Classwork Library Logic
 // =============================================
 
-function initForms() {
-    // Classwork form
-    document.getElementById('classwork-form').addEventListener('submit', handleClassworkSubmit);
+function initClassworkUI() {
+    // Top Level Buttons
+    document.getElementById('btn-new-section').addEventListener('click', promptNewSection);
+    document.getElementById('btn-new-classwork').addEventListener('click', () => openClassworkEditor(null));
 
-    // Homework form
-    document.getElementById('homework-form').addEventListener('submit', handleHomeworkSubmit);
+    // Filters
+    document.getElementById('cw-search').addEventListener('input', debounce(loadClasswork, 500));
+    document.getElementById('cw-filter-section').addEventListener('change', loadClasswork);
+    document.getElementById('cw-filter-date').addEventListener('change', loadClasswork);
 
-    // Grammar form
-    document.getElementById('grammar-form').addEventListener('submit', handleGrammarSubmit);
-
-    // Set default dates to today
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('cw-date').value = today;
-    document.getElementById('hw-date').value = today;
+    // Editor Actions
+    document.getElementById('btn-back-library').addEventListener('click', () => toggleClassworkView('list'));
+    document.getElementById('btn-save-note').addEventListener('click', saveClassworkNote);
+    document.getElementById('btn-ai-format').addEventListener('click', formatNotesWithAI);
 }
 
-async function handleClassworkSubmit(e) {
-    e.preventDefault();
-    const form = e.target;
-    const btn = form.querySelector('button');
-    const spinner = btn.querySelector('.spinner');
+function toggleClassworkView(viewName) {
+    const listContainer = document.getElementById('classwork-library-view');
+    const editorContainer = document.getElementById('classwork-editor-view');
+    const filters = document.querySelector('.library-filters'); // Use class for selection
+    const headerActions = document.querySelector('.section-header-row .header-actions');
 
-    const date = document.getElementById('cw-date').value;
-    const notes = document.getElementById('cw-notes').value;
+    if (viewName === 'editor') {
+        listContainer.classList.add('hidden');
+        editorContainer.classList.remove('hidden');
+        if (filters) filters.classList.add('hidden');
+        if (headerActions) headerActions.classList.add('hidden');
+    } else {
+        listContainer.classList.remove('hidden');
+        editorContainer.classList.add('hidden');
+        if (filters) filters.classList.remove('hidden');
+        if (headerActions) headerActions.classList.remove('hidden');
+        loadClasswork(); // Refresh list on return
+    }
+}
+
+async function loadSections() {
+    try {
+        const { data, error } = await supabase
+            .from('french_sections')
+            .select('*')
+            .order('name', { ascending: true });
+
+        if (error) throw error;
+
+        sectionsList = data || [];
+
+        // Populate Filter Dropdown
+        const filterSelect = document.getElementById('cw-filter-section');
+        const currentFilter = filterSelect.value;
+        filterSelect.innerHTML = '<option value="">All Sections</option>';
+        sectionsList.forEach(sec => {
+            filterSelect.innerHTML += `<option value="${sec.id}">${sec.name}</option>`;
+        });
+        filterSelect.value = currentFilter;
+
+        // Populate Editor Dropdown
+        const editorSelect = document.getElementById('editor-section');
+        editorSelect.innerHTML = '<option value="">Uncategorized</option>';
+        sectionsList.forEach(sec => {
+            editorSelect.innerHTML += `<option value="${sec.id}">${sec.name}</option>`;
+        });
+
+    } catch (err) {
+        console.error('Error loading sections:', err);
+    }
+}
+
+async function promptNewSection() {
+    const name = prompt("Enter section name (e.g., 'Conversation Class', 'Verbs 101'):");
+    if (!name) return;
+
+    try {
+        const { error } = await supabase
+            .from('french_sections')
+            .insert({ name });
+
+        if (error) throw error;
+
+        showToast(`Section "${name}" created!`, 'success');
+        loadSections();
+    } catch (err) {
+        showToast('Failed to create section', 'error');
+        console.error(err);
+    }
+}
+
+async function loadClasswork() {
+    const grid = document.getElementById('classwork-grid');
+    // Ensure we are in list view
+    if (document.getElementById('classwork-library-view').classList.contains('hidden')) return;
+
+    // Filters
+    const searchQuery = document.getElementById('cw-search')?.value.toLowerCase();
+    const sectionId = document.getElementById('cw-filter-section')?.value;
+    const dateFilter = document.getElementById('cw-filter-date')?.value;
+
+    try {
+        let query = supabase
+            .from('french_classwork')
+            .select(`
+                *,
+                french_sections(name)
+            `)
+            .order('date', { ascending: false });
+
+        if (sectionId) {
+            query = query.eq('section_id', sectionId);
+        }
+
+        if (dateFilter) {
+            query = query.eq('date', dateFilter);
+        }
+
+        const { data, error } = await query;
+
+        if (error) throw error;
+
+        let filteredData = data;
+
+        // Client-side search for more flexibility on tags/content
+        if (searchQuery) {
+            filteredData = data.filter(item => {
+                const textMatch = (item.raw_notes || '').toLowerCase().includes(searchQuery) ||
+                    (item.formatted_notes || '').toLowerCase().includes(searchQuery);
+                const tagMatch = (item.tags || []).some(t => t.toLowerCase().includes(searchQuery));
+                return textMatch || tagMatch;
+            });
+        }
+
+        if (!filteredData || filteredData.length === 0) {
+            grid.innerHTML = '<p class="empty-state card-wide">No classwork found matching criteria.</p>';
+            return;
+        }
+
+        grid.innerHTML = filteredData.map(item => `
+            <div class="note-card" onclick="openClassworkEditor('${item.id}')">
+                <div class="note-header">
+                    <span>${formatDate(item.date)}</span>
+                    <span style="font-weight:600; color:var(--accent-blue-light);">${item.french_sections?.name || 'Uncategorized'}</span>
+                </div>
+                <div class="note-title">${extractTitle(item)}</div>
+                <div class="note-preview">${stripHtml(item.formatted_notes || item.raw_notes || '')}</div>
+                ${item.tags && item.tags.length > 0 ? `
+                    <div class="note-tags">
+                        ${item.tags.slice(0, 3).map(tag => `<span class="note-tag">${tag}</span>`).join('')}
+                    </div>
+                ` : ''}
+            </div>
+        `).join('');
+
+    } catch (err) {
+        console.error('Error loading classwork:', err);
+        grid.innerHTML = '<p class="empty-state">Error loading notes. check console.</p>';
+    }
+}
+
+async function openClassworkEditor(id) {
+    editingClassworkId = id;
+    toggleClassworkView('editor');
+
+    // Reset Form
+    document.getElementById('editor-date').value = new Date().toISOString().split('T')[0];
+    document.getElementById('editor-section').value = '';
+    document.getElementById('editor-tags').value = '';
+    document.getElementById('editor-raw').value = '';
+    document.getElementById('editor-formatted').value = '';
+    document.getElementById('editor-status').textContent = id ? 'Loading...' : 'New Note';
+
+    if (id) {
+        try {
+            const { data, error } = await supabase
+                .from('french_classwork')
+                .select('*')
+                .eq('id', id)
+                .single();
+
+            if (error) throw error;
+
+            document.getElementById('editor-date').value = data.date;
+            document.getElementById('editor-section').value = data.section_id || '';
+            document.getElementById('editor-tags').value = (data.tags || []).join(', ');
+            document.getElementById('editor-raw').value = data.raw_notes || '';
+            document.getElementById('editor-formatted').value = data.formatted_notes || '';
+            document.getElementById('editor-status').textContent = 'Editing Mode';
+
+        } catch (err) {
+            showToast('Failed to load note details', 'error');
+            console.error(err);
+            toggleClassworkView('list');
+        }
+    }
+}
+
+async function formatNotesWithAI() {
+    const rawNotes = document.getElementById('editor-raw').value;
+    const btn = document.getElementById('btn-ai-format');
+
+    if (!rawNotes) {
+        showToast('Please enter some raw notes first.', 'error');
+        return;
+    }
+
+    try {
+        setLoading(btn, true);
+        const aiResult = await callEdgeFunction('format-notes', { notes: rawNotes });
+
+        document.getElementById('editor-formatted').value = aiResult.formatted_notes;
+
+        // Append new tags to existing ones
+        const currentTagsStr = document.getElementById('editor-tags').value;
+        const currentTags = currentTagsStr ? currentTagsStr.split(',').map(t => t.trim()) : [];
+        const newTags = aiResult.tags || [];
+        const mergedTags = [...new Set([...currentTags, ...newTags])]; // Unique
+        document.getElementById('editor-tags').value = mergedTags.join(', ');
+
+        showToast('AI Formatting Complete!', 'success');
+
+    } catch (err) {
+        console.error(err);
+        showToast('AI Formatting failed', 'error');
+    } finally {
+        setLoading(btn, false);
+    }
+}
+
+async function saveClassworkNote() {
+    const btn = document.getElementById('btn-save-note');
+    const date = document.getElementById('editor-date').value;
+    const sectionId = document.getElementById('editor-section').value || null;
+    const tagsStr = document.getElementById('editor-tags').value;
+    const rawNotes = document.getElementById('editor-raw').value;
+    const formattedNotes = document.getElementById('editor-formatted').value;
+
+    const tags = tagsStr.split(',').map(t => t.trim()).filter(t => t.length > 0);
+
+    if (!rawNotes) {
+        showToast('Note content cannot be empty', 'error');
+        return;
+    }
 
     try {
         setLoading(btn, true);
 
-        // Call AI to format notes
-        const aiResult = await callEdgeFunction('format-notes', { notes, date });
+        const payload = {
+            date,
+            section_id: sectionId,
+            tags,
+            raw_notes: rawNotes,
+            formatted_notes: formattedNotes
+        };
 
-        // Save to Supabase
-        const { data, error } = await supabase
-            .from('french_classwork')
-            .insert({
-                date,
-                raw_notes: notes,
-                formatted_notes: aiResult.formatted_notes,
-                tags: aiResult.tags || []
-            })
-            .select();
+        let result;
+        if (editingClassworkId) {
+            // Update
+            result = await supabase
+                .from('french_classwork')
+                .update(payload)
+                .eq('id', editingClassworkId);
+        } else {
+            // Insert
+            result = await supabase
+                .from('french_classwork')
+                .insert(payload);
+        }
 
-        if (error) throw error;
+        if (result.error) throw result.error;
 
-        showToast('Notes formatted and saved!', 'success');
-        form.reset();
-        document.getElementById('cw-date').value = new Date().toISOString().split('T')[0];
-        loadClasswork();
+        showToast('Note saved successfully!', 'success');
 
-    } catch (error) {
-        console.error('Error:', error);
-        showToast(error.message || 'Failed to save notes', 'error');
+        // If it was new, we can just switch back to list. Or stay. Let's switch back.
+        toggleClassworkView('list');
+
+    } catch (err) {
+        console.error(err);
+        showToast('Failed to save note', 'error');
     } finally {
         setLoading(btn, false);
     }
+}
+
+// Helper to get a preview title from formatted notes (usually first H1 or H2)
+function extractTitle(item) {
+    const text = item.formatted_notes || item.raw_notes || '';
+    // Try to find a header markdown
+    const match = text.match(/^#+\s+(.*)$/m);
+    if (match) return match[1];
+
+    // Or just first line
+    const firstLine = text.split('\n')[0];
+    return truncate(firstLine, 40);
+}
+
+function stripHtml(markdown) {
+    return markdown
+        .replace(/[#*`_~]/g, '') // remove markdown chars
+        .replace(/\n/g, ' ');
+}
+
+// =============================================
+// Forms (Legacy/Other Sections)
+// =============================================
+
+function initForms() {
+    // Homework form
+    const hwForm = document.getElementById('homework-form');
+    if (hwForm) hwForm.addEventListener('submit', handleHomeworkSubmit);
+
+    // Grammar form
+    const grForm = document.getElementById('grammar-form');
+    if (grForm) grForm.addEventListener('submit', handleGrammarSubmit);
+
+    // Set default dates
+    const today = new Date().toISOString().split('T')[0];
+    const hwDate = document.getElementById('hw-date');
+    if (hwDate) hwDate.value = today;
 }
 
 async function handleHomeworkSubmit(e) {
@@ -264,10 +540,12 @@ function initVocabulary() {
     });
 
     // Topic vocabulary form
-    document.getElementById('vocab-topic-form').addEventListener('submit', handleVocabTopicSubmit);
+    const vocabForm = document.getElementById('vocab-topic-form');
+    if (vocabForm) vocabForm.addEventListener('submit', handleVocabTopicSubmit);
 
     // Gender quiz button
-    document.getElementById('generate-gender-quiz').addEventListener('click', generateGenderQuiz);
+    const genQuizBtn = document.getElementById('generate-gender-quiz');
+    if (genQuizBtn) genQuizBtn.addEventListener('click', generateGenderQuiz);
 
     // Verb type buttons
     document.querySelectorAll('.verb-btn').forEach(btn => {
@@ -279,7 +557,8 @@ function initVocabulary() {
     });
 
     // Generate verbs button
-    document.getElementById('generate-verbs').addEventListener('click', generateVerbs);
+    const genVerbsBtn = document.getElementById('generate-verbs');
+    if (genVerbsBtn) genVerbsBtn.addEventListener('click', generateVerbs);
 }
 
 function switchVocabTab(vocabType) {
@@ -448,49 +727,17 @@ async function generateVerbs() {
 }
 
 // =============================================
-// Data Loading
+// Data Loading (General)
 // =============================================
 
 async function loadAllData() {
     await Promise.all([
+        loadSections(),
         loadClasswork(),
         loadHomework(),
         loadVocabulary(),
         loadGrammar()
     ]);
-}
-
-async function loadClasswork() {
-    try {
-        const { data, error } = await supabase
-            .from('french_classwork')
-            .select('*')
-            .order('date', { ascending: false });
-
-        if (error) throw error;
-
-        const list = document.getElementById('classwork-list');
-
-        if (!data || data.length === 0) {
-            list.innerHTML = '<p class="empty-state">No entries yet</p>';
-            return;
-        }
-
-        list.innerHTML = data.map(entry => `
-            <div class="entry-item" onclick="showClassworkDetail('${entry.id}')">
-                <div class="entry-date">${formatDate(entry.date)}</div>
-                <div class="entry-preview">${truncate(entry.raw_notes, 60)}</div>
-                ${entry.tags && entry.tags.length > 0 ? `
-                    <div class="entry-tags">
-                        ${entry.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join('')}
-                    </div>
-                ` : ''}
-            </div>
-        `).join('');
-
-    } catch (error) {
-        console.error('Error loading classwork:', error);
-    }
 }
 
 async function loadHomework() {
@@ -503,6 +750,7 @@ async function loadHomework() {
         if (error) throw error;
 
         const list = document.getElementById('homework-list');
+        if (!list) return;
 
         if (!data || data.length === 0) {
             list.innerHTML = '<p class="empty-state">No homework yet</p>';
@@ -534,30 +782,34 @@ async function loadVocabulary() {
         const topicData = data?.filter(v => v.vocab_type === 'topic') || [];
         const topicList = document.getElementById('vocab-topic-list');
 
-        if (topicData.length === 0) {
-            topicList.innerHTML = '<p class="empty-state">No vocabulary yet</p>';
-        } else {
-            topicList.innerHTML = topicData.map(entry => `
-                <div class="entry-item" onclick="showVocabDetail('${entry.id}')">
-                    <div class="entry-date">${entry.topic}</div>
-                    <div class="entry-preview">${formatDate(entry.created_at)}</div>
-                </div>
-            `).join('');
+        if (topicList) {
+            if (topicData.length === 0) {
+                topicList.innerHTML = '<p class="empty-state">No vocabulary yet</p>';
+            } else {
+                topicList.innerHTML = topicData.map(entry => `
+                    <div class="entry-item" onclick="showVocabDetail('${entry.id}')">
+                        <div class="entry-date">${entry.topic}</div>
+                        <div class="entry-preview">${formatDate(entry.created_at)}</div>
+                    </div>
+                `).join('');
+            }
         }
 
         // Verb vocabulary
         const verbData = data?.filter(v => v.vocab_type === 'verb') || [];
         const verbList = document.getElementById('verb-list');
 
-        if (verbData.length === 0) {
-            verbList.innerHTML = '<p class="empty-state">No verbs saved yet</p>';
-        } else {
-            verbList.innerHTML = verbData.map(entry => `
-                <div class="entry-item" onclick="showVocabDetail('${entry.id}')">
-                    <div class="entry-date">${entry.topic}</div>
-                    <div class="entry-preview">${formatDate(entry.created_at)}</div>
-                </div>
-            `).join('');
+        if (verbList) {
+            if (verbData.length === 0) {
+                verbList.innerHTML = '<p class="empty-state">No verbs saved yet</p>';
+            } else {
+                verbList.innerHTML = verbData.map(entry => `
+                    <div class="entry-item" onclick="showVocabDetail('${entry.id}')">
+                        <div class="entry-date">${entry.topic}</div>
+                        <div class="entry-preview">${formatDate(entry.created_at)}</div>
+                    </div>
+                `).join('');
+            }
         }
 
     } catch (error) {
@@ -575,6 +827,7 @@ async function loadGrammar() {
         if (error) throw error;
 
         const list = document.getElementById('grammar-list');
+        if (!list) return;
 
         if (!data || data.length === 0) {
             list.innerHTML = '<p class="empty-state">No grammar notes yet</p>';
@@ -594,50 +847,8 @@ async function loadGrammar() {
 }
 
 // =============================================
-// Detail Views
+// Detail Views (Legacy/Other)
 // =============================================
-
-async function showClassworkDetail(id) {
-    try {
-        const { data, error } = await supabase
-            .from('french_classwork')
-            .select('*')
-            .eq('id', id)
-            .single();
-
-        if (error) throw error;
-
-        const modal = document.getElementById('detail-modal');
-        const content = document.getElementById('detail-content');
-
-        content.innerHTML = `
-            <h2>📚 Classwork Notes</h2>
-            <div class="detail-date">${formatDate(data.date)}</div>
-            
-            ${data.tags && data.tags.length > 0 ? `
-                <div class="entry-tags" style="margin-bottom: 1.5rem;">
-                    ${data.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
-                </div>
-            ` : ''}
-            
-            <div class="detail-section">
-                <h3>Formatted Notes</h3>
-                <div class="detail-body">${renderMarkdown(data.formatted_notes || data.raw_notes)}</div>
-            </div>
-            
-            <div class="detail-section">
-                <h3>Original Notes</h3>
-                <div class="detail-body">${data.raw_notes}</div>
-            </div>
-        `;
-
-        modal.classList.remove('hidden');
-
-    } catch (error) {
-        console.error('Error:', error);
-        showToast('Failed to load entry', 'error');
-    }
-}
 
 async function showHomeworkDetail(id) {
     try {
@@ -841,11 +1052,14 @@ async function callEdgeFunction(endpoint, data) {
 
 function setLoading(btn, loading) {
     const spinner = btn.querySelector('.spinner');
-    const text = btn.querySelector('span');
+    const text = btn.innerText; // Basic fallback
+
+    // Better handling if text is in a span
+    const span = btn.querySelector('span');
 
     btn.disabled = loading;
     if (spinner) spinner.classList.toggle('hidden', !loading);
-    if (text) text.style.opacity = loading ? '0.5' : '1';
+    if (span) span.style.opacity = loading ? '0.5' : '1';
 }
 
 function formatDate(dateStr) {
@@ -879,6 +1093,19 @@ function renderMarkdown(text) {
         .replace(/\n/g, '<br>');
 }
 
+// Simple debounce
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
 function showToast(message, type = 'success') {
     const container = document.getElementById('toast-container');
     const toast = document.createElement('div');
@@ -899,8 +1126,9 @@ function showToast(message, type = 'success') {
 }
 
 // Make functions globally available for onclick handlers
-window.showClassworkDetail = showClassworkDetail;
+window.showClassworkDetail = openClassworkEditor; // Remapped to editor
 window.showHomeworkDetail = showHomeworkDetail;
 window.showVocabDetail = showVocabDetail;
 window.showGrammarDetail = showGrammarDetail;
 window.checkGenderAnswer = checkGenderAnswer;
+window.openClassworkEditor = openClassworkEditor; // Explicit

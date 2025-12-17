@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <!-- Password Modal -->
     <div id="password-modal" class="modal-overlay">
@@ -18,11 +20,12 @@
             <h2>French Learning App</h2>
             <p>Enter password to continue</p>
             <form id="password-form">
-                <input type="password" id="password-input" placeholder="Password" autocomplete="current-password" required>
+                <input type="password" id="password-input" placeholder="Password" autocomplete="current-password"
+                    required>
                 <button type="submit" class="btn btn-primary">
                     <span>Entrer</span>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                        <path d="M5 12h14M12 5l7 7-7 7" />
                     </svg>
                 </button>
             </form>
@@ -32,250 +35,335 @@
 
     <!-- Main App -->
     <div id="app" class="hidden">
-        <!-- Header -->
-        <header class="app-header">
-            <div class="header-content">
-                <div class="logo">
-                    <span class="flag">🇫🇷</span>
-                    <h1>Mon Français</h1>
+        <div class="app-layout">
+            <!-- Sidebar Navigation -->
+            <aside class="app-sidebar">
+                <div class="sidebar-header">
+                    <div class="logo">
+                        <span class="flag">🇫🇷</span>
+                        <h1>Mon Français</h1>
+                    </div>
                 </div>
+
                 <nav class="main-nav">
                     <button class="nav-btn active" data-section="classwork">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
                         </svg>
                         <span>Classwork</span>
                     </button>
                     <button class="nav-btn" data-section="homework">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                            <polyline points="14,2 14,8 20,8"/>
-                            <line x1="16" y1="13" x2="8" y2="13"/>
-                            <line x1="16" y1="17" x2="8" y2="17"/>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                            <polyline points="14,2 14,8 20,8" />
+                            <line x1="16" y1="13" x2="8" y2="13" />
+                            <line x1="16" y1="17" x2="8" y2="17" />
                         </svg>
                         <span>Homework</span>
                     </button>
                     <button class="nav-btn" data-section="vocabulary">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                            <path d="M2 17l10 5 10-5"/>
-                            <path d="M2 12l10 5 10-5"/>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                            <path d="M2 17l10 5 10-5" />
+                            <path d="M2 12l10 5 10-5" />
                         </svg>
                         <span>Vocabulary</span>
                     </button>
                     <button class="nav-btn" data-section="grammar">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"/>
-                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-                            <line x1="12" y1="17" x2="12.01" y2="17"/>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                            <line x1="12" y1="17" x2="12.01" y2="17" />
                         </svg>
                         <span>Grammar</span>
                     </button>
                 </nav>
-            </div>
-        </header>
 
-        <!-- Main Content -->
-        <main class="app-main">
-            <!-- Classwork Section -->
-            <section id="classwork-section" class="section active">
-                <div class="section-header">
-                    <h2>📚 Classwork Notes</h2>
-                    <p class="section-desc">Add your class notes and let AI organize them</p>
+                <div class="sidebar-footer">
+                    <p>Aakash Sanghvi</p>
                 </div>
+            </aside>
 
-                <div class="content-grid">
-                    <!-- Add New Entry -->
-                    <div class="card card-form">
-                        <h3>Add New Entry</h3>
-                        <form id="classwork-form">
-                            <div class="form-group">
-                                <label for="cw-date">Date</label>
-                                <input type="date" id="cw-date" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="cw-notes">Class Notes</label>
-                                <textarea id="cw-notes" rows="8" placeholder="Enter your class notes here..." required></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-full">
-                                <span>Format with AI</span>
-                                <svg class="spinner hidden" width="16" height="16" viewBox="0 0 24 24">
-                                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none" stroke-dasharray="30 60"/>
+            <!-- Main Content Area -->
+            <main class="app-content">
+                <!-- Classwork Section -->
+                <section id="classwork-section" class="section active">
+                    <header class="section-header-row">
+                        <div>
+                            <h2>📚 Classwork Library</h2>
+                            <p class="section-desc">Organize and review your French notes</p>
+                        </div>
+                        <div class="header-actions">
+                            <button id="btn-new-section" class="btn btn-secondary btn-sm">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
                                 </svg>
+                                New Section
                             </button>
-                        </form>
+                            <button id="btn-new-classwork" class="btn btn-primary btn-sm">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                                Add Note
+                            </button>
+                        </div>
+                    </header>
+
+                    <!-- Filters -->
+                    <div class="library-filters">
+                        <div class="search-box">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                            <input type="text" id="cw-search" placeholder="Search notes...">
+                        </div>
+                        <select id="cw-filter-section">
+                            <option value="">All Sections</option>
+                            <!-- Populated dynamically -->
+                        </select>
+                        <input type="date" id="cw-filter-date">
                     </div>
 
-                    <!-- History -->
-                    <div class="card card-list">
-                        <h3>Previous Entries</h3>
-                        <div id="classwork-list" class="entry-list">
-                            <p class="empty-state">No entries yet</p>
+                    <!-- Layout: Library List & Editor (Swappable) -->
+                    <div id="classwork-view-container">
+                        <!-- List View -->
+                        <div id="classwork-library-view">
+                            <div id="classwork-grid" class="notes-grid">
+                                <!-- Notes populated here -->
+                            </div>
+                        </div>
+
+                        <!-- Editor/Detail View (Hidden by default) -->
+                        <div id="classwork-editor-view" class="hidden">
+                            <div class="editor-toolbar">
+                                <button id="btn-back-library" class="btn btn-text">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                                    </svg>
+                                    Back to Library
+                                </button>
+                                <div class="editor-actions">
+                                    <span id="editor-status" class="status-msg"></span>
+                                    <button id="btn-save-note" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </div>
+
+                            <div class="editor-main">
+                                <div class="editor-meta">
+                                    <div class="form-group">
+                                        <label>Title / Date</label>
+                                        <input type="date" id="editor-date">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Section</label>
+                                        <select id="editor-section">
+                                            <option value="">Uncategorized</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Tags (comma separated)</label>
+                                        <input type="text" id="editor-tags" placeholder="grammar, verbs, culture...">
+                                    </div>
+                                </div>
+
+                                <div class="editor-content-split">
+                                    <div class="editor-pane">
+                                        <label>Raw Notes (Input)</label>
+                                        <textarea id="editor-raw"
+                                            placeholder="Type your rough notes here..."></textarea>
+                                        <button id="btn-ai-format" class="btn btn-secondary btn-full">
+                                            ✨ Format with AI
+                                        </button>
+                                    </div>
+                                    <div class="editor-pane">
+                                        <label>Formatted Output (Editable)</label>
+                                        <!-- Editable Div for Rich Text alike editing or just textarea for Markdown -->
+                                        <textarea id="editor-formatted"
+                                            placeholder="AI formatted notes will appear here. You can edit this."></textarea>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
 
-            <!-- Homework Section -->
-            <section id="homework-section" class="section">
-                <div class="section-header">
-                    <h2>📝 Homework Tracker</h2>
-                    <p class="section-desc">Track assignments and your completed work</p>
-                </div>
-
-                <div class="content-grid">
-                    <div class="card card-form">
-                        <h3>Add Homework</h3>
-                        <form id="homework-form">
-                            <div class="form-group">
-                                <label for="hw-date">Date</label>
-                                <input type="date" id="hw-date" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="hw-given">Homework Given</label>
-                                <textarea id="hw-given" rows="4" placeholder="What was assigned..." required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="hw-done">My Work</label>
-                                <textarea id="hw-done" rows="4" placeholder="Your completed homework..."></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-full">
-                                <span>Save Homework</span>
-                            </button>
-                        </form>
+                <!-- Homework Section -->
+                <section id="homework-section" class="section">
+                    <div class="section-header">
+                        <h2>📝 Homework Tracker</h2>
+                        <p class="section-desc">Track assignments and your completed work</p>
                     </div>
 
-                    <div class="card card-list">
-                        <h3>Homework History</h3>
-                        <div id="homework-list" class="entry-list">
-                            <p class="empty-state">No homework yet</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Vocabulary Section -->
-            <section id="vocabulary-section" class="section">
-                <div class="section-header">
-                    <h2>📖 Vocabulary</h2>
-                    <p class="section-desc">Build and practice your French vocabulary</p>
-                </div>
-
-                <!-- Vocabulary Sub-tabs -->
-                <div class="sub-tabs">
-                    <button class="sub-tab active" data-vocab="topic">Topic Vocab</button>
-                    <button class="sub-tab" data-vocab="gender">M/F Practice</button>
-                    <button class="sub-tab" data-vocab="verbs">Verbs</button>
-                </div>
-
-                <!-- Topic Vocabulary -->
-                <div id="vocab-topic" class="vocab-content active">
                     <div class="content-grid">
                         <div class="card card-form">
-                            <h3>Generate Topic Vocabulary</h3>
-                            <form id="vocab-topic-form">
+                            <h3>Add Homework</h3>
+                            <form id="homework-form">
                                 <div class="form-group">
-                                    <label for="vocab-topic-input">Topic</label>
-                                    <input type="text" id="vocab-topic-input" placeholder="e.g., At the restaurant, Travel, Family..." required>
+                                    <label for="hw-date">Date</label>
+                                    <input type="date" id="hw-date" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="hw-given">Homework Given</label>
+                                    <textarea id="hw-given" rows="4" placeholder="What was assigned..."
+                                        required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="hw-done">My Work</label>
+                                    <textarea id="hw-done" rows="4" placeholder="Your completed homework..."></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-full">
-                                    <span>Generate Vocabulary</span>
+                                    <span>Save Homework</span>
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="card card-list">
+                            <h3>Homework History</h3>
+                            <div id="homework-list" class="entry-list">
+                                <p class="empty-state">No homework yet</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Vocabulary Section -->
+                <section id="vocabulary-section" class="section">
+                    <div class="section-header">
+                        <h2>📖 Vocabulary</h2>
+                        <p class="section-desc">Build and practice your French vocabulary</p>
+                    </div>
+
+                    <!-- Vocabulary Sub-tabs -->
+                    <div class="sub-tabs">
+                        <button class="sub-tab active" data-vocab="topic">Topic Vocab</button>
+                        <button class="sub-tab" data-vocab="gender">M/F Practice</button>
+                        <button class="sub-tab" data-vocab="verbs">Verbs</button>
+                    </div>
+
+                    <!-- Topic Vocabulary -->
+                    <div id="vocab-topic" class="vocab-content active">
+                        <div class="content-grid">
+                            <div class="card card-form">
+                                <h3>Generate Topic Vocabulary</h3>
+                                <form id="vocab-topic-form">
+                                    <div class="form-group">
+                                        <label for="vocab-topic-input">Topic</label>
+                                        <input type="text" id="vocab-topic-input"
+                                            placeholder="e.g., At the restaurant, Travel, Family..." required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-full">
+                                        <span>Generate Vocabulary</span>
+                                        <svg class="spinner hidden" width="16" height="16" viewBox="0 0 24 24">
+                                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"
+                                                fill="none" stroke-dasharray="30 60" />
+                                        </svg>
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="card card-list">
+                                <h3>Saved Topics</h3>
+                                <div id="vocab-topic-list" class="entry-list">
+                                    <p class="empty-state">No vocabulary yet</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gender Practice -->
+                    <div id="vocab-gender" class="vocab-content">
+                        <div class="card card-wide">
+                            <h3>Masculine / Feminine Practice</h3>
+                            <p class="card-desc">Test your knowledge of French noun genders</p>
+                            <button id="generate-gender-quiz" class="btn btn-secondary">
+                                <span>Generate Quiz</span>
+                                <svg class="spinner hidden" width="16" height="16" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none"
+                                        stroke-dasharray="30 60" />
+                                </svg>
+                            </button>
+                            <div id="gender-quiz-area" class="quiz-area hidden">
+                                <!-- Quiz will be rendered here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Verbs -->
+                    <div id="vocab-verbs" class="vocab-content">
+                        <div class="content-grid">
+                            <div class="card card-form">
+                                <h3>Verb Conjugations</h3>
+                                <div class="verb-type-selector">
+                                    <button class="verb-btn active" data-verb="er">-ER Verbs</button>
+                                    <button class="verb-btn" data-verb="ir">-IR Verbs</button>
+                                    <button class="verb-btn" data-verb="re">-RE Verbs</button>
+                                    <button class="verb-btn" data-verb="irregular">Irregular</button>
+                                </div>
+                                <button id="generate-verbs" class="btn btn-primary btn-full" style="margin-top: 1rem;">
+                                    <span>Generate Verbs</span>
                                     <svg class="spinner hidden" width="16" height="16" viewBox="0 0 24 24">
-                                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none" stroke-dasharray="30 60"/>
+                                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"
+                                            fill="none" stroke-dasharray="30 60" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="card card-list">
+                                <h3>Saved Verbs</h3>
+                                <div id="verb-list" class="entry-list">
+                                    <p class="empty-state">No verbs saved yet</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Grammar Section -->
+                <section id="grammar-section" class="section">
+                    <div class="section-header">
+                        <h2>📏 Grammar</h2>
+                        <p class="section-desc">Generate focused grammar notes by topic</p>
+                    </div>
+
+                    <div class="content-grid">
+                        <div class="card card-form">
+                            <h3>Generate Grammar Notes</h3>
+                            <form id="grammar-form">
+                                <div class="form-group">
+                                    <label for="grammar-topic">Grammar Topic</label>
+                                    <input type="text" id="grammar-topic"
+                                        placeholder="e.g., Passé composé, Subjunctive, Articles..." required>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-full">
+                                    <span>Generate Notes</span>
+                                    <svg class="spinner hidden" width="16" height="16" viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"
+                                            fill="none" stroke-dasharray="30 60" />
                                     </svg>
                                 </button>
                             </form>
                         </div>
+
                         <div class="card card-list">
-                            <h3>Saved Topics</h3>
-                            <div id="vocab-topic-list" class="entry-list">
-                                <p class="empty-state">No vocabulary yet</p>
+                            <h3>Grammar Topics</h3>
+                            <div id="grammar-list" class="entry-list">
+                                <p class="empty-state">No grammar notes yet</p>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Gender Practice -->
-                <div id="vocab-gender" class="vocab-content">
-                    <div class="card card-wide">
-                        <h3>Masculine / Feminine Practice</h3>
-                        <p class="card-desc">Test your knowledge of French noun genders</p>
-                        <button id="generate-gender-quiz" class="btn btn-secondary">
-                            <span>Generate Quiz</span>
-                            <svg class="spinner hidden" width="16" height="16" viewBox="0 0 24 24">
-                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none" stroke-dasharray="30 60"/>
-                            </svg>
-                        </button>
-                        <div id="gender-quiz-area" class="quiz-area hidden">
-                            <!-- Quiz will be rendered here -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Verbs -->
-                <div id="vocab-verbs" class="vocab-content">
-                    <div class="content-grid">
-                        <div class="card card-form">
-                            <h3>Verb Conjugations</h3>
-                            <div class="verb-type-selector">
-                                <button class="verb-btn active" data-verb="er">-ER Verbs</button>
-                                <button class="verb-btn" data-verb="ir">-IR Verbs</button>
-                                <button class="verb-btn" data-verb="re">-RE Verbs</button>
-                                <button class="verb-btn" data-verb="irregular">Irregular</button>
-                            </div>
-                            <button id="generate-verbs" class="btn btn-primary btn-full" style="margin-top: 1rem;">
-                                <span>Generate Verbs</span>
-                                <svg class="spinner hidden" width="16" height="16" viewBox="0 0 24 24">
-                                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none" stroke-dasharray="30 60"/>
-                                </svg>
-                            </button>
-                        </div>
-                        <div class="card card-list">
-                            <h3>Saved Verbs</h3>
-                            <div id="verb-list" class="entry-list">
-                                <p class="empty-state">No verbs saved yet</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Grammar Section -->
-            <section id="grammar-section" class="section">
-                <div class="section-header">
-                    <h2>📏 Grammar</h2>
-                    <p class="section-desc">Generate focused grammar notes by topic</p>
-                </div>
-
-                <div class="content-grid">
-                    <div class="card card-form">
-                        <h3>Generate Grammar Notes</h3>
-                        <form id="grammar-form">
-                            <div class="form-group">
-                                <label for="grammar-topic">Grammar Topic</label>
-                                <input type="text" id="grammar-topic" placeholder="e.g., Passé composé, Subjunctive, Articles..." required>
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-full">
-                                <span>Generate Notes</span>
-                                <svg class="spinner hidden" width="16" height="16" viewBox="0 0 24 24">
-                                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none" stroke-dasharray="30 60"/>
-                                </svg>
-                            </button>
-                        </form>
-                    </div>
-
-                    <div class="card card-list">
-                        <h3>Grammar Topics</h3>
-                        <div id="grammar-list" class="entry-list">
-                            <p class="empty-state">No grammar notes yet</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <!-- Detail Modal for viewing entries -->
+                </section>
+            </main>
+        </div> <!-- Detail Modal for viewing entries -->
         <div id="detail-modal" class="modal-overlay hidden">
             <div class="modal-content modal-large">
                 <button class="modal-close" id="close-detail">&times;</button>
@@ -292,4 +380,5 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="app.js"></script>
 </body>
+
 </html>
