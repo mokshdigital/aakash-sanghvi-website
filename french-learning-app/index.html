@@ -155,6 +155,47 @@
                             </div>
                         </div>
 
+                        <!-- Detail View (Reading Mode) -->
+                        <div id="classwork-detail-view" class="hidden">
+                            <div class="editor-toolbar">
+                                <button id="btn-back-cw-list" class="btn btn-text">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                                    </svg>
+                                    Back to Library
+                                </button>
+                                <div class="editor-actions">
+                                    <button id="btn-delete-cw-detail" class="btn btn-secondary btn-danger"
+                                        style="color: #ff6b6b; border-color: #ff6b6b; margin-right: 1rem;">Delete</button>
+                                    <button id="btn-edit-cw" class="btn btn-primary">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem;">
+                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                        </svg>
+                                        Edit Note
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="card" style="max-width: 800px; margin: 0 auto; padding: 2rem;">
+                                <div id="cw-detail-header"
+                                    style="margin-bottom: 2rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem;">
+                                    <h2 id="cw-detail-date"
+                                        style="color: var(--accent-blue-light); margin-bottom: 0.5rem;"></h2>
+                                    <div
+                                        style="display: flex; gap: 1rem; color: var(--text-secondary); font-size: 0.9rem;">
+                                        <span id="cw-detail-section"></span>
+                                    </div>
+                                    <div id="cw-detail-tags" class="note-tags" style="margin-top: 1rem;"></div>
+                                </div>
+                                <div id="cw-detail-content" class="detail-body">
+                                    <!-- Content -->
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Editor/Detail View (Hidden by default) -->
                         <div id="classwork-editor-view" class="hidden">
                             <div class="editor-toolbar">
@@ -251,34 +292,36 @@
                                 </button>
                                 <div class="editor-actions">
                                     <button id="btn-delete-homework" class="btn btn-secondary btn-danger hidden"
-                                        style="color: #ff6b6b; border-color: #ff6b6b;">Delete</button>
+                                        style="color: #ff6b6b; border-color: #ff6b6b; margin-right: 1rem;">Delete</button>
+                                    <button id="btn-save-homework" class="btn btn-primary">Save Homework</button>
                                 </div>
                             </div>
 
-                            <!-- Form centered -->
-                            <div class="card card-form" style="max-width: 800px; margin: 0 auto;">
-                                <h3 id="hw-form-title">Add Homework</h3>
-                                <form id="homework-form">
-                                    <input type="hidden" id="hw-id"> <!-- For edits if we implement editing later -->
-                                    <div class="form-group">
+                            <form id="homework-form" class="editor-main" style="height: calc(100% - 60px);">
+                                <input type="hidden" id="hw-id">
+                                <h3 id="hw-form-title" class="hidden">Add Homework</h3>
+                                <!-- Hidden title to maintain ID reference if needed -->
+
+                                <div class="editor-meta">
+                                    <div class="form-group" style="max-width: 200px;">
                                         <label for="hw-date">Date</label>
                                         <input type="date" id="hw-date" required>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="hw-given">Homework Given</label>
-                                        <textarea id="hw-given" rows="4" placeholder="What was assigned..."
-                                            required></textarea>
+                                </div>
+
+                                <div class="editor-content-split">
+                                    <div class="editor-pane">
+                                        <label for="hw-given">Assignment Given</label>
+                                        <textarea id="hw-given" placeholder="What was assigned..." required
+                                            style="height: 100%; resize: none;"></textarea>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="editor-pane">
                                         <label for="hw-done">My Work</label>
-                                        <textarea id="hw-done" rows="4"
-                                            placeholder="Your completed homework..."></textarea>
+                                        <textarea id="hw-done" placeholder="Your completed homework..."
+                                            style="height: 100%; resize: none;"></textarea>
                                     </div>
-                                    <button type="submit" class="btn btn-primary btn-full">
-                                        <span>Save Homework</span>
-                                    </button>
-                                </form>
-                            </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </section>
@@ -321,6 +364,80 @@
                                 <h3>Saved Topics</h3>
                                 <div id="vocab-topic-list" class="entry-list">
                                     <p class="empty-state">No vocabulary yet</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Vocabulary Detail View -->
+                        <div id="vocab-detail-view" class="hidden">
+                            <div class="editor-toolbar">
+                                <button id="btn-back-vocab" class="btn btn-text">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                                    </svg>
+                                    Back to Vocabulary
+                                </button>
+                                <div class="editor-actions">
+                                    <button id="btn-delete-vocab-detail" class="btn btn-secondary btn-danger"
+                                        style="color: #ff6b6b; border-color: #ff6b6b;">Delete</button>
+                                </div>
+                            </div>
+
+                            <div class="card card-wide" style="margin-top: 1rem;">
+                                <div class="detail-header"
+                                    style="border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+                                    <h2 id="vocab-detail-topic"
+                                        style="color: var(--accent-purple-light); margin-bottom: 0.5rem;">Topic Name
+                                    </h2>
+                                    <div id="vocab-detail-date"
+                                        style="color: var(--text-secondary); font-size: 0.9rem;">Date</div>
+                                </div>
+
+                                <!-- Summary Section -->
+                                <div id="vocab-summary-section" style="margin-bottom: 2rem;">
+                                    <div
+                                        style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <h3 style="font-size: 1.1rem; color: var(--text-primary);">Contextual Summary
+                                        </h3>
+                                        <button id="btn-play-audio" class="btn btn-secondary btn-sm" title="Read Aloud">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2">
+                                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07">
+                                                </path>
+                                            </svg>
+                                            Listen
+                                        </button>
+                                    </div>
+                                    <div id="vocab-detail-summary" class="detail-body"
+                                        style="background: var(--bg-secondary); padding: 1rem; border-radius: var(--radius-md); font-style: italic;">
+                                        <!-- Summary text goes here -->
+                                    </div>
+                                </div>
+
+                                <!-- Word List -->
+                                <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 1rem;">
+                                    Vocabulary List</h3>
+                                <div id="vocab-detail-list" class="vocab-table">
+                                    <!-- Dynamic Content -->
+                                </div>
+
+                                <!-- Verb Conjugations -->
+                                <div id="vocab-conjugations-section"
+                                    style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border-subtle);">
+                                    <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 1rem;">
+                                        Related Verbs</h3>
+
+                                    <div class="verb-type-selector" style="margin-bottom: 1rem;">
+                                        <button class="verb-btn tab-btn active" data-tab="present">Present</button>
+                                        <button class="verb-btn tab-btn" data-tab="past">Passé Composé</button>
+                                        <button class="verb-btn tab-btn" data-tab="future">Futur Simple</button>
+                                    </div>
+
+                                    <div id="vocab-detail-verbs" class="grid-layout">
+                                        <!-- Verbs Content -->
+                                    </div>
                                 </div>
                             </div>
                         </div>

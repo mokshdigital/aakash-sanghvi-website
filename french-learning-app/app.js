@@ -141,38 +141,75 @@ function switchSection(sectionId) {
 // Classwork Library Logic
 // =============================================
 
+// =============================================
+// Classwork Library Logic
+// =============================================
+
 function initClassworkUI() {
     // Top Level Buttons
-    document.getElementById('btn-new-section').addEventListener('click', promptNewSection);
-    document.getElementById('btn-new-classwork').addEventListener('click', () => openClassworkEditor(null));
+    document.getElementById('btn-new-section')?.addEventListener('click', promptNewSection);
+    // New Note Button (Library)
+    document.getElementById('btn-new-note')?.addEventListener('click', () => {
+        openClassworkEditor(null);
+    });
 
     // Filters
-    document.getElementById('cw-search').addEventListener('input', debounce(loadClasswork, 500));
-    document.getElementById('cw-filter-section').addEventListener('change', loadClasswork);
-    document.getElementById('cw-filter-date').addEventListener('change', loadClasswork);
+    document.getElementById('cw-search')?.addEventListener('input', debounce(loadClasswork, 500));
+    document.getElementById('cw-filter-section')?.addEventListener('change', loadClasswork);
+    document.getElementById('cw-filter-date')?.addEventListener('change', loadClasswork);
 
     // Editor Actions
-    document.getElementById('btn-back-library').addEventListener('click', () => toggleClassworkView('list'));
-    document.getElementById('btn-save-note').addEventListener('click', saveClassworkNote);
-    document.getElementById('btn-delete-note').addEventListener('click', () => deleteItem('french_classwork', editingClassworkId, loadClasswork));
-    document.getElementById('btn-ai-format').addEventListener('click', formatNotesWithAI);
+    document.getElementById('btn-back-library')?.addEventListener('click', () => {
+        if (editingClassworkId) {
+            openClassworkDetail(editingClassworkId); // Go back to detail if editing existing
+        } else {
+            toggleClassworkView('list');
+        }
+    });
+
+    // Detail Actions
+    document.getElementById('btn-back-cw-list')?.addEventListener('click', () => {
+        toggleClassworkView('list');
+    });
+
+    document.getElementById('btn-edit-cw')?.addEventListener('click', () => {
+        const id = document.getElementById('btn-edit-cw').dataset.id;
+        if (id) openClassworkEditor(id);
+    });
+
+    document.getElementById('btn-delete-cw-detail')?.addEventListener('click', () => {
+        const id = document.getElementById('btn-delete-cw-detail').dataset.id;
+        if (id) deleteItem('french_classwork', id, loadClasswork);
+    });
+
+    document.getElementById('btn-save-note')?.addEventListener('click', saveClassworkNote);
+    // document.getElementById('btn-delete-note')?.addEventListener('click', () => deleteItem('french_classwork', editingClassworkId, loadClasswork));
+    document.getElementById('btn-ai-format')?.addEventListener('click', formatNotesWithAI);
 }
 
 function toggleClassworkView(viewName) {
     const listContainer = document.getElementById('classwork-library-view');
     const editorContainer = document.getElementById('classwork-editor-view');
-    const filters = document.querySelector('.library-filters'); // Use class for selection
-    const headerActions = document.querySelector('.section-header-row .header-actions');
-    const backBtn = document.getElementById('btn-back-library');
+    const detailContainer = document.getElementById('classwork-detail-view');
+    const filters = document.querySelector('.library-filters');
+    const headerActions = document.querySelector('#classwork-section .header-actions');
+
+    // Hide all
+    listContainer.classList.add('hidden');
+    editorContainer.classList.add('hidden');
+    if (detailContainer) detailContainer.classList.add('hidden');
 
     if (viewName === 'editor') {
-        listContainer.classList.add('hidden');
         editorContainer.classList.remove('hidden');
         if (filters) filters.classList.add('hidden');
         if (headerActions) headerActions.classList.add('hidden');
+    } else if (viewName === 'detail') {
+        if (detailContainer) detailContainer.classList.remove('hidden');
+        if (filters) filters.classList.add('hidden'); // Hide filters in detail view too
+        if (headerActions) headerActions.classList.add('hidden');
     } else {
+        // List
         listContainer.classList.remove('hidden');
-        editorContainer.classList.add('hidden');
         if (filters) filters.classList.remove('hidden');
         if (headerActions) headerActions.classList.remove('hidden');
         loadClasswork(); // Refresh list on return
@@ -310,8 +347,13 @@ async function openClassworkEditor(id) {
     document.getElementById('editor-tags').value = '';
     document.getElementById('editor-raw').value = '';
     document.getElementById('editor-formatted').value = '';
-    document.getElementById('editor-status').textContent = id ? 'Loading...' : 'New Note';
-    document.getElementById('btn-delete-note').style.display = id ? 'block' : 'none';
+
+    // Status update
+    const statusElem = document.getElementById('editor-status');
+    if (statusElem) statusElem.textContent = id ? 'Loading...' : 'New Note';
+
+    // Delete button in Editor is now legacy/hidden usually, but we keep logic just in case
+    // document.getElementById('btn-delete-note').style.display = id ? 'block' : 'none';
 
     if (id) {
         try {
@@ -328,13 +370,58 @@ async function openClassworkEditor(id) {
             document.getElementById('editor-tags').value = (data.tags || []).join(', ');
             document.getElementById('editor-raw').value = data.raw_notes || '';
             document.getElementById('editor-formatted').value = data.formatted_notes || '';
-            document.getElementById('editor-status').textContent = 'Editing Mode';
+            if (statusElem) statusElem.textContent = 'Editing Mode';
 
         } catch (err) {
             showToast('Failed to load note details', 'error');
             console.error(err);
             toggleClassworkView('list');
         }
+    }
+}
+
+async function openClassworkDetail(id) {
+    toggleClassworkView('detail');
+
+    // Store ID on the Edit and Delete buttons for reference
+    document.getElementById('btn-edit-cw').dataset.id = id;
+    document.getElementById('btn-delete-cw-detail').dataset.id = id; // New Delete Button
+
+    const headerDate = document.getElementById('cw-detail-date');
+    const headerSection = document.getElementById('cw-detail-section');
+    const headerTags = document.getElementById('cw-detail-tags');
+    const contentBody = document.getElementById('cw-detail-content');
+
+    // Clear previous
+    contentBody.innerHTML = '<div class="spinner"></div>';
+
+    try {
+        const { data, error } = await supabase
+            .from('french_classwork')
+            .select('*')
+            .eq('id', id)
+            .single();
+
+        if (error) throw error;
+
+        // Populate
+        headerDate.textContent = formatDate(data.date);
+        headerSection.textContent = data.title || 'Class Note'; // Fallback
+
+        if (data.tags && data.tags.length > 0) {
+            headerTags.innerHTML = data.tags.map(t => `<span class="tag">${t}</span>`).join('');
+        } else {
+            headerTags.innerHTML = '';
+        }
+
+        // Prefer formatted notes, fallback to raw notes
+        const displayContent = data.formatted_notes || data.raw_notes || 'No content';
+        contentBody.innerHTML = renderMarkdown(displayContent);
+
+    } catch (err) {
+        console.error(err);
+        showToast('Failed to load note details', 'error');
+        toggleClassworkView('list');
     }
 }
 
@@ -414,8 +501,13 @@ async function saveClassworkNote() {
 
         showToast('Note saved successfully!', 'success');
 
-        // If it was new, we can just switch back to list. Or stay. Let's switch back.
-        toggleClassworkView('list');
+        // If it was new, go to list (or maybe detail?)
+        // If editing, go back to detail view
+        if (editingClassworkId) {
+            openClassworkDetail(editingClassworkId);
+        } else {
+            toggleClassworkView('list');
+        }
 
     } catch (err) {
         console.error(err);
@@ -438,7 +530,12 @@ async function deleteItem(table, id, successCallback) {
 
         showToast('Item deleted successfully', 'success');
         if (successCallback) successCallback(); // Reload view
-        toggleClassworkView('list'); // Return to list if in editor
+
+        // Determine which list view to return to based on table
+        if (table === 'french_classwork') toggleClassworkView('list');
+        else if (table === 'french_homework') toggleHomeworkView('list');
+        else if (table === 'french_grammar') toggleGrammarView('list');
+        else if (table === 'french_resources') loadResources(); // Re-render logic is inside loadResources mostly
 
     } catch (err) {
         console.error(err);
@@ -483,6 +580,8 @@ function initForms() {
     if (hwDate) hwDate.value = today;
 }
 
+
+
 // =============================================
 // Homework (Enhanced)
 // =============================================
@@ -507,6 +606,11 @@ function initHomeworkUI() {
     // Form Submit
     const form = document.getElementById('homework-form');
     if (form) form.addEventListener('submit', handleHomeworkSubmit);
+
+    // Save Button (Toolbar)
+    document.getElementById('btn-save-homework')?.addEventListener('click', () => {
+        form.requestSubmit();
+    });
 }
 
 function toggleHomeworkView(viewName) {
@@ -570,7 +674,8 @@ async function openHomeworkEditor(id) {
 async function handleHomeworkSubmit(e) {
     e.preventDefault();
     const form = e.target;
-    const btn = form.querySelector('button');
+    // Button is now outside form or specific ID
+    const btn = document.getElementById('btn-save-homework');
 
     const id = document.getElementById('hw-id').value;
     const date = document.getElementById('hw-date').value;
@@ -763,71 +868,274 @@ function initVocabulary() {
 
     // Gender quiz button
     const genQuizBtn = document.getElementById('generate-gender-quiz');
-    if (genQuizBtn) genQuizBtn.addEventListener('click', generateGenderQuiz);
+    // Topic Form
+    const topicForm = document.getElementById('vocab-topic-form');
+    if (topicForm) topicForm.addEventListener('submit', handleVocabSubmit);
 
-    // Verb type buttons
-    document.querySelectorAll('.verb-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.verb-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentVerbType = btn.dataset.verb;
+    // Gender Quiz
+    document.getElementById('generate-gender-quiz')?.addEventListener('click', generateGenderQuiz);
+
+    // Verbs Form
+    document.querySelector('.verb-type-selector')?.addEventListener('click', (e) => {
+        if (e.target.classList.contains('verb-btn')) {
+            document.querySelectorAll('.verb-type-selector .verb-btn').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            currentVerbType = e.target.dataset.verb;
+        }
+    });
+
+    document.getElementById('generate-verbs')?.addEventListener('click', handleVerbsSubmit);
+
+
+    // Detail View Actions
+    document.getElementById('btn-back-vocab')?.addEventListener('click', () => {
+        document.getElementById('vocab-list-view').classList.remove('hidden');
+        document.getElementById('vocab-detail-view').classList.add('hidden');
+    });
+
+    document.getElementById('btn-delete-vocab-detail')?.addEventListener('click', () => {
+        const id = document.getElementById('btn-delete-vocab-detail').dataset.id;
+        if (id) deleteItem('french_vocabulary', id, loadVocabulary);
+    });
+
+    // Conjugation Tabs in Detail View
+    document.querySelectorAll('#vocab-conjugations-section .tab-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            // Remove active from all tabs
+            document.querySelectorAll('#vocab-conjugations-section .tab-btn').forEach(b => b.classList.remove('active'));
+            // Add to clicked
+            e.target.classList.add('active');
+
+            // Filter content
+            const tense = e.target.dataset.tab;
+            renderConjugations(currentVocabData?.content?.conjugations, tense);
         });
     });
 
-    // Generate verbs button
-    const genVerbsBtn = document.getElementById('generate-verbs');
-    if (genVerbsBtn) genVerbsBtn.addEventListener('click', generateVerbs);
-}
-
-function switchVocabTab(vocabType) {
-    currentVocabType = vocabType;
-
-    document.querySelectorAll('.sub-tab').forEach(tab => {
-        tab.classList.toggle('active', tab.dataset.vocab === vocabType);
-    });
-
-    document.querySelectorAll('.vocab-content').forEach(content => {
-        content.classList.toggle('active', content.id === `vocab-${vocabType}`);
+    // Audio Button
+    document.getElementById('btn-play-audio')?.addEventListener('click', () => {
+        const text = document.getElementById('vocab-detail-summary').textContent;
+        if (text) speakText(text);
     });
 }
 
-async function handleVocabTopicSubmit(e) {
+async function handleVocabSubmit(e) {
     e.preventDefault();
-    const form = e.target;
-    const btn = form.querySelector('button');
-
+    const btn = e.target.querySelector('button');
     const topic = document.getElementById('vocab-topic-input').value;
 
     try {
         setLoading(btn, true);
 
-        const aiResult = await callEdgeFunction('generate-vocab', {
+        // Requested Payload for AI to get enhanced data
+        const payload = {
             topic,
-            vocabType: 'topic'
-        });
+            type: 'topic_vocabulary_enhanced', // Custom type to signal enhanced generation
+            instructions: "Generate 10 words with gender, meaning, and example sentences. Also write a context paragraph using these words. Also conjugate 3 relevant verbs in Present, Passe Compose, and Futur Simple."
+        };
 
-        const { error } = await supabase
+        const aiResult = await callEdgeFunction('generate-vocab', payload);
+
+        // Fallback or Standardize Structure
+        // Expecting aiResult to have { vocabulary: [], paragraph: "", conjugations: [] }
+        // If legacy response, might just be { vocabulary: [] }
+
+        const contentToSave = {
+            vocabulary: aiResult.vocabulary || aiResult.words || [],
+            paragraph: aiResult.paragraph || '',
+            conjugations: aiResult.conjugations || []
+        };
+
+        const { data, error } = await supabase
             .from('french_vocabulary')
             .insert({
                 topic,
-                content: aiResult,
-                vocab_type: 'topic'
-            });
+                vocab_type: 'topic',
+                content: contentToSave
+            })
+            .select()
+            .single();
 
         if (error) throw error;
 
         showToast('Vocabulary generated!', 'success');
-        form.reset();
-        loadVocabulary();
+        document.getElementById('vocab-topic-input').value = ''; // Reset
+        loadVocabulary(); // Reload list
+        openVocabDetail(data.id); // Open new item
 
-    } catch (error) {
-        console.error('Error:', error);
-        showToast(error.message || 'Failed to generate vocabulary', 'error');
+    } catch (err) {
+        console.error(err);
+        showToast('Failed to generate vocabulary', 'error');
     } finally {
         setLoading(btn, false);
     }
 }
 
+let currentVocabData = null; // Store for tab switching
+
+async function openVocabDetail(id) {
+    const listView = document.getElementById('vocab-list-view');
+    const detailView = document.getElementById('vocab-detail-view');
+
+    // Switch Views
+    listView.classList.add('hidden');
+    detailView.classList.remove('hidden');
+
+    // Store ID for delete
+    document.getElementById('btn-delete-vocab-detail').dataset.id = id;
+
+    // Loading State
+    document.getElementById('vocab-detail-list').innerHTML = '<div class="spinner"></div>';
+
+    try {
+        const { data, error } = await supabase
+            .from('french_vocabulary')
+            .select('*')
+            .eq('id', id)
+            .single();
+
+        if (error) throw error;
+        currentVocabData = data;
+
+        // Populate Header
+        document.getElementById('vocab-detail-topic').textContent = data.topic;
+        document.getElementById('vocab-detail-date').textContent = formatDate(data.created_at);
+
+        // Populate Summary
+        const summaryDiv = document.getElementById('vocab-detail-summary');
+        const summarySection = document.getElementById('vocab-summary-section');
+        if (data.content.paragraph) {
+            summaryDiv.textContent = data.content.paragraph;
+            summarySection.classList.remove('hidden');
+        } else {
+            summarySection.classList.add('hidden');
+        }
+
+        // Populate Word List
+        const listDiv = document.getElementById('vocab-detail-list');
+        const words = data.content.vocabulary || data.content.words || data.content || [];
+
+        if (Array.isArray(words) && words.length > 0) {
+            listDiv.innerHTML = `
+                <div class="vocab-table-header">
+                    <div>Word</div>
+                    <div>Meaning</div>
+                    <div>Gender</div>
+                    <div>Example</div>
+                </div>
+                ${words.map(w => `
+                    <div class="vocab-row">
+                        <div style="font-weight:600; color:var(--text-primary);">${getFrench(w)}</div>
+                        <div class="vocab-en">${getEnglish(w)}</div>
+                        <div class="vocab-gender">${w.gender || '-'}</div>
+                        <div class="vocab-sentence">
+                            <div>${w.sentence || w.example || ''}</div>
+                            <div style="font-size:0.8rem; opacity:0.8;">${w.sentence_en || w.translation || ''}</div>
+                        </div>
+                    </div>
+                `).join('')}
+            `;
+        } else {
+            listDiv.innerHTML = '<p class="empty-state">No words found</p>';
+        }
+
+        // Populate Verbs (Default to Present)
+        const conjugationsSection = document.getElementById('vocab-conjugations-section');
+        if (data.content.conjugations && data.content.conjugations.length > 0) {
+            conjugationsSection.classList.remove('hidden');
+            // Reset tab
+            document.querySelectorAll('#vocab-conjugations-section .tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('#vocab-conjugations-section .tab-btn[data-tab="present"]').classList.add('active');
+
+            renderConjugations(data.content.conjugations, 'present');
+        } else {
+            conjugationsSection.classList.add('hidden');
+        }
+
+    } catch (err) {
+        console.error(err);
+        showToast('Failed to load details', 'error');
+        // Go back
+        listView.classList.remove('hidden');
+        detailView.classList.add('hidden');
+    }
+}
+
+function renderConjugations(conjugations, tense) {
+    const container = document.getElementById('vocab-detail-verbs');
+    if (!conjugations) return;
+
+    // Map strict tense names from buttons to data keys if needed
+    // Assuming data keys are 'present', 'passe_compose', 'future' etc.
+    // Tense mapping helper
+    const mapTense = (t) => {
+        if (t === 'past') return 'passe_compose';
+        if (t === 'future') return 'futur_simple';
+        return t; // 'present'
+    };
+
+    const targetTense = mapTense(tense);
+
+    container.innerHTML = conjugations.map(verbItem => {
+        const conjObj = verbItem.tenses ? verbItem.tenses[targetTense] : null;
+
+        // If structure is flat or different, adjust here. 
+        // Assuming: { verb: "Manger", tenses: { present: ["Je mange", ...], ... } }
+
+        let listHtml = '';
+        if (Array.isArray(conjObj)) {
+            listHtml = conjObj.map(line => `<div>${line}</div>`).join('');
+        } else if (typeof conjObj === 'object') {
+            // maybe { je: "mange", tu: "manges" }
+            listHtml = Object.entries(conjObj).map(([pronoun, form]) => `<div><strong>${pronoun}</strong> ${form}</div>`).join('');
+        } else {
+            listHtml = 'No conjugation available';
+        }
+
+        return `
+            <div class="verb-card">
+                <div class="verb-title">
+                    <span>${verbItem.verb}</span>
+                    <span style="font-size:0.8rem; font-weight:normal; color:var(--text-secondary);">(${verbItem.meaning || ''})</span>
+                </div>
+                <div class="conjugation-list">
+                    ${listHtml}
+                </div>
+            </div>
+         `;
+    }).join('');
+}
+
+function speakText(text) {
+    if (!window.speechSynthesis) {
+        showToast('Text-to-speech not supported', 'error');
+        return;
+    }
+
+    // Stop any current speaking
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'fr-FR'; // French
+    utterance.rate = 0.9; // Slightly slower
+
+    window.speechSynthesis.speak(utterance);
+}
+
+// Helpers for property access (reusing or moving to global scope if needed)
+function getFrench(word) {
+    return word.french || word.french_word || word.word_french ||
+        word.word || word.terme || word.mot ||
+        (word.verb && word.verb.french) || '';
+}
+
+function getEnglish(word) {
+    return word.english || word.english_word || word.word_english ||
+        word.meaning || word.traduction ||
+        (word.verb && word.verb.english) || '';
+}
+
+// Legacy / Other Vocab Functions
 async function generateGenderQuiz() {
     const btn = document.getElementById('generate-gender-quiz');
     const quizArea = document.getElementById('gender-quiz-area');
@@ -1125,6 +1433,9 @@ async function loadHomework() {
 }
 
 async function loadVocabulary() {
+    const grid = document.getElementById('vocabulary-grid'); // Assuming a grid for vocabulary
+    if (!grid) return;
+
     try {
         const { data, error } = await supabase
             .from('french_vocabulary')
@@ -1142,7 +1453,7 @@ async function loadVocabulary() {
                 topicList.innerHTML = '<p class="empty-state">No vocabulary yet</p>';
             } else {
                 topicList.innerHTML = topicData.map(entry => `
-                    <div class="entry-item" onclick="showVocabDetail('${entry.id}')">
+                    <div class="entry-item" onclick="openVocabDetail('${entry.id}')">
                         <div class="entry-date">${entry.topic}</div>
                         <div class="entry-preview">${formatDate(entry.created_at)}</div>
                     </div>
@@ -1169,6 +1480,40 @@ async function loadVocabulary() {
 
     } catch (error) {
         console.error('Error loading vocabulary:', error);
+    }
+}
+
+async function loadClasswork() {
+    const grid = document.getElementById('classwork-grid');
+    if (!grid) return;
+
+    try {
+        const { data, error } = await supabase
+            .from('french_classwork')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+            grid.innerHTML = '<p class="empty-state card-wide">No classwork notes yet</p>';
+            return;
+        }
+
+        grid.innerHTML = data.map(item => `
+            <div class="note-card" onclick="openClassworkDetail('${item.id}')">
+                <div class="note-header">
+                    <span>${formatDate(item.date)}</span>
+                    ${item.tags && item.tags.length ? `<span>${item.tags[0]}</span>` : ''}
+                </div>
+                <div class="note-title">${extractTitle(item)}</div>
+                <p class="note-preview">${item.raw_notes ? truncate(item.raw_notes, 100) : 'No preview available'}</p>
+            </div>
+        `).join('');
+
+    } catch (error) {
+        console.error('Error loading classwork:', error);
+        grid.innerHTML = '<p class="empty-state">Error loading classwork</p>';
     }
 }
 
@@ -1248,80 +1593,12 @@ async function showHomeworkDetail(id) {
     }
 }
 
-async function showVocabDetail(id) {
-    try {
-        const { data, error } = await supabase
-            .from('french_vocabulary')
-            .select('*')
-            .eq('id', id)
-            .single();
+// Deprecated or Replaced by openVocabDetail
+// But kept if referenced by older onclicks in HTML before full reload?
+// Actually we replaced the onclick in loadVocabulary, so this is dead code mostly.
+// Reuse logic in openVocabDetail
+console.log('Use openVocabDetail instead');
 
-        if (error) throw error;
-
-        const modal = document.getElementById('detail-modal');
-        const content = document.getElementById('detail-content');
-
-        let vocabHtml = '';
-
-        // Helper function to extract French word from various property names
-        const getFrench = (word) => {
-            return word.french || word.french_word || word.word_french ||
-                word.word || word.terme || word.mot ||
-                (word.verb && word.verb.french) || '';
-        };
-
-        const getEnglish = (word) => {
-            return word.english || word.english_word || word.word_english ||
-                word.meaning || word.traduction ||
-                (word.verb && word.verb.english) || '';
-        };
-
-        const renderTable = (items) => {
-            return `
-                <div class="vocab-table">
-                    ${items.map(item => `
-                        <div class="vocab-row">
-                            <span class="fr">${getFrench(item)}</span>
-                            <span class="en">${getEnglish(item)}</span>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-        };
-
-        // Handle different data structures
-        if (data.content) {
-            if (data.vocab_type === 'verb' && data.content.verbs) {
-                // Verb List
-                vocabHtml = renderTable(data.content.verbs);
-            } else if (data.content.vocabulary) {
-                // Topic Vocabulary
-                vocabHtml = renderTable(data.content.vocabulary);
-            } else if (Array.isArray(data.content)) {
-                // Direct Array
-                vocabHtml = renderTable(data.content);
-            } else if (data.content.words) {
-                // Gender Quiz / Word list
-                vocabHtml = renderTable(data.content.words);
-            } else {
-                vocabHtml = '<p>Data structure not recognized</p>';
-            }
-        }
-
-        content.innerHTML = `
-            <h2>📖 ${data.topic}</h2>
-            <div class="detail-date">${formatDate(data.created_at)}</div>
-            ${vocabHtml}
-            <button onclick="deleteItem('french_vocabulary', '${data.id}', loadVocabulary)" class="btn btn-secondary btn-full" style="margin-top: 2rem; color: #ff6b6b; border-color: #ff6b6b;">Delete Vocabulary</button>
-        `;
-
-        modal.classList.remove('hidden');
-
-    } catch (error) {
-        console.error('Error:', error);
-        showToast('Failed to load vocabulary', 'error');
-    }
-}
 
 async function showGrammarDetail(id) {
     try {
@@ -1473,12 +1750,14 @@ function showToast(message, type = 'success') {
 }
 
 // Make functions globally available for onclick handlers
-window.showClassworkDetail = openClassworkEditor;
+window.showClassworkDetail = openClassworkDetail; // Updated to detail
 window.showHomeworkDetail = showHomeworkDetail;
-window.showVocabDetail = showVocabDetail;
+window.showVocabDetail = openVocabDetail; // Mapped to new function
+window.openVocabDetail = openVocabDetail; // Direct access
 window.showGrammarDetail = showGrammarDetail;
 window.checkGenderAnswer = checkGenderAnswer;
 window.openClassworkEditor = openClassworkEditor;
+window.openClassworkDetail = openClassworkDetail; // Add this
 window.openHomeworkEditor = openHomeworkEditor;
 window.openGrammarEditor = openGrammarEditor;
 window.openGrammarDetail = openGrammarDetail;

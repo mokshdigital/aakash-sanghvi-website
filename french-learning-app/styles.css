@@ -502,6 +502,7 @@ body {
     margin-bottom: 1rem;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -512,6 +513,7 @@ body {
     line-height: 1.5;
     display: -webkit-box;
     -webkit-line-clamp: 3;
+    line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
     margin-bottom: auto;
@@ -601,6 +603,114 @@ body {
     padding: 1.5rem;
     /* Increased Padding */
     border: 1px solid var(--border-color);
+}
+
+/* ============================================= */
+/* Vocabulary Detail View Styles */
+/* ============================================= */
+.vocab-table {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.vocab-row,
+.vocab-table-header {
+    display: grid;
+    grid-template-columns: 1.5fr 1.5fr 0.5fr 3fr;
+    gap: 1rem;
+    padding: 1rem;
+    align-items: center;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.vocab-table-header {
+    font-weight: 600;
+    color: var(--text-muted);
+    border-bottom: 2px solid var(--border-color);
+    font-size: 0.9rem;
+}
+
+.vocab-row:last-child {
+    border-bottom: none;
+}
+
+.vocab-en {
+    color: var(--text-secondary);
+}
+
+.vocab-gender {
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--accent-purple-light);
+    font-size: 0.8rem;
+}
+
+.vocab-sentence {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.tab-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.tab-btn.active {
+    color: var(--accent-blue);
+    border-bottom-color: var(--accent-blue);
+}
+
+.grid-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.verb-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+}
+
+.verb-title {
+    color: var(--accent-green);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.conjugation-list {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+
+    .vocab-row,
+    .vocab-table-header {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+
+    .vocab-gender {
+        display: inline-block;
+        margin-left: 0.5rem;
+    }
+
+    .vocab-sentence {
+        display: block;
+        margin-top: 0.2rem;
+    }
 }
 
 #editor-formatted {
