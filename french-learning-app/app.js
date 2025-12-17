@@ -1024,12 +1024,12 @@ async function handleVocabSubmit(e) {
         const aiResult = await callEdgeFunction('generate-vocab', payload);
 
         // Fallback or Standardize Structure
-        // Expecting aiResult to have { vocabulary: [], paragraph: "", conjugations: [] }
-        // If legacy response, might just be { vocabulary: [] }
+        // Expecting aiResult to have { vocabulary: [], paragraph: "", paragraph_english: "", conjugations: [] }
 
         const contentToSave = {
             vocabulary: aiResult.vocabulary || aiResult.words || [],
             paragraph: aiResult.paragraph || '',
+            paragraph_english: aiResult.paragraph_english || '',
             conjugations: aiResult.conjugations || []
         };
 
@@ -1086,18 +1086,29 @@ async function openVocabDetail(id) {
 
         // Ensure content exists
         if (!data.content || typeof data.content !== 'object') {
-            data.content = { vocabulary: [], paragraph: '', conjugations: [] };
+            data.content = { vocabulary: [], paragraph: '', paragraph_english: '', conjugations: [] };
         }
 
         // Populate Header
         document.getElementById('vocab-detail-topic').textContent = data.topic;
         document.getElementById('vocab-detail-date').textContent = formatDate(data.created_at);
 
-        // Populate Summary
+        // Populate Summary (French and English)
         const summaryDiv = document.getElementById('vocab-detail-summary');
+        const summaryDivEn = document.getElementById('vocab-detail-summary-en');
         const summarySection = document.getElementById('vocab-summary-section');
+
         if (data.content.paragraph && data.content.paragraph.trim()) {
             summaryDiv.textContent = data.content.paragraph;
+
+            // Show English translation if available
+            if (data.content.paragraph_english && data.content.paragraph_english.trim()) {
+                summaryDivEn.textContent = data.content.paragraph_english;
+                summaryDivEn.classList.remove('hidden');
+            } else {
+                summaryDivEn.classList.add('hidden');
+            }
+
             summarySection.classList.remove('hidden');
         } else {
             summarySection.classList.add('hidden');
