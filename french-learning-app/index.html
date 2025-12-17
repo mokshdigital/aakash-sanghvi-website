@@ -342,7 +342,7 @@
 
                     <!-- Topic Vocabulary -->
                     <div id="vocab-topic" class="vocab-content active">
-                        <div class="content-grid">
+                        <div id="vocab-list-view" class="content-grid">
                             <div class="card card-form">
                                 <h3>Generate Topic Vocabulary</h3>
                                 <form id="vocab-topic-form">
@@ -368,79 +368,6 @@
                             </div>
                         </div>
 
-                        <!-- Vocabulary Detail View -->
-                        <div id="vocab-detail-view" class="hidden">
-                            <div class="editor-toolbar">
-                                <button id="btn-back-vocab" class="btn btn-text">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <path d="M19 12H5M12 19l-7-7 7-7" />
-                                    </svg>
-                                    Back to Vocabulary
-                                </button>
-                                <div class="editor-actions">
-                                    <button id="btn-delete-vocab-detail" class="btn btn-secondary btn-danger"
-                                        style="color: #ff6b6b; border-color: #ff6b6b;">Delete</button>
-                                </div>
-                            </div>
-
-                            <div class="card card-wide" style="margin-top: 1rem;">
-                                <div class="detail-header"
-                                    style="border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem; margin-bottom: 1.5rem;">
-                                    <h2 id="vocab-detail-topic"
-                                        style="color: var(--accent-purple-light); margin-bottom: 0.5rem;">Topic Name
-                                    </h2>
-                                    <div id="vocab-detail-date"
-                                        style="color: var(--text-secondary); font-size: 0.9rem;">Date</div>
-                                </div>
-
-                                <!-- Summary Section -->
-                                <div id="vocab-summary-section" style="margin-bottom: 2rem;">
-                                    <div
-                                        style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
-                                        <h3 style="font-size: 1.1rem; color: var(--text-primary);">Contextual Summary
-                                        </h3>
-                                        <button id="btn-play-audio" class="btn btn-secondary btn-sm" title="Read Aloud">
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                                stroke="currentColor" stroke-width="2">
-                                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                                                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07">
-                                                </path>
-                                            </svg>
-                                            Listen
-                                        </button>
-                                    </div>
-                                    <div id="vocab-detail-summary" class="detail-body"
-                                        style="background: var(--bg-secondary); padding: 1rem; border-radius: var(--radius-md); font-style: italic;">
-                                        <!-- Summary text goes here -->
-                                    </div>
-                                </div>
-
-                                <!-- Word List -->
-                                <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 1rem;">
-                                    Vocabulary List</h3>
-                                <div id="vocab-detail-list" class="vocab-table">
-                                    <!-- Dynamic Content -->
-                                </div>
-
-                                <!-- Verb Conjugations -->
-                                <div id="vocab-conjugations-section"
-                                    style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border-subtle);">
-                                    <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 1rem;">
-                                        Related Verbs</h3>
-
-                                    <div class="verb-type-selector" style="margin-bottom: 1rem;">
-                                        <button class="verb-btn tab-btn active" data-tab="present">Present</button>
-                                        <button class="verb-btn tab-btn" data-tab="past">Passé Composé</button>
-                                        <button class="verb-btn tab-btn" data-tab="future">Futur Simple</button>
-                                    </div>
-
-                                    <div id="vocab-detail-verbs" class="grid-layout">
-                                        <!-- Verbs Content -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                     <!-- Gender Practice -->
@@ -488,145 +415,141 @@
                             </div>
                         </div>
                     </div>
-                </section>
+        </div>
 
-                <!-- Grammar Section -->
-                <section id="grammar-section" class="section">
-                    <header class="section-header-row">
-                        <div>
-                            <h2>📏 Grammar</h2>
-                            <p class="section-desc">Generate focused grammar notes by topic</p>
-                        </div>
-                        <div class="header-actions">
-                            <button id="btn-new-grammar" class="btn btn-primary btn-sm">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                </svg>
-                                New Topic
-                            </button>
-                        </div>
-                    </header>
+        <!-- Vocabulary Detail View (Relocated) -->
+        <div id="vocab-detail-view" class="hidden">
+            <div class="editor-toolbar">
+                <button id="btn-back-vocab" class="btn btn-text">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                    Back to Vocabulary
+                </button>
+                <div class="editor-actions">
+                    <button id="btn-delete-vocab-detail" class="btn btn-secondary btn-danger"
+                        style="color: #ff6b6b; border-color: #ff6b6b;">Delete</button>
+                </div>
+            </div>
 
-                    <div id="grammar-view-container">
-                        <!-- List View -->
-                        <div id="grammar-library-view">
-                            <div id="grammar-grid" class="notes-grid">
-                                <!-- Notes populated here -->
-                            </div>
-                        </div>
+            <div class="card card-wide" style="margin-top: 1rem;">
+                <div class="detail-header"
+                    style="border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+                    <h2 id="vocab-detail-topic" style="color: var(--accent-purple-light); margin-bottom: 0.5rem;">Topic
+                        Name</h2>
+                    <div id="vocab-detail-date" style="color: var(--text-secondary); font-size: 0.9rem;">Date</div>
+                </div>
 
-                        <!-- Editor/Generator View -->
-                        <div id="grammar-editor-view" class="hidden">
-                            <div class="editor-toolbar">
-                                <button id="btn-back-grammar" class="btn btn-text">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <path d="M19 12H5M12 19l-7-7 7-7" />
-                                    </svg>
-                                    Back to Library
-                                </button>
-                                <div class="editor-actions">
-                                    <button id="btn-delete-grammar" class="btn btn-secondary btn-danger hidden"
-                                        style="color: #ff6b6b; border-color: #ff6b6b;">Delete</button>
-                                </div>
-                            </div>
-
-                            <!-- Content Display (Reading Mode) -->
-                            <div id="grammar-detail-content" class="hidden" style="max-width: 800px; margin: 0 auto;">
-                                <div class="card" style="padding: 2rem;">
-                                    <h2 id="grammar-detail-title"
-                                        style="margin-bottom: 1rem; color: var(--accent-blue-light);">Topic</h2>
-                                    <div id="grammar-detail-body" class="detail-body">
-                                        <!-- Markdown content -->
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Generator Form (Creation Mode) -->
-                            <div id="grammar-generator-content" class="card card-form"
-                                style="max-width: 600px; margin: 0 auto;">
-                                <h3>Generate Grammar Notes</h3>
-                                <form id="grammar-form">
-                                    <div class="form-group">
-                                        <label for="grammar-topic">Grammar Topic</label>
-                                        <input type="text" id="grammar-topic"
-                                            placeholder="e.g., Passé composé, Subjunctive, Articles..." required>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary btn-full">
-                                        <span>Generate Notes</span>
-                                        <svg class="spinner hidden" width="16" height="16" viewBox="0 0 24 24">
-                                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"
-                                                fill="none" stroke-dasharray="30 60" />
-                                        </svg>
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Resources Section -->
-                <section id="resources-section" class="section">
-                    <div class="section-header">
-                        <h2>🔗 Resources</h2>
-                        <p class="section-desc">Library of videos, articles, and tools.</p>
-                    </div>
-
-                    <div id="resources-action-bar" style="margin-bottom: 2rem;">
-                        <button id="btn-add-resource" class="btn btn-primary">
-                            <span>Add Resource</span>
+                <!-- Summary Section -->
+                <div id="vocab-summary-section" style="margin-bottom: 2rem;">
+                    <div
+                        style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <h3 style="font-size: 1.1rem; color: var(--text-primary);">Contextual Summary</h3>
+                        <button id="btn-play-audio" class="btn btn-secondary btn-sm" title="Read Aloud">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2">
-                                <path d="M12 5v14M5 12h14" />
+                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
                             </svg>
+                            Listen
                         </button>
                     </div>
+                    <div id="vocab-detail-summary" class="detail-body"
+                        style="background: var(--bg-secondary); padding: 1rem; border-radius: var(--radius-md); font-style: italic;">
+                        <!-- Summary text goes here -->
+                    </div>
+                </div>
 
-                    <div id="resources-filters" class="library-filters"
-                        style="margin-bottom: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
-                        <div class="search-box" style="flex: 1;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <circle cx="11" cy="11" r="8"></circle>
-                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                            </svg>
-                            <input type="text" id="res-search" placeholder="Search resources...">
-                        </div>
-                        <select id="res-filter-type" class="filter-select" style="width: auto;">
-                            <option value="">All Types</option>
-                            <option value="video">Video</option>
-                            <option value="article">Article</option>
-                            <option value="tool">Tool</option>
-                            <option value="other">Other</option>
-                        </select>
+                <!-- Word List -->
+                <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 1rem;">Vocabulary List</h3>
+                <div id="vocab-detail-list" class="vocab-table">
+                    <!-- Dynamic Content -->
+                </div>
+
+                <!-- Verb Conjugations -->
+                <div id="vocab-conjugations-section"
+                    style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border-subtle);">
+                    <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 1rem;">Related Verbs</h3>
+
+                    <div class="verb-type-selector" style="margin-bottom: 1rem;">
+                        <button class="verb-btn tab-btn active" data-tab="present">Present</button>
+                        <button class="verb-btn tab-btn" data-tab="past">Passé Composé</button>
+                        <button class="verb-btn tab-btn" data-tab="future">Futur Simple</button>
                     </div>
 
-                    <div id="resource-form-container" class="card card-form hidden" style="margin-bottom: 2rem;">
-                        <h3>New Resource</h3>
-                        <form id="resource-form">
-                            <div class="form-group">
-                                <label for="res-title">Title</label>
-                                <input type="text" id="res-title" placeholder="Resource Title" required>
+                    <div id="vocab-detail-verbs" class="grid-layout">
+                        <!-- Verbs Content -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grammar Section -->
+        <section id="grammar-section" class="section">
+            <header class="section-header-row">
+                <div>
+                    <h2>📏 Grammar</h2>
+                    <p class="section-desc">Generate focused grammar notes by topic</p>
+                </div>
+                <div class="header-actions">
+                    <button id="btn-new-grammar" class="btn btn-primary btn-sm">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        New Topic
+                    </button>
+                </div>
+            </header>
+
+            <div id="grammar-view-container">
+                <!-- List View -->
+                <div id="grammar-library-view">
+                    <div id="grammar-grid" class="notes-grid">
+                        <!-- Notes populated here -->
+                    </div>
+                </div>
+
+                <!-- Editor/Generator View -->
+                <div id="grammar-editor-view" class="hidden">
+                    <div class="editor-toolbar">
+                        <button id="btn-back-grammar" class="btn btn-text">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M19 12H5M12 19l-7-7 7-7" />
+                            </svg>
+                            Back to Library
+                        </button>
+                        <div class="editor-actions">
+                            <button id="btn-delete-grammar" class="btn btn-secondary btn-danger hidden"
+                                style="color: #ff6b6b; border-color: #ff6b6b;">Delete</button>
+                        </div>
+                    </div>
+
+                    <!-- Content Display (Reading Mode) -->
+                    <div id="grammar-detail-content" class="hidden" style="max-width: 800px; margin: 0 auto;">
+                        <div class="card" style="padding: 2rem;">
+                            <h2 id="grammar-detail-title" style="margin-bottom: 1rem; color: var(--accent-blue-light);">
+                                Topic</h2>
+                            <div id="grammar-detail-body" class="detail-body">
+                                <!-- Markdown content -->
                             </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="res-url">URL</label>
-                                    <input type="url" id="res-url" placeholder="https://..." required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="res-type">Type</label>
-                                    <select id="res-type" required>
-                                        <option value="video">Video (YouTube)</option>
-                                        <option value="article">Article</option>
-                                        <option value="tool">Tool</option>
-                                        <option value="other">Other</option>
-                                    </select>
-                                </div>
+                        </div>
+                    </div>
+
+                    <!-- Generator Form (Creation Mode) -->
+                    <div id="grammar-generator-content" class="card card-form"
+                        style="max-width: 600px; margin: 0 auto;">
+                        <h3>Generate Grammar Notes</h3>
+                        <form id="grammar-form">
+                            <div class="form-group">
+                                <label for="grammar-topic">Grammar Topic</label>
+                                <input type="text" id="grammar-topic"
+                                    placeholder="e.g., Passé composé, Subjunctive, Articles..." required>
                             </div>
                             <button type="submit" class="btn btn-primary btn-full">
-                                <span>Save Resource</span>
+                                <span>Generate Notes</span>
                                 <svg class="spinner hidden" width="16" height="16" viewBox="0 0 24 24">
                                     <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none"
                                         stroke-dasharray="30 60" />
@@ -634,25 +557,94 @@
                             </button>
                         </form>
                     </div>
-
-                    <div id="resources-grid" class="notes-grid">
-                        <!-- Resources will be loaded here -->
-                    </div>
-                </section>
-
-            </main>
-        </div> <!-- Detail Modal for viewing entries -->
-        <div id="detail-modal" class="modal-overlay hidden">
-            <div class="modal-content modal-large">
-                <button class="modal-close" id="close-detail">&times;</button>
-                <div id="detail-content">
-                    <!-- Content will be rendered here -->
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Toast Notifications -->
-        <div id="toast-container"></div>
+        <!-- Resources Section -->
+        <section id="resources-section" class="section">
+            <div class="section-header">
+                <h2>🔗 Resources</h2>
+                <p class="section-desc">Library of videos, articles, and tools.</p>
+            </div>
+
+            <div id="resources-action-bar" style="margin-bottom: 2rem;">
+                <button id="btn-add-resource" class="btn btn-primary">
+                    <span>Add Resource</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 5v14M5 12h14" />
+                    </svg>
+                </button>
+            </div>
+
+            <div id="resources-filters" class="library-filters"
+                style="margin-bottom: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+                <div class="search-box" style="flex: 1;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" id="res-search" placeholder="Search resources...">
+                </div>
+                <select id="res-filter-type" class="filter-select" style="width: auto;">
+                    <option value="">All Types</option>
+                    <option value="video">Video</option>
+                    <option value="article">Article</option>
+                    <option value="tool">Tool</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div id="resource-form-container" class="card card-form hidden" style="margin-bottom: 2rem;">
+                <h3>New Resource</h3>
+                <form id="resource-form">
+                    <div class="form-group">
+                        <label for="res-title">Title</label>
+                        <input type="text" id="res-title" placeholder="Resource Title" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="res-url">URL</label>
+                            <input type="url" id="res-url" placeholder="https://..." required>
+                        </div>
+                        <div class="form-group">
+                            <label for="res-type">Type</label>
+                            <select id="res-type" required>
+                                <option value="video">Video (YouTube)</option>
+                                <option value="article">Article</option>
+                                <option value="tool">Tool</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <span>Save Resource</span>
+                        <svg class="spinner hidden" width="16" height="16" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none"
+                                stroke-dasharray="30 60" />
+                        </svg>
+                    </button>
+                </form>
+            </div>
+
+            <div id="resources-grid" class="notes-grid">
+                <!-- Resources will be loaded here -->
+            </div>
+        </section>
+
+        </main>
+    </div> <!-- Detail Modal for viewing entries -->
+    <div id="detail-modal" class="modal-overlay hidden">
+        <div class="modal-content modal-large">
+            <button class="modal-close" id="close-detail">&times;</button>
+            <div id="detail-content">
+                <!-- Content will be rendered here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container"></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

@@ -854,6 +854,14 @@ async function handleGrammarSubmit(e) {
 // =============================================
 
 function initVocabulary() {
+    // Sub-tabs
+    document.querySelectorAll('.sub-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            const vocabType = tab.dataset.vocab;
+            switchVocabTab(vocabType);
+        });
+    });
+
     // Topic Form
     const topicForm = document.getElementById('vocab-topic-form');
     if (topicForm) topicForm.addEventListener('submit', handleVocabSubmit);
@@ -906,6 +914,23 @@ function initVocabulary() {
         const text = document.getElementById('vocab-detail-summary').textContent;
         if (text) speakText(text);
     });
+}
+
+function switchVocabTab(type) {
+    // Buttons
+    document.querySelectorAll('.sub-tab').forEach(tab => {
+        if (tab.dataset.vocab === type) tab.classList.add('active');
+        else tab.classList.remove('active');
+    });
+
+    // Content Areas
+    document.querySelectorAll('.vocab-content').forEach(content => {
+        content.classList.remove('active');
+    });
+
+    // Show selected
+    const selected = document.getElementById(`vocab-${type}`);
+    if (selected) selected.classList.add('active');
 }
 
 async function handleVocabSubmit(e) {
