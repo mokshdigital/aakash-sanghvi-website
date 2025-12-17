@@ -88,6 +88,7 @@ function initializeAppContent() {
     initMyVocabulary();
     initGrammarUI();
     initQuizzes();
+    initChat();
     initResources();
     loadAllData();
 }
@@ -2233,3 +2234,63 @@ function shareQuizToWhatsapp() {
     window.open(url, '_blank');
 }
 window.openMyVocabDetail = openMyVocabDetail; // Export to window
+
+// =============================================
+// Chat Section
+// =============================================
+
+let chatHistory = [];
+
+function initChat() {
+    const chatForm = document.getElementById('chat-form');
+    if (chatForm) {
+        chatForm.addEventListener('submit', handleChatSubmit);
+    }
+}
+
+async function handleChatSubmit(e) {
+    e.preventDefault();
+    const input = document.getElementById('chat-input');
+    const message = input.value.trim();
+    if (!message) return;
+
+    // Add User Message
+    addChatMessage(message, 'user');
+    input.value = '';
+
+    // Scroll to bottom
+    const container = document.getElementById('chat-messages');
+    container.scrollTop = container.scrollHeight;
+
+    try {
+        const result = await callEdgeFunction('chat', {
+            message,
+            history: chatHistory.slice(-10) // Keep last 10 messages for context
+        });
+
+        // Add AI Message
+        if (result.reply) {
+            addChatMessage(result.reply, 'ai');
+
+            // Update history
+            chatHistory.push({ role: 'user', content: message });
+            chatHistory.push({ role: 'assistant', content: result.reply });
+        } else {
+            // Fallback if structure is different
+            addChatMessage("I'm having trouble connecting right now. Please try again.", 'ai');
+        }
+
+    } catch (err) {
+        console.error(err);
+        addChatMessage("Sorry, I encountered an error. Please try again.", 'ai');
+    }
+}
+
+function addChatMessage(text, sender) {
+    const container = document.getElementById('chat-messages');
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `message ${sender}-message`;
+    msgDiv.innerHTML = `<div class="message-content">${text}</div>`;
+    container.appendChild(msgDiv);
+    container.scrollTop = container.scrollHeight;
+}
