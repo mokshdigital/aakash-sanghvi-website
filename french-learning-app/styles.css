@@ -815,6 +815,30 @@ body {
     box-shadow: 0 0 0 3px var(--glow-blue);
 }
 
+/* Search Input (Vocabulary) */
+.search-input {
+    width: 100%;
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    font-family: inherit;
+    transition: var(--transition-fast);
+    margin-bottom: 1rem;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 3px var(--glow-blue);
+}
+
+.search-input::placeholder {
+    color: var(--text-muted);
+}
+
 .form-group textarea {
     min-height: 100px;
     padding: 1rem;

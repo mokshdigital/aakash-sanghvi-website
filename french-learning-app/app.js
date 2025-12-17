@@ -890,6 +890,14 @@ function initVocabulary() {
     const topicForm = document.getElementById('vocab-topic-form');
     if (topicForm) topicForm.addEventListener('submit', handleVocabSubmit);
 
+    // Search input
+    const searchInput = document.getElementById('vocab-search');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            filterVocabularyTopics(e.target.value);
+        });
+    }
+
     // Gender Quiz
     document.getElementById('generate-gender-quiz')?.addEventListener('click', generateGenderQuiz);
 
@@ -941,6 +949,44 @@ function initVocabulary() {
         const text = document.getElementById('vocab-detail-summary').textContent;
         if (text) speakText(text);
     });
+}
+
+// Store vocabulary data for filtering
+let allVocabTopics = [];
+
+function filterVocabularyTopics(query) {
+    const topicList = document.getElementById('vocab-topic-list');
+    if (!topicList) return;
+
+    const searchTerm = query.toLowerCase().trim();
+
+    if (!searchTerm) {
+        // Show all topics
+        renderVocabTopicList(allVocabTopics);
+        return;
+    }
+
+    const filtered = allVocabTopics.filter(entry =>
+        entry.topic.toLowerCase().includes(searchTerm)
+    );
+
+    renderVocabTopicList(filtered);
+}
+
+function renderVocabTopicList(topics) {
+    const topicList = document.getElementById('vocab-topic-list');
+    if (!topicList) return;
+
+    if (topics.length === 0) {
+        topicList.innerHTML = '<p class="empty-state">No matching topics found</p>';
+    } else {
+        topicList.innerHTML = topics.map(entry => `
+            <div class="entry-item" onclick="openVocabDetail('${entry.id}')">
+                <div class="entry-date">${entry.topic}</div>
+                <div class="entry-preview">${formatDate(entry.created_at)}</div>
+            </div>
+        `).join('');
+    }
 }
 
 function switchVocabTab(type) {
@@ -1506,39 +1552,15 @@ async function loadVocabulary() {
 
         if (error) throw error;
 
-        // Topic vocabulary
-        const topicData = data?.filter(v => v.vocab_type === 'topic') || [];
-        const topicList = document.getElementById('vocab-topic-list');
+        // Topic vocabulary - store in global for search filtering
+        allVocabTopics = data?.filter(v => v.vocab_type === 'topic') || [];
 
-        if (topicList) {
-            if (topicData.length === 0) {
-                topicList.innerHTML = '<p class="empty-state">No vocabulary yet</p>';
-            } else {
-                topicList.innerHTML = topicData.map(entry => `
-                    <div class="entry-item" onclick="openVocabDetail('${entry.id}')">
-                        <div class="entry-date">${entry.topic}</div>
-                        <div class="entry-preview">${formatDate(entry.created_at)}</div>
-                    </div>
-                `).join('');
-            }
-        }
+        // Clear search input when reloading
+        const searchInput = document.getElementById('vocab-search');
+        if (searchInput) searchInput.value = '';
 
-        // Verb vocabulary
-        const verbData = data?.filter(v => v.vocab_type === 'verb') || [];
-        const verbList = document.getElementById('verb-list');
-
-        if (verbList) {
-            if (verbData.length === 0) {
-                verbList.innerHTML = '<p class="empty-state">No verbs yet</p>';
-            } else {
-                verbList.innerHTML = verbData.map(entry => `
-                    <div class="entry-item" onclick="openVocabDetail('${entry.id}')">
-                        <div class="entry-date">${entry.topic}</div>
-                        <div class="entry-preview">${formatDate(entry.created_at)}</div>
-                    </div>
-                `).join('');
-            }
-        }
+        // Render the topic list
+        renderVocabTopicList(allVocabTopics);
 
     } catch (error) {
         console.error('Error loading vocabulary:', error);
