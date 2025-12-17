@@ -1239,6 +1239,88 @@ body {
 }
 
 /* ============================================= */
+/* Quizzes Styles */
+/* ============================================= */
+
+.quiz-content-area {
+    margin-top: 1.5rem;
+}
+
+.quiz-item {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.question-text {
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+}
+
+.quiz-answer-key {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--border-color);
+    color: var(--accent-green);
+    font-weight: 500;
+}
+
+.mcq-options {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+}
+
+.mcq-badge {
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.audio-player-box {
+    background: var(--bg-input);
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    text-align: center;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border-color);
+}
+
+.reading-passage {
+    background: var(--bg-secondary);
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    font-family: 'Georgia', serif;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+    border-left: 4px solid var(--accent-blue);
+    font-size: 1.05rem;
+}
+
+.prompt-box {
+    background: var(--bg-secondary);
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    text-align: center;
+    border: 1px solid var(--border-color);
+}
+
+.model-answer {
+    white-space: pre-line;
+    color: var(--text-secondary);
+    font-style: italic;
+    line-height: 1.6;
+}
+
+/* ============================================= */
 /* Animations */
 /* ============================================= */
 

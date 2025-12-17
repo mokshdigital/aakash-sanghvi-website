@@ -87,6 +87,7 @@ function initializeAppContent() {
     initVocabulary();
     initMyVocabulary();
     initGrammarUI();
+    initQuizzes();
     initResources();
     loadAllData();
 }
@@ -2032,3 +2033,203 @@ window.openGrammarDetail = openGrammarDetail;
 window.deleteItem = deleteItem;
 window.loadResources = loadResources;
 
+
+// =============================================
+// Quizzes Section
+// =============================================
+
+let currentQuizData = null;
+
+function initQuizzes() {
+    const quizForm = document.getElementById('quiz-form');
+    if (quizForm) {
+        quizForm.addEventListener('submit', handleQuizGenerate);
+    }
+
+    const btnShowAnswers = document.getElementById('btn-show-answers');
+    if (btnShowAnswers) {
+        btnShowAnswers.addEventListener('click', () => {
+            const answers = document.querySelectorAll('.quiz-answer-key');
+            answers.forEach(el => el.classList.toggle('hidden'));
+            btnShowAnswers.textContent = btnShowAnswers.textContent.includes('Show') ? 'Hide Answers' : 'Show Answers';
+        });
+    }
+
+    const btnShareWhatsapp = document.getElementById('btn-share-whatsapp');
+    if (btnShareWhatsapp) {
+        btnShareWhatsapp.addEventListener('click', shareQuizToWhatsapp);
+    }
+}
+
+async function handleQuizGenerate(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    const type = document.getElementById('quiz-type').value;
+
+    try {
+        setLoading(btn, true);
+
+        // Hide previous result
+        document.getElementById('quiz-display').classList.add('hidden');
+
+        // Call AI
+        const result = await callEdgeFunction('generate-quiz', { type });
+        currentQuizData = result;
+
+        renderQuiz(result, type);
+
+        // Show result
+        document.getElementById('quiz-display').classList.remove('hidden');
+
+        // Scroll to result
+        document.getElementById('quiz-display').scrollIntoView({ behavior: 'smooth' });
+
+    } catch (err) {
+        console.error(err);
+        showToast('Failed to generate quiz', 'error');
+    } finally {
+        setLoading(btn, false);
+    }
+}
+
+function renderQuiz(data, type) {
+    const titleEl = document.getElementById('quiz-title');
+    const contentEl = document.getElementById('quiz-content');
+
+    titleEl.textContent = data.title || 'Quiz';
+    contentEl.innerHTML = '';
+
+    // Handle different quiz formats
+    if (type === 'listening') {
+        renderListeningQuiz(data, contentEl);
+    } else if (type === 'comprehension') {
+        renderComprehensionQuiz(data, contentEl);
+    } else if (type === 'writing' || type === 'speaking') {
+        renderPromptQuiz(data, contentEl);
+    } else {
+        renderStandardQuiz(data, contentEl);
+    }
+
+    // Reset Answer Button
+    const btnShowAnswers = document.getElementById('btn-show-answers');
+    if (btnShowAnswers) btnShowAnswers.textContent = 'Show Answers';
+}
+
+function renderStandardQuiz(data, container) {
+    const list = document.createElement('div');
+    list.className = 'quiz-questions';
+
+    if (data.questions && Array.isArray(data.questions)) {
+        data.questions.forEach((q, index) => {
+            const item = document.createElement('div');
+            item.className = 'quiz-item';
+            item.innerHTML = `
+                <div class="question-text"><strong>Q${index + 1}:</strong> ${q.question}</div>
+                ${q.options ? renderMCQOptions(q.options) : ''}
+                <div class="quiz-answer-key hidden">
+                    <strong>Answer:</strong> ${q.answer}
+                </div>
+            `;
+            list.appendChild(item);
+        });
+    }
+    container.appendChild(list);
+}
+
+function renderMCQOptions(options) {
+    return `<div class="mcq-options">
+        ${options.map(opt => `<span class="mcq-badge">${opt}</span>`).join('')}
+    </div>`;
+}
+
+function renderListeningQuiz(data, container) {
+    const wrapper = document.createElement('div');
+
+    // Audio Player (TTS)
+    const playerDiv = document.createElement('div');
+    playerDiv.className = 'audio-player-box';
+    playerDiv.innerHTML = `
+        <p style="margin-bottom:0.5rem; color:var(--text-secondary)">Listen to the audio script:</p>
+        <button class="btn btn-primary btn-sm" onclick="speakText('${data.script_french.replace(/'/g, "\\'")}')">
+            ▶ Play Audio
+        </button>
+    `;
+    wrapper.appendChild(playerDiv);
+
+    // Questions (Meaning + Words)
+    const questionsDiv = document.createElement('div');
+    questionsDiv.className = 'quiz-questions';
+    questionsDiv.innerHTML = `
+        <div class="quiz-item">
+            <div class="question-text"><strong>Task 1:</strong> Write the meaning/summary of what you heard in English.</div>
+            <div class="quiz-answer-key hidden">
+                <div style="margin-bottom:0.5rem; font-style:italic; color:var(--text-secondary)">Transcript: ${data.script_french}</div>
+                <strong>Summary:</strong> ${data.answer_meaning}
+            </div>
+        </div>
+        <div class="quiz-item">
+            <div class="question-text"><strong>Task 2:</strong> List as many French words as you recognized.</div>
+            <div class="quiz-answer-key hidden">
+                <strong>Key Words:</strong> ${data.answer_words.join(', ')}
+            </div>
+        </div>
+    `;
+    wrapper.appendChild(questionsDiv);
+    container.appendChild(wrapper);
+}
+
+function renderComprehensionQuiz(data, container) {
+    // Reading Passage
+    const passageDiv = document.createElement('div');
+    passageDiv.className = 'reading-passage';
+    passageDiv.innerHTML = `<p>${data.passage}</p>`;
+    container.appendChild(passageDiv);
+
+    // Questions
+    renderStandardQuiz(data, container);
+}
+
+function renderPromptQuiz(data, container) {
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = `
+        <div class="prompt-box">
+            <h3>Topic</h3>
+            <p>${data.prompt}</p>
+        </div>
+        <div class="quiz-answer-key hidden" style="margin-top: 2rem;">
+            <h3>Model Response</h3>
+            <div class="model-answer">${data.model_answer || data.model_response}</div>
+        </div>
+    `;
+    container.appendChild(wrapper);
+}
+
+function shareQuizToWhatsapp() {
+    if (!currentQuizData) return;
+
+    let text = `*${currentQuizData.title}*\n\n`;
+
+    // Format text based on type
+    if (currentQuizData.questions) {
+        currentQuizData.questions.forEach((q, i) => {
+            text += `Q${i + 1}: ${q.question}\n`;
+            if (q.options) text += `Options: ${q.options.join(', ')}\n`;
+            text += `Answer: ${q.answer}\n\n`;
+        });
+    } else if (currentQuizData.prompt) {
+        text += `Prompt: ${currentQuizData.prompt}\n\n`;
+        text += `Model Response: ${currentQuizData.model_answer || currentQuizData.model_response}\n`;
+    } else if (currentQuizData.script_french) {
+        text += `Script: ${currentQuizData.script_french}\n\n`;
+        text += `Summary: ${currentQuizData.answer_meaning}\n`;
+        text += `Words: ${currentQuizData.answer_words.join(', ')}\n`;
+    }
+
+    // Add attribution
+    text += `\nGenerate by My French App`;
+
+    // Open WhatsApp
+    const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank');
+}
+window.openMyVocabDetail = openMyVocabDetail; // Export to window
