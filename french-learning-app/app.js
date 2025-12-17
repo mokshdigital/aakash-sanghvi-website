@@ -135,6 +135,26 @@ function switchSection(sectionId) {
     document.querySelectorAll('.section').forEach(section => {
         section.classList.toggle('active', section.id === `${sectionId}-section`);
     });
+
+    // Reset all nested views to their default state when switching sections
+    // This prevents views from other sections from remaining visible
+
+    // Reset Classwork views
+    document.getElementById('classwork-library-view')?.classList.remove('hidden');
+    document.getElementById('classwork-editor-view')?.classList.add('hidden');
+    document.getElementById('classwork-detail-view')?.classList.add('hidden');
+
+    // Reset Homework views
+    document.getElementById('homework-library-view')?.classList.remove('hidden');
+    document.getElementById('homework-editor-view')?.classList.add('hidden');
+
+    // Reset Vocabulary views
+    document.getElementById('vocab-list-view')?.classList.remove('hidden');
+    document.getElementById('vocab-detail-view')?.classList.add('hidden');
+
+    // Reset Grammar views
+    document.getElementById('grammar-library-view')?.classList.remove('hidden');
+    document.getElementById('grammar-editor-view')?.classList.add('hidden');
 }
 
 // =============================================
@@ -756,10 +776,14 @@ function toggleGrammarView(viewName) {
         listContainer.classList.add('hidden');
         editorContainer.classList.remove('hidden');
         if (headerActions) headerActions.classList.add('hidden');
+        // Note: Sub-views (detail/generator) are managed by openGrammarEditor/openGrammarDetail
     } else {
         listContainer.classList.remove('hidden');
         editorContainer.classList.add('hidden');
         if (headerActions) headerActions.classList.remove('hidden');
+        // Hide both sub-views when returning to list
+        document.getElementById('grammar-detail-content')?.classList.add('hidden');
+        document.getElementById('grammar-generator-content')?.classList.add('hidden');
         loadGrammar();
     }
 }
@@ -888,6 +912,9 @@ function initVocabulary() {
     document.getElementById('btn-back-vocab')?.addEventListener('click', () => {
         document.getElementById('vocab-list-view').classList.remove('hidden');
         document.getElementById('vocab-detail-view').classList.add('hidden');
+        // Ensure we're on the vocabulary section and reload the list
+        switchSection('vocabulary');
+        loadVocabulary();
     });
 
     document.getElementById('btn-delete-vocab-detail')?.addEventListener('click', () => {
