@@ -12,8 +12,8 @@ const EDGE_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/french-ai`;
 const PASSWORD_HASH = '6e7f287c5946eb089f82a9be0f1476a8e8c2a0b2e1f6c3d4a5b6c7d8e9f0a1b2';
 const CORRECT_PASSWORD = 'MyFrenchApp2791@@';
 
-// Initialize Supabase client
-let supabase;
+// Initialize supabaseClient client
+let supabaseClient;
 
 // State
 let currentSection = 'classwork';
@@ -37,8 +37,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initSupabase() {
-    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    console.log('✅ Supabase initialized');
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    console.log('✅ supabaseClient initialized');
 }
 
 // =============================================
@@ -218,7 +218,7 @@ function toggleClassworkView(viewName) {
 
 async function loadSections() {
     try {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('french_sections')
             .select('*')
             .order('name', { ascending: true });
@@ -253,7 +253,7 @@ async function promptNewSection() {
     if (!name) return;
 
     try {
-        const { error } = await supabase
+        const { error } = await supabaseClient
             .from('french_sections')
             .insert({ name });
 
@@ -278,7 +278,7 @@ async function loadClasswork() {
     const dateFilter = document.getElementById('cw-filter-date')?.value;
 
     try {
-        let query = supabase
+        let query = supabaseClient
             .from('french_classwork')
             .select(`
                 *,
@@ -357,7 +357,7 @@ async function openClassworkEditor(id) {
 
     if (id) {
         try {
-            const { data, error } = await supabase
+            const { data, error } = await supabaseClient
                 .from('french_classwork')
                 .select('*')
                 .eq('id', id)
@@ -396,7 +396,7 @@ async function openClassworkDetail(id) {
     contentBody.innerHTML = '<div class="spinner"></div>';
 
     try {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('french_classwork')
             .select('*')
             .eq('id', id)
@@ -486,13 +486,13 @@ async function saveClassworkNote() {
         let result;
         if (editingClassworkId) {
             // Update
-            result = await supabase
+            result = await supabaseClient
                 .from('french_classwork')
                 .update(payload)
                 .eq('id', editingClassworkId);
         } else {
             // Insert
-            result = await supabase
+            result = await supabaseClient
                 .from('french_classwork')
                 .insert(payload);
         }
@@ -521,7 +521,7 @@ async function deleteItem(table, id, successCallback) {
     if (!id || !confirm('Are you sure you want to delete this item? This cannot be undone.')) return;
 
     try {
-        const { error } = await supabase
+        const { error } = await supabaseClient
             .from(table)
             .delete()
             .eq('id', id);
@@ -650,7 +650,7 @@ async function openHomeworkEditor(id) {
         deleteBtn.classList.remove('hidden');
 
         try {
-            const { data, error } = await supabase
+            const { data, error } = await supabaseClient
                 .from('french_homework')
                 .select('*')
                 .eq('id', id)
@@ -688,7 +688,7 @@ async function handleHomeworkSubmit(e) {
         let result;
         if (id) {
             // Update
-            result = await supabase
+            result = await supabaseClient
                 .from('french_homework')
                 .update({
                     date,
@@ -698,7 +698,7 @@ async function handleHomeworkSubmit(e) {
                 .eq('id', id);
         } else {
             // Insert
-            result = await supabase
+            result = await supabaseClient
                 .from('french_homework')
                 .insert({
                     date,
@@ -793,7 +793,7 @@ async function openGrammarDetail(id) {
 
     // Load Data
     try {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('french_grammar')
             .select('*')
             .eq('id', id)
@@ -824,8 +824,8 @@ async function handleGrammarSubmit(e) {
         // Call AI to generate grammar notes
         const aiResult = await callEdgeFunction('generate-grammar', { topic });
 
-        // Save to Supabase
-        const { data, error } = await supabase
+        // Save to supabaseClient
+        const { data, error } = await supabaseClient
             .from('french_grammar')
             .insert({
                 topic,
@@ -935,7 +935,7 @@ async function handleVocabSubmit(e) {
             conjugations: aiResult.conjugations || []
         };
 
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('french_vocabulary')
             .insert({
                 topic,
@@ -977,7 +977,7 @@ async function openVocabDetail(id) {
     document.getElementById('vocab-detail-list').innerHTML = '<div class="spinner"></div>';
 
     try {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('french_vocabulary')
             .select('*')
             .eq('id', id)
@@ -1220,7 +1220,7 @@ async function generateVerbs() {
             verbType: currentVerbType
         });
 
-        const { error } = await supabase
+        const { error } = await supabaseClient
             .from('french_vocabulary')
             .insert({
                 topic: `${currentVerbType.toUpperCase()} verbs`,
@@ -1273,7 +1273,7 @@ async function handleResourceSubmit(e) {
     try {
         setLoading(btn, true);
 
-        const { error } = await supabase
+        const { error } = await supabaseClient
             .from('french_resources')
             .insert({
                 title,
@@ -1304,7 +1304,7 @@ async function loadResources() {
     const typeFilter = document.getElementById('res-filter-type')?.value;
 
     try {
-        let query = supabase
+        let query = supabaseClient
             .from('french_resources')
             .select('*')
             .order('created_at', { ascending: false });
@@ -1388,7 +1388,7 @@ async function loadHomework() {
     if (!grid) return;
 
     try {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('french_homework')
             .select('*')
             .order('date', { ascending: false });
@@ -1425,7 +1425,7 @@ async function loadVocabulary() {
     // vocabulary-grid check removed as it doesn't exist. We check specific lists below.
 
     try {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('french_vocabulary')
             .select('*')
             .order('created_at', { ascending: false });
@@ -1476,7 +1476,7 @@ async function loadClasswork() {
     if (!grid) return;
 
     try {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('french_classwork')
             .select('*')
             .order('created_at', { ascending: false });
@@ -1510,7 +1510,7 @@ async function loadGrammar() {
     if (!grid) return;
 
     try {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('french_grammar')
             .select('*')
             .order('created_at', { ascending: false });
@@ -1545,7 +1545,7 @@ async function loadGrammar() {
 
 async function showHomeworkDetail(id) {
     try {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('french_homework')
             .select('*')
             .eq('id', id)
@@ -1590,7 +1590,7 @@ console.log('Use openVocabDetail instead');
 
 async function showGrammarDetail(id) {
     try {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('french_grammar')
             .select('*')
             .eq('id', id)
@@ -1751,3 +1751,4 @@ window.openGrammarEditor = openGrammarEditor;
 window.openGrammarDetail = openGrammarDetail;
 window.deleteItem = deleteItem;
 window.loadResources = loadResources;
+
