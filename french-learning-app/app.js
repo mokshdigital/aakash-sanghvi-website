@@ -316,7 +316,7 @@ async function loadClasswork() {
         }
 
         grid.innerHTML = filteredData.map(item => `
-            <div class="note-card" onclick="openClassworkEditor('${item.id}')">
+            <div class="note-card" onclick="openClassworkDetail('${item.id}')">
                 <div class="note-header">
                     <span>${formatDate(item.date)}</span>
                     <span style="font-weight:600; color:var(--accent-blue-light);">${item.french_sections?.name || 'Uncategorized'}</span>
@@ -1493,40 +1493,6 @@ async function loadVocabulary() {
 
     } catch (error) {
         console.error('Error loading vocabulary:', error);
-    }
-}
-
-async function loadClasswork() {
-    const grid = document.getElementById('classwork-grid');
-    if (!grid) return;
-
-    try {
-        const { data, error } = await supabaseClient
-            .from('french_classwork')
-            .select('*')
-            .order('created_at', { ascending: false });
-
-        if (error) throw error;
-
-        if (!data || data.length === 0) {
-            grid.innerHTML = '<p class="empty-state card-wide">No classwork notes yet</p>';
-            return;
-        }
-
-        grid.innerHTML = data.map(item => `
-            <div class="note-card" onclick="openClassworkDetail('${item.id}')">
-                <div class="note-header">
-                    <span>${formatDate(item.date)}</span>
-                    ${item.tags && item.tags.length ? `<span>${item.tags[0]}</span>` : ''}
-                </div>
-                <div class="note-title">${extractTitle(item)}</div>
-                <p class="note-preview">${item.raw_notes ? truncate(item.raw_notes, 100) : 'No preview available'}</p>
-            </div>
-        `).join('');
-
-    } catch (error) {
-        console.error('Error loading classwork:', error);
-        grid.innerHTML = '<p class="empty-state">Error loading classwork</p>';
     }
 }
 
