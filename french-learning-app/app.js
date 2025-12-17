@@ -1109,11 +1109,12 @@ async function openVocabDetail(id) {
 
 function renderConjugations(conjugations, tense) {
     const container = document.getElementById('vocab-detail-verbs');
-    if (!conjugations) return;
+    if (!conjugations || !Array.isArray(conjugations)) {
+        container.innerHTML = '<p class="empty-state">No conjugations available</p>';
+        return;
+    }
 
     // Map strict tense names from buttons to data keys if needed
-    // Assuming data keys are 'present', 'passe_compose', 'future' etc.
-    // Tense mapping helper
     const mapTense = (t) => {
         if (t === 'past') return 'passe_compose';
         if (t === 'future') return 'futur_simple';
@@ -1123,25 +1124,41 @@ function renderConjugations(conjugations, tense) {
     const targetTense = mapTense(tense);
 
     container.innerHTML = conjugations.map(verbItem => {
-        const conjObj = verbItem.tenses ? verbItem.tenses[targetTense] : null;
+        // Access conjugation directly from verbItem (not under tenses property)
+        const verbTenseData = verbItem[targetTense];
 
-        // If structure is flat or different, adjust here. 
-        // Assuming: { verb: "Manger", tenses: { present: ["Je mange", ...], ... } }
+        // Skip this verb if the tense data is missing
+        if (!verbTenseData) {
+            return `
+                <div class="verb-card">
+                    <div class="verb-title">
+                        <span>${verbItem.verb || 'Unknown verb'}</span>
+                        <span style="font-size:0.8rem; font-weight:normal; color:var(--text-secondary);">(${verbItem.meaning || ''})</span>
+                    </div>
+                    <div class="conjugation-list">
+                        <div style="opacity: 0.6;">Conjugation not available for this tense</div>
+                    </div>
+                </div>
+            `;
+        }
 
         let listHtml = '';
-        if (Array.isArray(conjObj)) {
-            listHtml = conjObj.map(line => `<div>${line}</div>`).join('');
-        } else if (typeof conjObj === 'object') {
-            // maybe { je: "mange", tu: "manges" }
-            listHtml = Object.entries(conjObj).map(([pronoun, form]) => `<div><strong>${pronoun}</strong> ${form}</div>`).join('');
+        if (Array.isArray(verbTenseData)) {
+            // Handle array format: ["Je mange", "Tu manges", ...]
+            listHtml = verbTenseData.map(line => `<div>${line}</div>`).join('');
+        } else if (typeof verbTenseData === 'object') {
+            // Handle object format: { je: "mange", tu: "manges", ... }
+            listHtml = Object.entries(verbTenseData).map(([pronoun, form]) => {
+                return `<div><strong>${pronoun}</strong> ${form}</div>`;
+            }).join('');
         } else {
-            listHtml = 'No conjugation available';
+            listHtml = '<div style="opacity: 0.6;">Invalid conjugation format</div>';
         }
 
         return `
             <div class="verb-card">
                 <div class="verb-title">
-                    <span>${verbItem.verb}</span>
+                    <span>${verbItem.verb || 'Unknown verb'}</span>
                     <span style="font-size:0.8rem; font-weight:normal; color:var(--text-secondary);">(${verbItem.meaning || ''})</span>
                 </div>
                 <div class="conjugation-list">
