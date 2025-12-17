@@ -854,20 +854,6 @@ async function handleGrammarSubmit(e) {
 // =============================================
 
 function initVocabulary() {
-    // Sub-tabs
-    document.querySelectorAll('.sub-tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-            const vocabType = tab.dataset.vocab;
-            switchVocabTab(vocabType);
-        });
-    });
-
-    // Topic vocabulary form
-    const vocabForm = document.getElementById('vocab-topic-form');
-    if (vocabForm) vocabForm.addEventListener('submit', handleVocabTopicSubmit);
-
-    // Gender quiz button
-    const genQuizBtn = document.getElementById('generate-gender-quiz');
     // Topic Form
     const topicForm = document.getElementById('vocab-topic-form');
     if (topicForm) topicForm.addEventListener('submit', handleVocabSubmit);
@@ -876,16 +862,19 @@ function initVocabulary() {
     document.getElementById('generate-gender-quiz')?.addEventListener('click', generateGenderQuiz);
 
     // Verbs Form
-    document.querySelector('.verb-type-selector')?.addEventListener('click', (e) => {
-        if (e.target.classList.contains('verb-btn')) {
-            document.querySelectorAll('.verb-type-selector .verb-btn').forEach(b => b.classList.remove('active'));
-            e.target.classList.add('active');
-            currentVerbType = e.target.dataset.verb;
-        }
-    });
+    const verbSelector = document.querySelector('.verb-type-selector');
+    if (verbSelector) {
+        verbSelector.addEventListener('click', (e) => {
+            if (e.target.classList.contains('verb-btn')) {
+                document.querySelectorAll('.verb-type-selector .verb-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentVerbType = e.target.dataset.verb;
+            }
+        });
+    }
 
-    document.getElementById('generate-verbs')?.addEventListener('click', handleVerbsSubmit);
-
+    // Use generateVerbs (existing function)
+    document.getElementById('generate-verbs')?.addEventListener('click', generateVerbs);
 
     // Detail View Actions
     document.getElementById('btn-back-vocab')?.addEventListener('click', () => {
@@ -1433,8 +1422,7 @@ async function loadHomework() {
 }
 
 async function loadVocabulary() {
-    const grid = document.getElementById('vocabulary-grid'); // Assuming a grid for vocabulary
-    if (!grid) return;
+    // vocabulary-grid check removed as it doesn't exist. We check specific lists below.
 
     try {
         const { data, error } = await supabase
@@ -1470,7 +1458,7 @@ async function loadVocabulary() {
                 verbList.innerHTML = '<p class="empty-state">No verbs yet</p>';
             } else {
                 verbList.innerHTML = verbData.map(entry => `
-                    <div class="entry-item" onclick="showVocabDetail('${entry.id}')">
+                    <div class="entry-item" onclick="openVocabDetail('${entry.id}')">
                         <div class="entry-date">${entry.topic}</div>
                         <div class="entry-preview">${formatDate(entry.created_at)}</div>
                     </div>
