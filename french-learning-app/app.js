@@ -488,12 +488,38 @@ async function formatNotesWithAI() {
             notes: `Instructions: Format the user notes below. Return strictly valid JSON with the following structure: { "formatted_notes": "markdown string", "tags": ["tag1", "tag2"] }. Do not include any other text. \n\nUser Notes:\n${rawNotes}`
         });
 
-        document.getElementById('editor-formatted').value = aiResult.formatted_notes;
+        console.log('DEBUG: AI Full Result:', aiResult);
+
+        let parsedResult = aiResult;
+
+        // generated text might be nested or stringified
+        if (!aiResult.formatted_notes) {
+            // Check if it's stringified JSON in a 'reply' or 'content' field
+            const candidate = aiResult.reply || aiResult.content || aiResult.data;
+            if (typeof candidate === 'string') {
+                try {
+                    parsedResult = JSON.parse(candidate);
+                } catch (e) {
+                    console.warn('Failed to parse inner string JSON', e);
+                }
+            } else if (typeof candidate === 'object') {
+                parsedResult = candidate;
+            }
+        }
+
+        if (!parsedResult.formatted_notes) {
+            console.error('Missing formatted_notes in:', parsedResult);
+            showToast('AI returned unexpected format. Check console.', 'error');
+            document.getElementById('editor-formatted').value = JSON.stringify(parsedResult, null, 2); // Show raw for debugging
+            return;
+        }
+
+        document.getElementById('editor-formatted').value = parsedResult.formatted_notes;
 
         // Append new tags to existing ones
         const currentTagsStr = document.getElementById('editor-tags').value;
         const currentTags = currentTagsStr ? currentTagsStr.split(',').map(t => t.trim()) : [];
-        const newTags = aiResult.tags || [];
+        const newTags = parsedResult.tags || [];
         const mergedTags = [...new Set([...currentTags, ...newTags])]; // Unique
         document.getElementById('editor-tags').value = mergedTags.join(', ');
 
