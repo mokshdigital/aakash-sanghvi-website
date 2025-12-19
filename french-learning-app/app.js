@@ -485,7 +485,7 @@ async function formatNotesWithAI() {
     try {
         setLoading(btn, true);
         const aiResult = await callEdgeFunction('format-notes', {
-            notes: `Instructions: Format the user notes below. Return strictly valid JSON with the following structure: { "formatted_notes": "markdown string", "tags": ["tag1", "tag2"] }. Do not include any other text. \n\nUser Notes:\n${rawNotes}`
+            notes: `Instructions: You are an expert French Language Tutor. Your task is to format the user's study notes. Strict Rules: 1. If the content is NOT related to French language learning, ignore it and return an empty note with a 'off-topic' tag. 2. Return strictly valid JSON with the following structure: { "formatted_notes": "markdown string", "tags": ["tag1", "tag2"] }. Do not include any other text. \n\nUser Notes:\n${rawNotes}`
         });
 
         console.log('DEBUG: AI Full Result:', aiResult);
@@ -927,7 +927,7 @@ async function handleGrammarSubmit(e) {
         // Call AI to generate grammar notes
         const aiResult = await callEdgeFunction('generate-grammar', {
             topic,
-            instructions: "Please provide the grammar notes in JSON format."
+            instructions: "You are a French Language Tutor. Generate detailed French grammar notes for the provided topic. Strict Rules: 1. The content MUST be about French grammar. 2. If the topic is unrelated (e.g., baking, coding), return an error message in the notes saying 'Please ask a French grammar related question.'. 3. Provide the response in JSON format.{ \"notes\": \"markdown string\" }"
         });
 
         // Save to supabaseClient
@@ -1142,7 +1142,7 @@ async function handleMyVocabSubmit(e) {
         // Call AI to analyze the word
         const aiResult = await callEdgeFunction('analyze-word', {
             word,
-            instructions: "Please return the analysis in JSON format."
+            instructions: "You are a French Language Dictionary. Analyze this word/phrase. Strict Rules: 1. If the input is English, provide the French translation and analysis. 2. If the input is French, provide the English meaning and analysis. 3. If the word is off-topic/offensive, return null. 4. Return the analysis in JSON format."
         });
 
         // Save to database
@@ -1291,7 +1291,7 @@ async function handleVocabSubmit(e) {
         const payload = {
             topic,
             type: 'topic_vocabulary_enhanced', // Custom type to signal enhanced generation
-            instructions: "Generate 10 words with gender, meaning, and example sentences. Also write a context paragraph using these words. Also conjugate 3 relevant verbs in Present, Passe Compose, and Futur Simple. Please provide the response in JSON format."
+            instructions: "You are a French Language Teacher. Generate a vocabulary list for the given topic. Strict Rules: 1. Ensure all words are relevant to the topic in the context of French culture/daily life. 2. Generate 10 words with gender, meaning, and example sentences. 3. Write a context paragraph in French using these words. 4. Conjugate 3 relevant verbs. 5. Provide the response in JSON format."
         };
 
         const aiResult = await callEdgeFunction('generate-vocab', payload);
@@ -1539,7 +1539,7 @@ async function generateGenderQuiz() {
         const aiResult = await callEdgeFunction('generate-vocab', {
             topic: 'common nouns',
             vocabType: 'gender',
-            instructions: "Generate list in JSON format."
+            instructions: "You are a French Language Teacher. Generate a list of French nouns for a gender quiz. Provide the list in JSON format."
         });
 
         if (aiResult.words && aiResult.words.length > 0) {
@@ -1623,7 +1623,7 @@ async function generateVerbs() {
             topic: currentVerbType,
             vocabType: 'verb',
             verbType: currentVerbType,
-            instructions: "Generate verb list in JSON format."
+            instructions: "You are a French Language Teacher. Generate a list of French verbs and their conjugations. Provide the list in JSON format."
         });
 
         const { error } = await supabaseClient
@@ -2143,7 +2143,7 @@ async function handleQuizGenerate(e) {
         // Call AI
         const result = await callEdgeFunction('generate-quiz', {
             type,
-            instructions: "Please provide the quiz in JSON format."
+            instructions: "You are a French Language Examiner. Create a quiz to test French language skills. Strict Rules: 1. The quiz MUST be about French language (grammar, vocab, listening, etc.). 2. Provide the quiz in JSON format."
         });
         currentQuizData = result;
 
@@ -2336,7 +2336,7 @@ async function handleChatSubmit(e) {
         const result = await callEdgeFunction('chat', {
             message,
             history: chatHistory.slice(-10), // Keep last 10 messages for context
-            instructions: "Please reply in JSON format with a 'reply' field."
+            instructions: "You are a helpful French Language Tutor. Your goal is to help the user learn French. Strict Rules: 1. If the user asks a question about French, answer it. 2. If the user speaks in English, you can reply in English but encourage French. 3. If the user asks about something completely unrelated to learning French (e.g. 'How to build a car'), politely decline and remind them you are a French tutor. 4. Reply in JSON format with a 'reply' field."
         });
 
         // Add AI Message
