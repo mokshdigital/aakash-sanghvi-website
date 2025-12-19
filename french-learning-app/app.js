@@ -494,13 +494,18 @@ async function formatNotesWithAI() {
 
         // generated text might be nested or stringified
         if (!aiResult.formatted_notes) {
-            // Check if it's stringified JSON in a 'reply' or 'content' field
-            const candidate = aiResult.reply || aiResult.content || aiResult.data;
+            // Check if it's stringified JSON in a 'formatted', 'reply', or 'content' field
+            // Based on latest debug, it returns { "formatted": "stringified_json" }
+            const candidate = aiResult.formatted || aiResult.reply || aiResult.content || aiResult.data;
+
             if (typeof candidate === 'string') {
                 try {
+                    // It seems the Edge Function returns the JSON string inside 'formatted'
                     parsedResult = JSON.parse(candidate);
                 } catch (e) {
                     console.warn('Failed to parse inner string JSON', e);
+                    // If parsing fails, maybe the string IS the formatted note?
+                    // But for now, we assume it's the JSON structure we asked for.
                 }
             } else if (typeof candidate === 'object') {
                 parsedResult = candidate;
@@ -510,7 +515,8 @@ async function formatNotesWithAI() {
         if (!parsedResult.formatted_notes) {
             console.error('Missing formatted_notes in:', parsedResult);
             showToast('AI returned unexpected format. Check console.', 'error');
-            document.getElementById('editor-formatted').value = JSON.stringify(parsedResult, null, 2); // Show raw for debugging
+            // Show raw result to user to help debug further if needed
+            document.getElementById('editor-formatted').value = JSON.stringify(aiResult, null, 2);
             return;
         }
 
