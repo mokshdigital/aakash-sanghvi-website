@@ -927,7 +927,7 @@ async function handleGrammarSubmit(e) {
         // Call AI to generate grammar notes
         const aiResult = await callEdgeFunction('generate-grammar', {
             topic,
-            instructions: "You are a French Language Tutor. Generate detailed French grammar notes for the provided topic. Strict Rules: 1. The content MUST be about French grammar. 2. If the topic is unrelated (e.g., baking, coding), return an error message in the notes saying 'Please ask a French grammar related question.'. 3. Provide the response in JSON format.{ \"notes\": \"markdown string\" }"
+            instructions: "You are a dedicated French Language Tutor. Your Task: Generate detailed grammar notes strictly for the FRENCH LANGUAGE ONLY. Critical Rules: 1. Output MUST be ONLY in French and English (for explanations). 2. DO NOT include examples from Spanish, Italian, German, or any other language. I repeat: NO SPANISH, NO ITALIAN. 3. If the user asks about a general concept like '-IR verbs', assume they mean FRENCH -IR verbs only. 4. Provide the response in JSON format: { \"notes\": \"markdown string\" }"
         });
 
         // Save to supabaseClient
