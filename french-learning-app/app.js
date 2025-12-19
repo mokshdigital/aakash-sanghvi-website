@@ -197,7 +197,7 @@ function initClassworkUI() {
     // Top Level Buttons
     document.getElementById('btn-new-section')?.addEventListener('click', promptNewSection);
     // New Note Button (Library)
-    document.getElementById('btn-new-note')?.addEventListener('click', () => {
+    document.getElementById('btn-new-classwork')?.addEventListener('click', () => {
         openClassworkEditor(null);
     });
 
