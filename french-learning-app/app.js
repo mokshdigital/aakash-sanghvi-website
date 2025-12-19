@@ -484,7 +484,9 @@ async function formatNotesWithAI() {
 
     try {
         setLoading(btn, true);
-        const aiResult = await callEdgeFunction('format-notes', { notes: rawNotes });
+        const aiResult = await callEdgeFunction('format-notes', {
+            notes: `Instructions: Format the user notes below. Return strictly valid JSON with the following structure: { "formatted_notes": "markdown string", "tags": ["tag1", "tag2"] }. Do not include any other text. \n\nUser Notes:\n${rawNotes}`
+        });
 
         document.getElementById('editor-formatted').value = aiResult.formatted_notes;
 
@@ -891,7 +893,10 @@ async function handleGrammarSubmit(e) {
         setLoading(btn, true);
 
         // Call AI to generate grammar notes
-        const aiResult = await callEdgeFunction('generate-grammar', { topic });
+        const aiResult = await callEdgeFunction('generate-grammar', {
+            topic,
+            instructions: "Please provide the grammar notes in JSON format."
+        });
 
         // Save to supabaseClient
         const { data, error } = await supabaseClient
@@ -1103,7 +1108,10 @@ async function handleMyVocabSubmit(e) {
         setLoading(btn, true);
 
         // Call AI to analyze the word
-        const aiResult = await callEdgeFunction('analyze-word', { word });
+        const aiResult = await callEdgeFunction('analyze-word', {
+            word,
+            instructions: "Please return the analysis in JSON format."
+        });
 
         // Save to database
         const { data, error } = await supabaseClient
@@ -1251,7 +1259,7 @@ async function handleVocabSubmit(e) {
         const payload = {
             topic,
             type: 'topic_vocabulary_enhanced', // Custom type to signal enhanced generation
-            instructions: "Generate 10 words with gender, meaning, and example sentences. Also write a context paragraph using these words. Also conjugate 3 relevant verbs in Present, Passe Compose, and Futur Simple."
+            instructions: "Generate 10 words with gender, meaning, and example sentences. Also write a context paragraph using these words. Also conjugate 3 relevant verbs in Present, Passe Compose, and Futur Simple. Please provide the response in JSON format."
         };
 
         const aiResult = await callEdgeFunction('generate-vocab', payload);
@@ -1498,7 +1506,8 @@ async function generateGenderQuiz() {
 
         const aiResult = await callEdgeFunction('generate-vocab', {
             topic: 'common nouns',
-            vocabType: 'gender'
+            vocabType: 'gender',
+            instructions: "Generate list in JSON format."
         });
 
         if (aiResult.words && aiResult.words.length > 0) {
@@ -1581,7 +1590,8 @@ async function generateVerbs() {
         const aiResult = await callEdgeFunction('generate-vocab', {
             topic: currentVerbType,
             vocabType: 'verb',
-            verbType: currentVerbType
+            verbType: currentVerbType,
+            instructions: "Generate verb list in JSON format."
         });
 
         const { error } = await supabaseClient
@@ -2099,7 +2109,10 @@ async function handleQuizGenerate(e) {
         document.getElementById('quiz-display').classList.add('hidden');
 
         // Call AI
-        const result = await callEdgeFunction('generate-quiz', { type });
+        const result = await callEdgeFunction('generate-quiz', {
+            type,
+            instructions: "Please provide the quiz in JSON format."
+        });
         currentQuizData = result;
 
         renderQuiz(result, type);
@@ -2290,7 +2303,8 @@ async function handleChatSubmit(e) {
     try {
         const result = await callEdgeFunction('chat', {
             message,
-            history: chatHistory.slice(-10) // Keep last 10 messages for context
+            history: chatHistory.slice(-10), // Keep last 10 messages for context
+            instructions: "Please reply in JSON format with a 'reply' field."
         });
 
         // Add AI Message
