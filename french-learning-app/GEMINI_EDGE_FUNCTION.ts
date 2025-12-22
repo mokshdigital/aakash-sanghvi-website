@@ -1,4 +1,4 @@
-
+// @ts-nocheck - This file runs in Supabase Edge Functions (Deno runtime), not Node.js
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { GoogleGenerativeAI } from "https://esm.sh/@google/generative-ai@0.1.3";
 
@@ -48,20 +48,46 @@ serve(async (req) => {
             type,
             message,
             history,
-            vocabType
+            vocabType,
+            images // NEW: Array of base64 data URLs for vision
         } = body;
 
-        console.log(`Received action: ${action}`);
+        console.log(`Received action: ${action}, images: ${images?.length || 0}`);
 
         // 4. Construct Prompt
-        let prompt = "";
+        let prompt: any = "";
 
         // Base System Instruction (can be reinforced here)
         const baseInstruction = "You are an expert French Language Tutor. STRICTLY output valid JSON.";
 
         switch (action) {
             case 'format-notes':
-                prompt = `${baseInstruction}\n${instructions}\n\nUser Notes:\n${notes}`;
+                // Check if we have images for vision processing
+                if (images && images.length > 0) {
+                    // MULTIMODAL: Create content parts with images
+                    const parts: any[] = [
+                        { text: `${baseInstruction}\n${notes}` }
+                    ];
+
+                    // Add each image as an inline data part
+                    for (const imageDataUrl of images) {
+                        // Parse data URL: data:image/jpeg;base64,/9j/4AAQ...
+                        const match = imageDataUrl.match(/^data:(.+);base64,(.+)$/);
+                        if (match) {
+                            parts.push({
+                                inlineData: {
+                                    mimeType: match[1],
+                                    data: match[2]
+                                }
+                            });
+                        }
+                    }
+
+                    prompt = parts;
+                } else {
+                    // TEXT ONLY: Standard prompt
+                    prompt = `${baseInstruction}\n${notes}`;
+                }
                 break;
 
             case 'generate-grammar':

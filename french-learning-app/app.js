@@ -26,6 +26,12 @@ let genderQuizScore = 0;
 // Classwork Specific State
 let editingClassworkId = null;
 let sectionsList = []; // Array of section objects {id, name}
+let cwSortColumn = 'date'; // Current sort column: 'date', 'section', 'title'
+let cwSortDirection = 'desc'; // 'asc' or 'desc'
+
+// Image Upload State
+let cwUploadedImages = []; // Array of {file, url, base64, uploading}
+const MAX_IMAGES = 5;
 
 // =============================================
 // Initialize App
@@ -206,6 +212,17 @@ function initClassworkUI() {
     document.getElementById('cw-filter-section')?.addEventListener('change', loadClasswork);
     document.getElementById('cw-filter-date')?.addEventListener('change', loadClasswork);
 
+    // Clear Filters Button
+    document.getElementById('btn-clear-cw-filters')?.addEventListener('click', clearClassworkFilters);
+
+    // Table Header Sorting
+    document.querySelectorAll('.cw-table th.sortable').forEach(th => {
+        th.addEventListener('click', () => {
+            const column = th.dataset.sort;
+            sortClassworkBy(column);
+        });
+    });
+
     // Editor Actions
     document.getElementById('btn-back-library')?.addEventListener('click', () => {
         if (editingClassworkId) {
@@ -233,6 +250,266 @@ function initClassworkUI() {
     document.getElementById('btn-save-note')?.addEventListener('click', saveClassworkNote);
     // document.getElementById('btn-delete-note')?.addEventListener('click', () => deleteItem('french_classwork', editingClassworkId, loadClasswork));
     document.getElementById('btn-ai-format')?.addEventListener('click', formatNotesWithAI);
+
+    // Image Upload Handlers
+    initImageUpload();
+}
+
+// Initialize image upload event handlers
+function initImageUpload() {
+    const uploadZone = document.getElementById('image-upload-zone');
+    const fileInput = document.getElementById('image-file-input');
+    const rawNotesTextarea = document.getElementById('editor-raw');
+
+    if (!uploadZone || !fileInput) return;
+
+    // Click to open file picker
+    uploadZone.addEventListener('click', () => {
+        if (!uploadZone.classList.contains('disabled')) {
+            fileInput.click();
+        }
+    });
+
+    // File input change
+    fileInput.addEventListener('change', (e) => {
+        handleImageFiles(e.target.files);
+        fileInput.value = ''; // Reset for re-selection
+    });
+
+    // Drag and drop
+    uploadZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadZone.classList.add('dragover');
+    });
+
+    uploadZone.addEventListener('dragleave', () => {
+        uploadZone.classList.remove('dragover');
+    });
+
+    uploadZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadZone.classList.remove('dragover');
+        handleImageFiles(e.dataTransfer.files);
+    });
+
+    // Mutual exclusivity: disable upload zone when typing
+    rawNotesTextarea?.addEventListener('input', () => {
+        const hasText = rawNotesTextarea.value.trim().length > 0;
+        const hasImages = cwUploadedImages.length > 0;
+
+        if (hasText && !hasImages) {
+            uploadZone.classList.add('disabled');
+        } else if (!hasText && !hasImages) {
+            uploadZone.classList.remove('disabled');
+        }
+    });
+}
+
+// Handle image file selection
+async function handleImageFiles(files) {
+    const validFiles = Array.from(files).filter(f => f.type.startsWith('image/'));
+
+    if (validFiles.length === 0) {
+        showToast('Please select valid image files', 'error');
+        return;
+    }
+
+    const remaining = MAX_IMAGES - cwUploadedImages.length;
+    if (remaining <= 0) {
+        showToast(`Maximum ${MAX_IMAGES} images allowed`, 'error');
+        return;
+    }
+
+    const toProcess = validFiles.slice(0, remaining);
+
+    if (validFiles.length > remaining) {
+        showToast(`Only ${remaining} more image(s) allowed. Added first ${remaining}.`, 'error');
+    }
+
+    // Disable raw notes textarea when images are added
+    const rawNotesTextarea = document.getElementById('editor-raw');
+    if (rawNotesTextarea) {
+        rawNotesTextarea.disabled = true;
+        rawNotesTextarea.placeholder = 'Images selected — text input disabled';
+    }
+
+    // Process each image
+    for (const file of toProcess) {
+        await processAndUploadImage(file);
+    }
+}
+
+// Process single image: convert to base64 and upload to storage
+async function processAndUploadImage(file) {
+    const uploadStatus = document.getElementById('upload-status');
+    const statusText = document.getElementById('upload-status-text');
+
+    // Add to array with uploading state
+    const imageObj = {
+        file,
+        base64: null,
+        url: null,
+        uploading: true
+    };
+    cwUploadedImages.push(imageObj);
+    renderImageThumbnails();
+
+    // Show upload status
+    uploadStatus?.classList.remove('hidden');
+    statusText.textContent = `Uploading ${cwUploadedImages.length} image(s)...`;
+
+    try {
+        // Convert to base64 for AI processing
+        imageObj.base64 = await fileToBase64(file);
+
+        // Upload to Supabase Storage
+        const fileName = `cw_${Date.now()}_${Math.random().toString(36).substr(2, 9)}.${file.name.split('.').pop()}`;
+
+        const { data, error } = await supabaseClient.storage
+            .from('french-app-images')
+            .upload(fileName, file, {
+                cacheControl: '3600',
+                upsert: false
+            });
+
+        if (error) throw error;
+
+        // Get public URL
+        const { data: urlData } = supabaseClient.storage
+            .from('french-app-images')
+            .getPublicUrl(fileName);
+
+        imageObj.url = urlData.publicUrl;
+        imageObj.uploading = false;
+
+        renderImageThumbnails();
+
+    } catch (err) {
+        console.error('Image upload error:', err);
+        showToast('Failed to upload image', 'error');
+        // Remove failed image
+        cwUploadedImages = cwUploadedImages.filter(img => img !== imageObj);
+        renderImageThumbnails();
+    }
+
+    // Hide upload status if all done
+    const stillUploading = cwUploadedImages.some(img => img.uploading);
+    if (!stillUploading) {
+        uploadStatus?.classList.add('hidden');
+    }
+}
+
+// Convert file to base64
+function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+}
+
+// Remove uploaded image
+function removeUploadedImage(index) {
+    const image = cwUploadedImages[index];
+
+    // Delete from storage if uploaded
+    if (image.url) {
+        const fileName = image.url.split('/').pop();
+        supabaseClient.storage
+            .from('french-app-images')
+            .remove([fileName])
+            .catch(err => console.warn('Failed to delete image from storage:', err));
+    }
+
+    cwUploadedImages.splice(index, 1);
+    renderImageThumbnails();
+
+    // Re-enable raw notes if no images
+    if (cwUploadedImages.length === 0) {
+        const rawNotesTextarea = document.getElementById('editor-raw');
+        if (rawNotesTextarea) {
+            rawNotesTextarea.disabled = false;
+            rawNotesTextarea.placeholder = 'Type your rough notes here...';
+        }
+        document.getElementById('image-upload-zone')?.classList.remove('disabled');
+    }
+}
+
+// Render image thumbnails
+function renderImageThumbnails() {
+    const container = document.getElementById('image-thumbnails');
+    if (!container) return;
+
+    if (cwUploadedImages.length === 0) {
+        container.classList.add('hidden');
+        container.innerHTML = '';
+        return;
+    }
+
+    container.classList.remove('hidden');
+    container.innerHTML = cwUploadedImages.map((img, index) => `
+        <div class="image-thumb ${img.uploading ? 'uploading' : ''}">
+            <img src="${img.base64 || img.url}" alt="Uploaded image ${index + 1}">
+            ${!img.uploading ? `<button class="remove-btn" onclick="removeUploadedImage(${index})">×</button>` : ''}
+        </div>
+    `).join('');
+}
+
+// Reset image upload state (called when opening new editor)
+function resetImageUpload() {
+    cwUploadedImages = [];
+    renderImageThumbnails();
+
+    const rawNotesTextarea = document.getElementById('editor-raw');
+    if (rawNotesTextarea) {
+        rawNotesTextarea.disabled = false;
+        rawNotesTextarea.placeholder = 'Type your rough notes here...';
+    }
+
+    document.getElementById('upload-status')?.classList.add('hidden');
+    document.getElementById('image-upload-zone')?.classList.remove('disabled');
+}
+
+// Sort classwork by column
+function sortClassworkBy(column) {
+    if (cwSortColumn === column) {
+        // Toggle direction
+        cwSortDirection = cwSortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+        // New column, default to descending for date, ascending for others
+        cwSortColumn = column;
+        cwSortDirection = column === 'date' ? 'desc' : 'asc';
+    }
+
+    // Update header UI
+    updateSortHeaderUI();
+    loadClasswork();
+}
+
+// Update table header sort indicators
+function updateSortHeaderUI() {
+    document.querySelectorAll('.cw-table th.sortable').forEach(th => {
+        th.classList.remove('sorted-asc', 'sorted-desc');
+        const icon = th.querySelector('.sort-icon');
+        if (icon) icon.textContent = '';
+
+        if (th.dataset.sort === cwSortColumn) {
+            th.classList.add(cwSortDirection === 'asc' ? 'sorted-asc' : 'sorted-desc');
+            if (icon) icon.textContent = cwSortDirection === 'asc' ? '▲' : '▼';
+        }
+    });
+}
+
+// Clear all classwork filters
+function clearClassworkFilters() {
+    document.getElementById('cw-search').value = '';
+    document.getElementById('cw-filter-section').value = '';
+    document.getElementById('cw-filter-date').value = '';
+    cwSortColumn = 'date';
+    cwSortDirection = 'desc';
+    updateSortHeaderUI();
+    loadClasswork();
 }
 
 function toggleClassworkView(viewName) {
@@ -316,7 +593,7 @@ async function promptNewSection() {
 }
 
 async function loadClasswork() {
-    const grid = document.getElementById('classwork-grid');
+    const tbody = document.getElementById('classwork-tbody');
     // Ensure we are in list view
     if (document.getElementById('classwork-library-view').classList.contains('hidden')) return;
 
@@ -331,8 +608,7 @@ async function loadClasswork() {
             .select(`
                 *,
                 french_sections(name)
-            `)
-            .order('date', { ascending: false });
+            `);
 
         if (sectionId) {
             query = query.eq('section_id', sectionId);
@@ -346,42 +622,76 @@ async function loadClasswork() {
 
         if (error) throw error;
 
-        let filteredData = data;
+        let filteredData = data || [];
 
         // Client-side search for more flexibility on tags/content
         if (searchQuery) {
-            filteredData = data.filter(item => {
+            filteredData = filteredData.filter(item => {
                 const textMatch = (item.raw_notes || '').toLowerCase().includes(searchQuery) ||
                     (item.formatted_notes || '').toLowerCase().includes(searchQuery);
                 const tagMatch = (item.tags || []).some(t => t.toLowerCase().includes(searchQuery));
-                return textMatch || tagMatch;
+                const sectionMatch = (item.french_sections?.name || '').toLowerCase().includes(searchQuery);
+                return textMatch || tagMatch || sectionMatch;
             });
         }
 
-        if (!filteredData || filteredData.length === 0) {
-            grid.innerHTML = '<p class="empty-state card-wide">No classwork found matching criteria.</p>';
+        // Client-side sorting
+        filteredData.sort((a, b) => {
+            let valA, valB;
+
+            switch (cwSortColumn) {
+                case 'date':
+                    valA = a.date || '';
+                    valB = b.date || '';
+                    break;
+                case 'section':
+                    valA = (a.french_sections?.name || 'zzz').toLowerCase();
+                    valB = (b.french_sections?.name || 'zzz').toLowerCase();
+                    break;
+                case 'title':
+                    valA = extractTitle(a).toLowerCase();
+                    valB = extractTitle(b).toLowerCase();
+                    break;
+                default:
+                    valA = a.date || '';
+                    valB = b.date || '';
+            }
+
+            if (valA < valB) return cwSortDirection === 'asc' ? -1 : 1;
+            if (valA > valB) return cwSortDirection === 'asc' ? 1 : -1;
+            return 0;
+        });
+
+        if (filteredData.length === 0) {
+            tbody.innerHTML = `
+                <tr class="empty-row">
+                    <td colspan="4">No classwork found matching your criteria.</td>
+                </tr>
+            `;
             return;
         }
 
-        grid.innerHTML = filteredData.map(item => `
-            <div class="note-card" onclick="openClassworkDetail('${item.id}')">
-                <div class="note-header">
-                    <span>${formatDate(item.date)}</span>
-                    <span style="font-weight:600; color:var(--accent-blue-light);">${item.french_sections?.name || 'Uncategorized'}</span>
-                </div>
-                <div class="note-title">${extractTitle(item)}</div>
-                <div class="note-preview">${stripHtml(item.formatted_notes || item.raw_notes || '')}</div>
-                ${item.tags && item.tags.length > 0 ? `
-                    <div class="note-tags">
-                        ${item.tags.slice(0, 3).map(tag => `<span class="note-tag">${tag}</span>`).join('')}
-                    </div>
-                ` : ''}
-            </div>
+        tbody.innerHTML = filteredData.map(item => `
+            <tr onclick="openClassworkDetail('${item.id}')">
+                <td>${formatDate(item.date)}</td>
+                <td>${item.french_sections?.name || 'Uncategorized'}</td>
+                <td>${extractTitle(item)}</td>
+                <td>
+                    ${item.tags && item.tags.length > 0
+                ? `<div class="cw-tags">${item.tags.slice(0, 3).map(tag => `<span class="cw-tag">${tag}</span>`).join('')}</div>`
+                : '<span style="color: var(--text-muted);">—</span>'
+            }
+                </td>
+            </tr>
         `).join('');
 
     } catch (err) {
         console.error('Error loading classwork:', err);
-        grid.innerHTML = '<p class="empty-state">Error loading notes. check console.</p>';
+        tbody.innerHTML = `
+            <tr class="empty-row">
+                <td colspan="4">Error loading notes. Check console.</td>
+            </tr>
+        `;
     }
 }
 
@@ -395,6 +705,9 @@ async function openClassworkEditor(id) {
     document.getElementById('editor-tags').value = '';
     document.getElementById('editor-raw').value = '';
     document.getElementById('editor-formatted').value = '';
+
+    // Reset image upload state
+    resetImageUpload();
 
     // Status update
     const statusElem = document.getElementById('editor-status');
@@ -476,17 +789,73 @@ async function openClassworkDetail(id) {
 async function formatNotesWithAI() {
     const rawNotes = document.getElementById('editor-raw').value;
     const btn = document.getElementById('btn-ai-format');
+    const hasImages = cwUploadedImages.length > 0 && cwUploadedImages.some(img => !img.uploading);
+    const hasText = rawNotes.trim().length > 0;
 
-    if (!rawNotes) {
-        showToast('Please enter some raw notes first.', 'error');
+    // Validation: must have either images OR text, not both, not neither
+    if (!hasImages && !hasText) {
+        showToast('Please add images or enter text notes first.', 'error');
         return;
     }
 
     try {
         setLoading(btn, true);
-        const aiResult = await callEdgeFunction('format-notes', {
-            notes: `Instructions: You are an expert French Language Tutor. Your task is to format the user's study notes. Strict Rules: 1. If the content is NOT related to French language learning, ignore it and return an empty note with a 'off-topic' tag. 2. Return strictly valid JSON with the following structure: { "formatted_notes": "markdown string", "tags": ["tag1", "tag2"] }. Do not include any other text. \n\nUser Notes:\n${rawNotes}`
-        });
+
+        let aiResult;
+
+        if (hasImages) {
+            // IMAGE MODE - Send base64 images for vision processing
+            btn.innerHTML = '<span class="spinner"></span> Analyzing images...';
+
+            const imageBase64s = cwUploadedImages
+                .filter(img => !img.uploading && img.base64)
+                .map(img => img.base64);
+
+            const imagePrompt = `You are an expert French Language Tutor. You are analyzing handwritten notes or textbook images about French language learning.
+
+Your Task:
+1. Parse and extract all text from the images
+2. Identify the French learning topic(s) covered
+3. Refine and improve the notes with proper formatting
+4. Add helpful examples where appropriate
+5. For any French translations, use ONLY English as the translation language
+
+Return strictly valid JSON with this structure:
+{
+    "formatted_notes": "# Title\\n\\nWell-organized markdown notes with examples and explanations",
+    "tags": ["relevant", "topic", "tags"]
+}`;
+
+            aiResult = await callEdgeFunction('format-notes', {
+                notes: imagePrompt,
+                images: imageBase64s
+            });
+        } else {
+            // TEXT MODE - Original behavior with enhanced prompt
+            btn.innerHTML = '<span class="spinner"></span> Formatting notes...';
+
+            const textPrompt = `You are an expert French Language Tutor. Your task is to refine and improve the user's French study notes.
+
+Your Task:
+1. Refine and improve the structure and clarity of the notes
+2. Add helpful examples where appropriate
+3. Ensure proper French accents and grammar
+4. For any translations, use ONLY English as the translation language
+5. If the content is NOT related to French language learning, return a note with 'off-topic' tag
+
+Return strictly valid JSON with this structure:
+{
+    "formatted_notes": "# Title\\n\\nWell-organized markdown notes",
+    "tags": ["relevant", "topic", "tags"]
+}
+
+User Notes:
+${rawNotes}`;
+
+            aiResult = await callEdgeFunction('format-notes', {
+                notes: textPrompt
+            });
+        }
 
         console.log('DEBUG: AI Full Result:', aiResult);
 
@@ -522,6 +891,12 @@ async function formatNotesWithAI() {
 
         document.getElementById('editor-formatted').value = parsedResult.formatted_notes;
 
+        // If using images, also populate raw notes with extracted text info
+        if (hasImages) {
+            document.getElementById('editor-raw').value = '[Notes extracted from uploaded images]';
+            document.getElementById('editor-raw').disabled = true;
+        }
+
         // Append new tags to existing ones
         const currentTagsStr = document.getElementById('editor-tags').value;
         const currentTags = currentTagsStr ? currentTagsStr.split(',').map(t => t.trim()) : [];
@@ -536,6 +911,7 @@ async function formatNotesWithAI() {
         showToast('AI Formatting failed', 'error');
     } finally {
         setLoading(btn, false);
+        btn.innerHTML = '✨ Format with AI';
     }
 }
 
@@ -549,7 +925,14 @@ async function saveClassworkNote() {
 
     const tags = tagsStr.split(',').map(t => t.trim()).filter(t => t.length > 0);
 
-    if (!rawNotes) {
+    // Get image URLs from uploaded images
+    const imageUrls = cwUploadedImages
+        .filter(img => !img.uploading && img.url)
+        .map(img => img.url);
+
+    // Validation: need either raw notes OR images (for image-based notes)
+    const hasContent = rawNotes.trim().length > 0 || imageUrls.length > 0;
+    if (!hasContent) {
         showToast('Note content cannot be empty', 'error');
         return;
     }
@@ -562,7 +945,8 @@ async function saveClassworkNote() {
             section_id: sectionId,
             tags,
             raw_notes: rawNotes,
-            formatted_notes: formattedNotes
+            formatted_notes: formattedNotes,
+            image_urls: imageUrls
         };
 
         let result;

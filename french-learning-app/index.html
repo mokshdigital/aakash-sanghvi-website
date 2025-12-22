@@ -191,14 +191,43 @@
                             <!-- Populated dynamically -->
                         </select>
                         <input type="date" id="cw-filter-date">
+                        <button id="btn-clear-cw-filters" class="btn btn-text btn-sm">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                            Clear
+                        </button>
                     </div>
 
                     <!-- Layout: Library List & Editor (Swappable) -->
                     <div id="classwork-view-container">
-                        <!-- List View -->
+                        <!-- Table View -->
                         <div id="classwork-library-view">
-                            <div id="classwork-grid" class="notes-grid">
-                                <!-- Notes populated here -->
+                            <div class="cw-table-wrapper">
+                                <table class="cw-table" id="classwork-table">
+                                    <thead>
+                                        <tr>
+                                            <th data-sort="date" class="sortable sorted-desc">
+                                                Date
+                                                <span class="sort-icon">▼</span>
+                                            </th>
+                                            <th data-sort="section" class="sortable">
+                                                Section
+                                                <span class="sort-icon"></span>
+                                            </th>
+                                            <th data-sort="title" class="sortable">
+                                                Title
+                                                <span class="sort-icon"></span>
+                                            </th>
+                                            <th>Tags</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="classwork-tbody">
+                                        <!-- Rows populated dynamically -->
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
 
@@ -281,6 +310,35 @@
 
                                 <div class="editor-content-split">
                                     <div class="editor-pane">
+                                        <!-- Image Upload Zone -->
+                                        <div class="image-upload-section">
+                                            <label>Upload Images (up to 5) <span class="text-muted">— OR type notes
+                                                    below</span></label>
+                                            <div id="image-upload-zone" class="image-upload-zone">
+                                                <input type="file" id="image-file-input" accept="image/*" multiple
+                                                    hidden>
+                                                <div class="upload-placeholder">
+                                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="1.5">
+                                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                                                        <circle cx="8.5" cy="8.5" r="1.5" />
+                                                        <polyline points="21,15 16,10 5,21" />
+                                                    </svg>
+                                                    <p>Drag & drop images here or <span class="upload-link">click to
+                                                            browse</span></p>
+                                                    <p class="text-muted">Supports JPG, PNG, HEIC • Max 5 images</p>
+                                                </div>
+                                            </div>
+                                            <div id="image-thumbnails" class="image-thumbnails hidden">
+                                                <!-- Thumbnails inserted dynamically -->
+                                            </div>
+                                            <div id="upload-status" class="upload-status hidden">
+                                                <span class="spinner-small"></span>
+                                                <span id="upload-status-text">Uploading...</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Raw Notes -->
                                         <label>Raw Notes (Input)</label>
                                         <textarea id="editor-raw"
                                             placeholder="Type your rough notes here..."></textarea>
