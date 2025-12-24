@@ -1,4 +1,4 @@
-Step Id: 165
+Step Id: 37
 # Task Completion Log - AI Formatting Fix
 
 ## Objective
@@ -23,3 +23,9 @@ Resolve the "encountered an improper format stop reason" error when using the "F
 
 ## Outcome
 The `app.js` file has been updated with robust prompts that satisfy OpenAI's requirements for JSON mode. The application should now correctly format notes and perform other AI tasks without triggering the "improper format" error.
+
+## Recent Fixes (2025-12-23)
+### Issue: "My Vocabulary" Gemini Error
+**Symptom:** "Invalid JSON payload received. Unknown name 'responseMimeType' at 'generation_config'".
+**Cause:** The Edge Function was importing an outdated version of the Google Generative AI SDK (`0.1.3`) which did not support the `responseMimeType` parameter used for JSON mode.
+**Fix:** Updated `GEMINI_EDGE_FUNCTION.ts` to import `@google/generative-ai@0.12.0` and redeployed the Edge Function `french-ai`.
