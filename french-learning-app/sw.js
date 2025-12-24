@@ -1,8 +1,8 @@
-const CACHE_NAME = 'french-app-v1';
+const CACHE_NAME = 'french-app-v2';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',
-    './style.css',
+    './styles.css',
     './app.js',
     './manifest.json'
 ];
