@@ -1678,7 +1678,7 @@ async function handleVocabSubmit(e) {
         const payload = {
             topic,
             type: 'topic_vocabulary_enhanced', // Custom type to signal enhanced generation
-            instructions: "You are a French Language Teacher. Generate a vocabulary list for the given topic. Strict Rules: 1. Ensure all words are relevant to the topic in the context of French culture/daily life. 2. Generate 10 words with gender, meaning, and example sentences. 3. Write a context paragraph in French using these words. 4. Conjugate 3 relevant verbs. 5. Provide the response in JSON format."
+            instructions: "You are a French Language Teacher. Generate comprehensive vocabulary content for the given topic. Return JSON with EXACTLY these keys: 1) 'paragraph' (a 4-5 sentence contextual summary in French using vocabulary from the topic), 2) 'paragraph_english' (English translation of the paragraph), 3) 'vocabulary' (array of EXACTLY 10 objects, each with: 'word' (French), 'meaning' (English), 'gender' (one of: 'Masculine', 'Feminine', 'Masculine Plural', 'Feminine Plural', or 'N/A' for verbs), 'example' (French sentence using the word)), 4) 'conjugations' (array of 3 topic-related verbs, each with: 'verb' (infinitive), 'meaning' (English), 'present' (object with je/tu/il/nous/vous/ils conjugations), 'passe_compose' (same structure), 'futur_simple' (same structure))."
         };
 
         const aiResult = await callEdgeFunction('generate-vocab', payload);
