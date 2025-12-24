@@ -23,10 +23,7 @@ serve(async (req) => {
         const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
         // Use the latest stable model or the one requested (gemini-1.5-pro)
         const model = genAI.getGenerativeModel({
-            model: "gemini-1.5-pro-latest",
-            generationConfig: {
-                responseMimeType: "application/json"
-            }
+            model: "gemini-1.5-pro-latest"
         });
 
         // 2. Determine Request Type from URL
