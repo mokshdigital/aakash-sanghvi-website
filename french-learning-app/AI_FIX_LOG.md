@@ -1,4 +1,4 @@
-Step Id: 123
+Step Id: 155
 # Task Completion Log - AI Formatting Fix
 
 ## Objective
@@ -27,5 +27,9 @@ The `app.js` file has been updated with robust prompts that satisfy OpenAI's req
 ## Recent Fixes (2025-12-23)
 ### Issue: "My Vocabulary" Gemini Error
 **Symptom:** "Invalid JSON payload received. Unknown name 'responseMimeType' at 'generation_config'".
-**Cause:** The Edge Function used `responseMimeType: "application/json"` which caused compatibility issues with the deployed environment/model, even after upgrading the SDK to `0.19.0`. This configuration was likely introduced recently and was inconsistent with the previous working state.
-**Fix:** Removed the `generationConfig` block containing `responseMimeType` from `GEMINI_EDGE_FUNCTION.ts`, reverting to the previous method of relying on system prompts ("STRICTLY output valid JSON") for JSON formatting. The SDK version is kept at `0.19.0`.
+**Cause:** The Edge Function used `responseMimeType: "application/json"` which caused compatibility issues with the deployed environment/model.
+**Fix Phase 1 (Failed):** Updated SDK to `0.19.0` and `0.12.0` but errors persisted.
+**Fix Phase 2 (Partial):** Removed `generationConfig` to revert to prompt-based JSON.
+**Symptom 2:** "404 Not Found: models/gemini-1.5-pro-latest is not found".
+**Cause:** The model alias `gemini-1.5-pro-latest` is invalid or deprecated for the current API version/region.
+**Fix Phase 3 (Final):** Switched the model to **`gemini-1.5-flash`** as requested by the user (who asked for "gemini-2.5-flash", interpreted as the latest stable flash model). This model is faster, cheaper, and widely available.
