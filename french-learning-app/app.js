@@ -1529,7 +1529,7 @@ async function handleMyVocabSubmit(e) {
         // Call AI to analyze the word
         const aiResult = await callEdgeFunction('analyze-word', {
             word,
-            instructions: "You are a French Language Dictionary. Analyze this word/phrase. Strict Rules: 1. If the input is English, provide the French translation and analysis. 2. If the input is French, provide the English meaning and analysis. 3. If the word is off-topic/offensive, return null. 4. Return the analysis in JSON format."
+            instructions: "You are a French Language Dictionary. Analyze this word/phrase. Strict Rules: 1. If the input is English, provide the French translation and analysis. 2. If the input is French, provide the English meaning and analysis. 3. If the word is off-topic/offensive, return null. 4. Return the analysis in JSON format with these exact keys: 'french_word', 'gender' (e.g. 'Masculine'), 'english_meaning', 'example_sentences' (array of strings)."
         });
 
         // Save to database
@@ -2530,7 +2530,7 @@ async function handleQuizGenerate(e) {
         // Call AI
         const result = await callEdgeFunction('generate-quiz', {
             type,
-            instructions: "You are a French Language Examiner. Create a quiz to test French language skills. Strict Rules: 1. The quiz MUST be about French language (grammar, vocab, listening, etc.). 2. Provide the quiz in JSON format."
+            instructions: "You are a French Language Examiner. Create a quiz to test French language skills. Strict Rules: 1. The quiz MUST be about French language. 2. Provide the quiz in JSON format with keys: 'title', 'questions' (array of objects with 'question', 'options' (if MCQ), 'answer')."
         });
         currentQuizData = result;
 
