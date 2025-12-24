@@ -1,6 +1,6 @@
 // @ts-nocheck - This file runs in Supabase Edge Functions (Deno runtime), not Node.js
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { GoogleGenerativeAI } from "https://esm.sh/@google/generative-ai@0.12.0";
+import { GoogleGenerativeAI } from "https://esm.sh/@google/generative-ai@0.19.0";
 
 const corsHeaders = {
     'Access-Control-Allow-Origin': '*',

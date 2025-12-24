@@ -1,4 +1,4 @@
-Step Id: 37
+Step Id: 63
 # Task Completion Log - AI Formatting Fix
 
 ## Objective
@@ -27,5 +27,5 @@ The `app.js` file has been updated with robust prompts that satisfy OpenAI's req
 ## Recent Fixes (2025-12-23)
 ### Issue: "My Vocabulary" Gemini Error
 **Symptom:** "Invalid JSON payload received. Unknown name 'responseMimeType' at 'generation_config'".
-**Cause:** The Edge Function was importing an outdated version of the Google Generative AI SDK (`0.1.3`) which did not support the `responseMimeType` parameter used for JSON mode.
-**Fix:** Updated `GEMINI_EDGE_FUNCTION.ts` to import `@google/generative-ai@0.12.0` and redeployed the Edge Function `french-ai`.
+**Cause:** The Edge Function was importing an outdated version of the Google Generative AI SDK (`0.12.0`) which did not support the `responseMimeType` parameter used for JSON mode. The initial update to `0.12.0` was insufficient.
+**Fix:** Updated `GEMINI_EDGE_FUNCTION.ts` to import `@google/generative-ai@0.19.0` and redeployed the Edge Function `french-ai`.
