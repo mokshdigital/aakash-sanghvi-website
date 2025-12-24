@@ -1529,7 +1529,7 @@ async function handleMyVocabSubmit(e) {
         // Call AI to analyze the word
         const aiResult = await callEdgeFunction('analyze-word', {
             word,
-            instructions: "You are a French Language Dictionary. Analyze this word/phrase. Strict Rules: 1. If the input is English, provide the French translation and analysis. 2. If the input is French, provide the English meaning and analysis. 3. If the word is off-topic/offensive, return null. 4. Return the analysis in JSON format with these exact keys: 'french_word' (string), 'gender' (one of: 'm', 'f', or 'n/a'), 'english_meaning' (string), 'example_sentences' (array of objects, each with 'french' and 'english' string keys)."
+            instructions: "You are a French Language Dictionary. Analyze this word/phrase. Strict Rules: 1. If the input is English, provide the French translation and analysis. 2. If the input is French, provide the English meaning and analysis. 3. If the word is off-topic/offensive, return null. 4. Return the analysis in JSON format with these exact keys: 'french_word' (string), 'gender' (one of: 'm', 'f', or 'n/a'), 'english_meaning' (string), 'example_sentences' (array of AT LEAST 5 objects, each with 'french' and 'english' string keys)."
         });
 
         // Save to database
