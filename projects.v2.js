@@ -1,42 +1,69 @@
+console.log('🚀 projects.v2.js loaded');
+
 document.addEventListener('DOMContentLoaded', async () => {
+    console.log('📌 DOMContentLoaded in projects.v2.js');
     const grid = document.getElementById('projects-grid');
+
+    if (!grid) {
+        console.error('❌ #projects-grid not found!');
+        return;
+    }
 
     // Ensure Supabase is ready
     if (!window.supabaseClient) {
+        console.log('⏳ Waiting for Supabase client...');
         await new Promise(resolve => {
             if (window.supabaseClient) resolve();
-            window.addEventListener('supabase-ready', resolve);
+            window.addEventListener('supabase-ready', () => {
+                console.log('✅ Supabase Ready Event fired');
+                resolve();
+            });
             // Fallback check
-            setTimeout(() => { if (window.supabaseClient) resolve(); }, 1000);
+            setTimeout(() => {
+                if (window.supabaseClient) {
+                    console.log('⚠️ Supabase found via fallback timeout');
+                    resolve();
+                } else {
+                    console.error('❌ Supabase client NOT found after timeout');
+                    grid.innerHTML = '<div class="col-span-full text-center text-red-400">Database connection failed.</div>';
+                }
+            }, 2000);
         });
     }
 
+    if (!window.supabaseClient) return;
+
     // Fetch Data
     try {
+        console.log('🔄 Fetching projects...');
         const { data: projects, error } = await window.supabaseClient
             .from('projects')
             .select('*')
-            .eq('is_visible', true)
-            .order('created_at', { ascending: false }); // Default sort
+            // .eq('is_visible', true) // Temporarily commenting out to debug
+            .order('created_at', { ascending: false });
+
+        console.log('📦 DB Response:', { projects, error });
 
         if (error) throw error;
 
         if (!projects || projects.length === 0) {
+            console.warn('⚠️ No projects found in DB');
             grid.innerHTML = `
                 <div class="col-span-full text-center py-12">
-                    <p class="text-slate-500 text-lg">Work in progress. Projects coming soon.</p>
+                    <p class="text-slate-500 text-lg">No projects found.</p>
                 </div>
             `;
             return;
         }
 
+        console.log(`✅ Rendering ${projects.length} projects`);
         renderProjects(projects);
 
     } catch (err) {
-        console.error('Error fetching projects:', err);
+        console.error('🔥 Error fetching projects:', err);
         grid.innerHTML = `
             <div class="col-span-full text-center py-12">
-                <p class="text-red-400">Unable to load projects at the moment.</p>
+                <p class="text-red-400">Unable to load projects: ${err.message}</p>
             </div>
         `;
     }
