@@ -104,28 +104,28 @@ if (canvas) {
 // --- 3. Hero Animations (Reveal) ---
 const tl = gsap.timeline();
 
-// Stagger text reveal
-tl.to('.reveal-text', {
-    y: 0,
+// Stagger text reveal - Animate FROM hidden state
+tl.from('.reveal-text', {
+    y: "100%",
     duration: 1,
     stagger: 0.2,
     ease: "power4.out",
     delay: 0.2
 })
-    .to('.hero-sub', {
-        opacity: 1,
-        y: 0,
+    .from('.hero-sub', {
+        opacity: 0,
+        y: 20,
         duration: 1,
         ease: "power2.out"
     }, "-=0.5")
-    .to('.hero-cta', {
-        opacity: 1,
-        y: 0,
+    .from('.hero-cta', {
+        opacity: 0,
+        y: 20,
         duration: 1,
         ease: "power2.out"
     }, "-=0.5")
-    .to('.hero-scroll', {
-        opacity: 0.6,
+    .from('.hero-scroll', {
+        opacity: 0,
         duration: 1
     }, "-=0.5");
 

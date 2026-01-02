@@ -4,8 +4,10 @@
     --bg-dark: #0f172a;
     --text-white: #f8fafc;
     --text-gray: #94a3b8;
-    --accent-primary: #8b5cf6; /* Violet */
-    --accent-secondary: #06b6d4; /* Cyan */
+    --accent-primary: #8b5cf6;
+    /* Violet */
+    --accent-secondary: #06b6d4;
+    /* Cyan */
     --accent-glow: rgba(139, 92, 246, 0.5);
 }
 
@@ -14,7 +16,8 @@ body {
     background-color: var(--bg-dark);
     color: var(--text-white);
     overflow-x: hidden;
-    cursor: none; /* Hide default cursor */
+    cursor: none;
+    /* Hide default cursor */
     margin: 0;
     padding: 0;
 }
@@ -23,13 +26,16 @@ body {
 ::-webkit-scrollbar {
     width: 8px;
 }
+
 ::-webkit-scrollbar-track {
     background: var(--bg-dark);
 }
+
 ::-webkit-scrollbar-thumb {
     background: #334155;
     border-radius: 4px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
     background: #475569;
 }
@@ -101,12 +107,17 @@ nav {
 
 .reveal-text {
     display: inline-block;
-    transform: translateY(100%);
+    /* Removed default transform to ensure visibility if JS fails */
 }
 
-/* Marquee */
-.marquee-wrapper {
-    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+/* Nav Alignment Fix */
+.nav-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
 }
 
 /* Card 3D Effects */
@@ -145,7 +156,8 @@ nav {
 
 /* Glitch/Scramble Effect helper */
 .scramble-text {
-    font-family: 'Inter', monospace; /* Fallback to monospace for alignment if needed, but Inter has good tabular nums */
+    font-family: 'Inter', monospace;
+    /* Fallback to monospace for alignment if needed, but Inter has good tabular nums */
 }
 
 /* Hide elements for animation init */
