@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduAbroad Expo App | Aakash Sanghvi</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0f172a', /* Deep Slate - keeping site theme */
+                        brandRed: '#dc2626', /* ESPI Red inspired */
+                        navy: '#1e3a8a', /* Deep Navy */
+                        primary: '#8b5cf6',
+                        secondary: '#06b6d4',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../styles.css">
+    <!-- Supabase & GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+
+<body class="bg-dark text-slate-200 antialiased selection:bg-brandRed selection:text-white cursor-none">
+
+    <!-- Custom Cursor -->
+    <div id="cursor-dot" class="hidden md:block"></div>
+    <div id="cursor-outline" class="hidden md:block"></div>
+
+    <!-- Navigation -->
+    <nav
+        class="fixed top-0 w-full z-50 px-6 backdrop-blur-sm bg-dark/50 border-b border-white/5 transition-all duration-300 h-20">
+        <div class="nav-container max-w-7xl mx-auto flex justify-between items-center h-full">
+            <a href="../index.html"
+                class="text-xl font-bold tracking-tighter hover-magnet cursor-pointer z-50 text-white">
+                AAKASH SANGHVI.
+            </a>
+            <div class="hidden md:flex gap-8 text-sm font-medium text-white">
+                <a href="../index.html" class="hover:text-primary transition-colors hover-magnet">Back Home</a>
+                <a href="../projects.html" class="hover:text-primary transition-colors hover-magnet">All Projects</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative pt-40 pb-20 overflow-hidden">
+        <!-- Background decorative elements -->
+        <div class="absolute top-0 right-0 w-2/3 h-full bg-navy/10 blur-[120px] -z-10"></div>
+        <div class="absolute bottom-0 left-0 w-1/2 h-2/3 bg-brandRed/5 blur-[100px] -z-10"></div>
+
+        <div class="container mx-auto px-6 max-w-6xl">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <div
+                        class="inline-block px-4 py-1.5 bg-brandRed/10 border border-brandRed/20 rounded-full text-brandRed text-sm font-mono font-bold mb-4 fade-up">
+                        EDUCATION TECH
+                    </div>
+                    <h1 class="text-5xl md:text-7xl font-bold leading-tight fade-up">
+                        EduAbroad <br>
+                        <span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-navy to-brandRed via-white">Expo
+                            Manager</span>
+                    </h1>
+                    <p class="text-xl text-slate-400 leading-relaxed fade-up">
+                        A real-time event management system built in just <strong class="text-white">10 days</strong>.
+                        Handled 2,000+ students and 50+ universities across 4 cities with zero downtime.
+                    </p>
+
+                    <div class="flex flex-wrap gap-4 pt-4 fade-up">
+                        <div class="px-4 py-2 bg-slate-800 rounded-lg border border-white/5">
+                            <span class="block text-xs text-slate-500 uppercase">Role</span>
+                            <span class="font-bold">Lead Developer</span>
+                        </div>
+                        <div class="px-4 py-2 bg-slate-800 rounded-lg border border-white/5">
+                            <span class="block text-xs text-slate-500 uppercase">Speed</span>
+                            <span class="font-bold">10 Days Sprint</span>
+                        </div>
+                        <div class="px-4 py-2 bg-slate-800 rounded-lg border border-white/5">
+                            <span class="block text-xs text-slate-500 uppercase">Stack</span>
+                            <span class="font-bold">No-Code (Adalo)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Image Showcase -->
+                <div class="relative fade-up delay-200">
+                    <div class="absolute inset-0 bg-brandRed/20 blur-3xl -z-10 rounded-full"></div>
+                    <!-- Using Home.png as the main hero shot -->
+                    <img src="../espi-eduabroad/Home.png" alt="EduAbroad App Interface"
+                        class="rounded-2xl shadow-2xl border border-white/10 w-full transform rotate-2 hover:rotate-0 transition-all duration-700">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- The Challenge Section -->
+    <section class="py-24 bg-slate-900 border-y border-white/5">
+        <div class="container mx-auto px-6 max-w-4xl text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-12 fade-up">The Challenge</h2>
+            <div class="grid md:grid-cols-3 gap-8 text-left">
+                <div
+                    class="p-8 bg-dark rounded-2xl border border-white/5 hover:border-brandRed/30 transition-all fade-up">
+                    <h3 class="text-4xl font-bold text-brandRed mb-2">10 Days</h3>
+                    <p class="text-slate-400">To conceive, build, and deploy a robust multi-user system before the expo
+                        doors opened.</p>
+                </div>
+                <div
+                    class="p-8 bg-dark rounded-2xl border border-white/5 hover:border-brandRed/30 transition-all fade-up delay-100">
+                    <h3 class="text-4xl font-bold text-white mb-2">2,000+</h3>
+                    <p class="text-slate-400">Active students verifying identities and booking sessions in real-time.
+                    </p>
+                </div>
+                <div
+                    class="p-8 bg-dark rounded-2xl border border-white/5 hover:border-brandRed/30 transition-all fade-up delay-200">
+                    <h3 class="text-4xl font-bold text-navy mb-2">Snap-Second</h3>
+                    <p class="text-slate-400">Real-time data for management to track walk-ins and lead distribution
+                        instantly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- User Journeys & Gallery -->
+    <section class="py-24">
+        <div class="container mx-auto px-6 max-w-6xl">
+            <h2 class="text-4xl font-bold mb-16 text-center fade-up">Core Workflows</h2>
+
+            <!-- 1. Student Journey -->
+            <div class="mb-32">
+                <div class="grid md:grid-cols-2 gap-12 items-center mb-12">
+                    <div class="order-2 md:order-1 space-y-6 fade-up">
+                        <span class="text-brandRed font-mono font-bold">01. STUDENT EXPERIENCE</span>
+                        <h3 class="text-3xl font-bold">Seamless Onboarding & Engagement</h3>
+                        <p class="text-slate-400 text-lg">
+                            We replaced paper forms with digital OTP verification. Students could instantly view their
+                            matched universities, book IELTS demos, and take scholarship tests.
+                        </p>
+                        <ul class="space-y-2 text-slate-300">
+                            <li class="flex items-center gap-2"><span class="text-brandRed">→</span> WhatsApp OTP
+                                Verification</li>
+                            <li class="flex items-center gap-2"><span class="text-brandRed">→</span> Automated
+                                Scholarship Scoring</li>
+                            <li class="flex items-center gap-2"><span class="text-brandRed">→</span> Instant Slot
+                                Booking for Reps</li>
+                        </ul>
+                    </div>
+                    <div class="order-1 md:order-2 grid grid-cols-2 gap-4 fade-up">
+                        <img src="../espi-eduabroad/StudentDashboard.png"
+                            class="rounded-xl shadow-lg border border-white/10 hover:scale-105 transition-transform"
+                            alt="Dashboard">
+                        <img src="../espi-eduabroad/Student_Test2.png"
+                            class="rounded-xl shadow-lg border border-white/10 hover:scale-105 transition-transform mt-8"
+                            alt="Scholarship Test">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Counselor Triage -->
+            <div class="mb-32">
+                <div class="grid md:grid-cols-2 gap-12 items-center mb-12">
+                    <div class="grid grid-cols-2 gap-4 fade-up">
+                        <img src="../espi-eduabroad/Counsellor_Home.png"
+                            class="rounded-xl shadow-lg border border-white/10 hover:scale-105 transition-transform"
+                            alt="Counselor Home">
+                        <img src="../espi-eduabroad/Counsellor_SelectRep.png"
+                            class="rounded-xl shadow-lg border border-white/10 hover:scale-105 transition-transform mt-8"
+                            alt="Select Rep">
+                    </div>
+                    <div class="space-y-6 fade-up">
+                        <span class="text-brandRed font-mono font-bold">02. TRIAGE SYSTEM</span>
+                        <h3 class="text-3xl font-bold">Smart Matchmaking</h3>
+                        <p class="text-slate-400 text-lg">
+                            Counselors acted as the intake layer, enriching student profiles and "triaging" them to the
+                            correct university representatives based on eligibility, ensuring high-quality leads for
+                            universities.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. University CRM -->
+            <div class="mb-16">
+                <div class="grid md:grid-cols-2 gap-12 items-center mb-12">
+                    <div class="order-2 md:order-1 space-y-6 fade-up">
+                        <span class="text-brandRed font-mono font-bold">03. REP CRM</span>
+                        <h3 class="text-3xl font-bold">Pocket CRM for Universities</h3>
+                        <p class="text-slate-400 text-lg">
+                            University reps ditched notepads for a dedicated tablet interface. They could see their
+                            specific leads, view academic history, and log interaction remarks instantly.
+                        </p>
+                    </div>
+                    <div class="order-1 md:order-2 grid grid-cols-2 gap-4 fade-up">
+                        <img src="../espi-eduabroad/UniRep_StudentList.png"
+                            class="rounded-xl shadow-lg border border-white/10 hover:scale-105 transition-transform"
+                            alt="Rep List">
+                        <img src="../espi-eduabroad/UniRep_AddRemark.png"
+                            class="rounded-xl shadow-lg border border-white/10 hover:scale-105 transition-transform mt-8"
+                            alt="Add Remark">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Technical Details -->
+    <section class="py-24 bg-slate-900 border-t border-white/5">
+        <div class="container mx-auto px-6 max-w-4xl">
+            <h2 class="text-3xl font-bold mb-12 fade-up">Under the Hood</h2>
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="space-y-4 fade-up">
+                    <h3 class="text-xl font-bold text-white">Adalo No-Code & Database</h3>
+                    <p class="text-slate-400">
+                        Leveraged Adalo's relational database to handle complex many-to-many relationships (Students <->
+                            Universities <-> Counselors). This allowed for rapid iteration without writing boilerplate
+                                backend code.
+                    </p>
+                </div>
+                <div class="space-y-4 fade-up delay-100">
+                    <h3 class="text-xl font-bold text-white">Automated Logic</h3>
+                    <p class="text-slate-400">
+                        <strong>Scholarship Engine:</strong> Custom logic automatically calculated waivers based on test
+                        scores (1-30 scale), instantly reflecting the award on the student's dashboard.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-white/5 bg-dark relative z-10">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-2xl font-bold mb-8">Ready to build something fast?</h2>
+            <a href="../work-with-me.html"
+                class="px-8 py-4 bg-white text-black font-bold rounded-full hover:scale-105 transition-transform inline-block">Lets
+                Talk</a>
+            <p class="text-slate-600 text-sm mt-12">
+                &copy; 2026 Aakash Sanghvi.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../config.js"></script>
+    <script src="../script.js"></script>
+    <script>
+        // Custom GSAP setup for this page since it's in a subdir
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Re-run fade ups
+        const fadeUps = document.querySelectorAll('.fade-up');
+        fadeUps.forEach(el => {
+            gsap.from(el, {
+                scrollTrigger: {
+                    trigger: el,
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                },
+                y: 50,
+                opacity: 0,
+                duration: 0.8,
+                ease: "power3.out"
+            });
+        });
+    </script>
+</body>
+
+</html>
