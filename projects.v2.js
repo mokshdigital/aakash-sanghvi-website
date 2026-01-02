@@ -2,20 +2,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     const grid = document.getElementById('projects-grid');
 
     // Ensure Supabase is ready
-    if (typeof supabase === 'undefined') {
-        // If config.js handles loading, we wait. If not, this might hang if not careful.
-        // Assuming config.js is loaded and does init.
+    if (!window.supabaseClient) {
         await new Promise(resolve => {
-            if (typeof supabase !== 'undefined') resolve();
+            if (window.supabaseClient) resolve();
             window.addEventListener('supabase-ready', resolve);
             // Fallback check
-            setTimeout(() => { if (typeof supabase !== 'undefined') resolve(); }, 1000);
+            setTimeout(() => { if (window.supabaseClient) resolve(); }, 1000);
         });
     }
 
     // Fetch Data
     try {
-        const { data: projects, error } = await supabase
+        const { data: projects, error } = await window.supabaseClient
             .from('projects')
             .select('*')
             .eq('is_visible', true)
