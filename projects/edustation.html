@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduStation: 0 to 5,000 Students | Aakash Sanghvi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        /* ============================================
+       DARK THEME - CINEMATIC DESIGN
+       ============================================ */
+        :root {
+            --color-bg: #0a0a0a;
+            --color-bg-subtle: #111111;
+            --color-bg-card: #161616;
+            --color-bg-elevated: #1a1a1a;
+
+            --color-text: #ffffff;
+            --color-text-muted: #a1a1a1;
+            --color-text-subtle: #6b6b6b;
+
+            --color-primary: #f97316;
+            /* Orange - representing fire/resilience */
+            --color-primary-light: #fb923c;
+            --color-primary-dark: #ea580c;
+
+            --color-accent-blue: #3b82f6;
+            --color-accent-emerald: #10b981;
+            --color-accent-violet: #8b5cf6;
+
+            --color-border: #262626;
+            --color-border-light: #333333;
+
+            --gradient-hero: linear-gradient(180deg, #0a0a0a 0%, #111111 100%);
+            --gradient-card: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, transparent 50%);
+
+            --shadow-glow: 0 0 60px rgba(249, 115, 22, 0.15);
+            --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.5);
+
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        a {
+            color: var(--color-primary);
+            text-decoration: none;
+            transition: color 0.2s var(--transition-smooth);
+        }
+
+        a:hover {
+            color: var(--color-primary-light);
+        }
+
+        /* ============================================
+       NAVIGATION
+       ============================================ */
+        .cs-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 0 24px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .cs-nav-logo {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--color-text);
+            letter-spacing: -0.5px;
+        }
+
+        .cs-nav-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .cs-nav-links a {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--color-text-muted);
+            transition: color 0.2s;
+        }
+
+        .cs-nav-links a:hover {
+            color: var(--color-text);
+        }
+
+        @media (max-width: 640px) {
+            .cs-nav-links {
+                display: none;
+            }
+        }
+
+        /* ============================================
+       LAYOUT
+       ============================================ */
+        .cs-section {
+            padding: 140px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .cs-section--full {
+            max-width: none;
+        }
+
+        .cs-section--alt {
+            background: var(--color-bg-subtle);
+        }
+
+        @media (max-width: 768px) {
+            .cs-section {
+                padding: 100px 20px;
+            }
+        }
+
+        /* ============================================
+       TYPOGRAPHY
+       ============================================ */
+        .cs-label {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--color-primary);
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .cs-heading-xl {
+            font-size: clamp(40px, 8vw, 72px);
+            font-weight: 900;
+            line-height: 1.1;
+            letter-spacing: -3px;
+            color: var(--color-text);
+        }
+
+        .cs-heading-lg {
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -2px;
+            color: var(--color-text);
+        }
+
+        .cs-heading-md {
+            font-size: clamp(24px, 3vw, 32px);
+            font-weight: 600;
+            line-height: 1.3;
+            letter-spacing: -1px;
+            color: var(--color-text);
+        }
+
+        .cs-heading-sm {
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 1.4;
+            color: var(--color-text);
+        }
+
+        .cs-text {
+            font-size: 18px;
+            color: var(--color-text-muted);
+            line-height: 1.8;
+        }
+
+        .cs-text--large {
+            font-size: 22px;
+        }
+
+        /* ============================================
+       ANIMATIONS
+       ============================================ */
+        .cs-animate {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s var(--transition-smooth), transform 0.8s var(--transition-smooth);
+        }
+
+        .cs-animate.cs-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .cs-animate--delay-1 {
+            transition-delay: 0.1s;
+        }
+
+        .cs-animate--delay-2 {
+            transition-delay: 0.2s;
+        }
+
+        .cs-animate--delay-3 {
+            transition-delay: 0.3s;
+        }
+
+        .cs-animate--delay-4 {
+            transition-delay: 0.4s;
+        }
+
+        /* ============================================
+       HERO SECTION
+       ============================================ */
+        .cs-hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 160px 24px 120px;
+            position: relative;
+            background: var(--gradient-hero);
+            overflow: hidden;
+        }
+
+        .cs-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background:
+                radial-gradient(ellipse 100% 80% at 50% 0%, rgba(249, 115, 22, 0.08), transparent 50%),
+                radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.05), transparent 40%);
+            pointer-events: none;
+        }
+
+        .cs-hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1000px;
+        }
+
+        .cs-hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: rgba(249, 115, 22, 0.1);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: 32px;
+        }
+
+        .cs-hero-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--color-primary);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .cs-hero-title {
+            margin-bottom: 24px;
+        }
+
+        .cs-hero-subtitle {
+            font-size: clamp(18px, 2.5vw, 24px);
+            color: var(--color-text-muted);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .cs-hero-year {
+            font-size: 200px;
+            font-weight: 900;
+            position: absolute;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.02);
+            z-index: 0;
+            letter-spacing: -10px;
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            .cs-hero-year {
+                font-size: 100px;
+                bottom: -30px;
+            }
+        }
+
+        /* ============================================
+       HORIZONTAL TIMELINE
+       ============================================ */
+        .cs-timeline-section {
+            padding: 100px 24px;
+            background: var(--color-bg-subtle);
+            border-top: 1px solid var(--color-border);
+            border-bottom: 1px solid var(--color-border);
+            overflow: hidden;
+        }
+
+        .cs-timeline-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 80px;
+        }
+
+        .cs-timeline-track {
+            position: relative;
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .cs-timeline-track::before {
+            content: '';
+            position: absolute;
+            top: 24px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--color-border), var(--color-primary), var(--color-border));
+        }
+
+        .cs-timeline-item {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            padding: 0 16px;
+        }
+
+        .cs-timeline-dot {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--color-bg-card);
+            border: 3px solid var(--color-border);
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--color-text-subtle);
+            transition: all 0.4s var(--transition-smooth);
+            position: relative;
+            z-index: 1;
+        }
+
+        .cs-timeline-item:hover .cs-timeline-dot {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+            transform: scale(1.1);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .cs-timeline-date {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--color-primary);
+            margin-bottom: 8px;
+        }
+
+        .cs-timeline-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: 8px;
+        }
+
+        .cs-timeline-desc {
+            font-size: 14px;
+            color: var(--color-text-subtle);
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .cs-timeline-track {
+                flex-direction: column;
+                gap: 40px;
+            }
+
+            .cs-timeline-track::before {
+                top: 0;
+                bottom: 0;
+                left: 24px;
+                right: auto;
+                width: 2px;
+                height: auto;
+            }
+
+            .cs-timeline-item {
+                text-align: left;
+                padding-left: 70px;
+            }
+
+            .cs-timeline-dot {
+                position: absolute;
+                left: 0;
+                top: 0;
+                margin: 0;
+            }
+        }
+
+        /* ============================================
+       STORY SECTIONS
+       ============================================ */
+        .cs-story {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            padding: 100px 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .cs-story:last-child {
+            border-bottom: none;
+        }
+
+        .cs-story:nth-child(even) {
+            direction: rtl;
+        }
+
+        .cs-story:nth-child(even)>* {
+            direction: ltr;
+        }
+
+        @media (max-width: 900px) {
+
+            .cs-story,
+            .cs-story:nth-child(even) {
+                grid-template-columns: 1fr;
+                gap: 48px;
+                direction: ltr;
+            }
+        }
+
+        .cs-story-number {
+            font-size: 120px;
+            font-weight: 900;
+            line-height: 1;
+            color: rgba(249, 115, 22, 0.1);
+            margin-bottom: -40px;
+        }
+
+        .cs-story-visual {
+            position: relative;
+        }
+
+        .cs-story-image {
+            background: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 16px;
+            aspect-ratio: 16/10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-text-subtle);
+            font-size: 14px;
+            overflow: hidden;
+            transition: all 0.4s var(--transition-smooth);
+        }
+
+        .cs-story-image:hover {
+            transform: scale(1.02);
+            border-color: var(--color-primary);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .cs-story-quote {
+            font-size: 24px;
+            font-weight: 500;
+            font-style: italic;
+            line-height: 1.5;
+            color: var(--color-text);
+            padding: 32px;
+            background: var(--gradient-card);
+            border-left: 4px solid var(--color-primary);
+            border-radius: 0 16px 16px 0;
+            margin-top: 32px;
+        }
+
+        /* ============================================
+       METRICS GRID
+       ============================================ */
+        .cs-metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .cs-metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .cs-metric-card {
+            background: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 20px;
+            padding: 40px 32px;
+            text-align: center;
+            transition: all 0.4s var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cs-metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-accent-blue));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .cs-metric-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--color-primary);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .cs-metric-card:hover::before {
+            opacity: 1;
+        }
+
+        .cs-metric-value {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .cs-metric-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ============================================
+       TECH DEEP DIVE
+       ============================================ */
+        .cs-tech-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        @media (max-width: 900px) {
+            .cs-tech-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .cs-tech-card {
+            background: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s var(--transition-smooth);
+        }
+
+        .cs-tech-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--color-border-light);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .cs-tech-card-image {
+            aspect-ratio: 16/10;
+            background: var(--color-bg-elevated);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-text-subtle);
+            font-size: 14px;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .cs-tech-card-content {
+            padding: 28px;
+        }
+
+        .cs-tech-card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* ============================================
+       CTA SECTION
+       ============================================ */
+        .cs-cta {
+            text-align: center;
+            background: var(--color-bg-subtle);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .cs-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 20px 40px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 100px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s var(--transition-smooth);
+            text-decoration: none;
+        }
+
+        .cs-button--primary {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+            color: white;
+            box-shadow: 0 10px 30px -5px rgba(249, 115, 22, 0.4);
+        }
+
+        .cs-button--primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 20px 40px -5px rgba(249, 115, 22, 0.5);
+            color: white;
+        }
+
+        /* ============================================
+       FOOTER
+       ============================================ */
+        .cs-footer {
+            padding: 48px 24px;
+            text-align: center;
+            border-top: 1px solid var(--color-border);
+            background: var(--color-bg);
+        }
+
+        .cs-footer p {
+            font-size: 14px;
+            color: var(--color-text-subtle);
+        }
+
+        /* ============================================
+       DIVIDER
+       ============================================ */
+        .cs-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--color-border), transparent);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="cs-nav">
+        <a href="../index.html" class="cs-nav-logo">Aakash Sanghvi</a>
+        <div class="cs-nav-links">
+            <a href="../index.html">Home</a>
+            <a href="../projects.html">Projects</a>
+            <a href="../work-with-me.html">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="cs-hero">
+        <div class="cs-hero-content">
+            <div class="cs-hero-badge cs-animate">
+                COVID-19 Response • EdTech SaaS
+            </div>
+            <h1 class="cs-heading-xl cs-hero-title cs-animate cs-animate--delay-1">
+                EduStation: 0 to 5,000 Students<br>
+                <span style="color: var(--color-primary);">in the Eye of a Global Pandemic</span>
+            </h1>
+            <p class="cs-hero-subtitle cs-animate cs-animate--delay-2">
+                Leading a 60-day digital transformation from physical classrooms to a Whitelabeled B2B SaaS platform.
+            </p>
+        </div>
+        <div class="cs-hero-year">2020</div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="cs-timeline-section">
+        <div class="cs-timeline-header">
+            <span class="cs-label cs-animate">The Journey</span>
+            <h2 class="cs-heading-lg cs-animate cs-animate--delay-1">From Crisis to Market Leader</h2>
+        </div>
+
+        <div class="cs-timeline-track">
+            <div class="cs-timeline-item cs-animate">
+                <div class="cs-timeline-dot">1</div>
+                <div class="cs-timeline-date">Mar 2020</div>
+                <div class="cs-timeline-title">Global Lockdown</div>
+                <div class="cs-timeline-desc">Classrooms closed. Project inception in the midst of chaos.</div>
+            </div>
+            <div class="cs-timeline-item cs-animate cs-animate--delay-1">
+                <div class="cs-timeline-dot">2</div>
+                <div class="cs-timeline-date">May 2020</div>
+                <div class="cs-timeline-title">MVP Launch</div>
+                <div class="cs-timeline-desc">The Lifeline. 60-day sprint to keep the business alive.</div>
+            </div>
+            <div class="cs-timeline-item cs-animate cs-animate--delay-2">
+                <div class="cs-timeline-dot">3</div>
+                <div class="cs-timeline-date">Oct 2020</div>
+                <div class="cs-timeline-title">V1.0 Release</div>
+                <div class="cs-timeline-desc">Modular curriculum + automated assessment engine.</div>
+            </div>
+            <div class="cs-timeline-item cs-animate cs-animate--delay-3">
+                <div class="cs-timeline-dot">4</div>
+                <div class="cs-timeline-date">Dec 2020</div>
+                <div class="cs-timeline-title">B2B Whitelabeling</div>
+                <div class="cs-timeline-desc">Platform pivot. Regional expansion across 20+ agents.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Sections -->
+    <section class="cs-section">
+        <div style="text-align: center; margin-bottom: 80px;">
+            <span class="cs-label cs-animate">The Narrative</span>
+            <h2 class="cs-heading-lg cs-animate cs-animate--delay-1">A Story of Survival & Scale</h2>
+        </div>
+
+        <!-- Story 1: The Growth Ceiling -->
+        <div class="cs-story">
+            <div class="cs-animate">
+                <span class="cs-story-number">01</span>
+                <span class="cs-label">March 2020</span>
+                <h3 class="cs-heading-md" style="margin-bottom: 20px;">The Growth Ceiling</h3>
+                <p class="cs-text" style="margin-bottom: 24px;">
+                    March 2020 — The Day the Classrooms Closed. For ESPI, a business built on physical classrooms and
+                    face-to-face coaching, the lockdown was an existential threat. Our centers were empty, but the
+                    ambition of thousands of students to study abroad hadn't vanished — it was just trapped.
+                </p>
+                <p class="cs-text">
+                    As Lead Business Analyst and Product Lead, I faced a stark reality: <strong
+                        style="color: var(--color-text);">adapt or die</strong>.
+                </p>
+            </div>
+            <div class="cs-story-visual cs-animate cs-animate--delay-2">
+                <div class="cs-story-image">[IMAGE_LOCKDOWN_IMPACT]</div>
+                <blockquote class="cs-story-quote">
+                    "The world stopped. But the ambition of thousands of students hadn't vanished — it was just
+                    trapped."
+                </blockquote>
+            </div>
+        </div>
+
+        <!-- Story 2: The BA & Product Strategy -->
+        <div class="cs-story">
+            <div class="cs-animate">
+                <span class="cs-story-number">02</span>
+                <span class="cs-label">The 60-Day Sprint</span>
+                <h3 class="cs-heading-md" style="margin-bottom: 20px;">The BA & Product Strategy</h3>
+                <p class="cs-text" style="margin-bottom: 24px;">
+                    We didn't have a year for discovery. I led a "War Room" development cycle, translating the chaotic
+                    needs
+                    of remote education into a structured SaaS architecture.
+                </p>
+                <p class="cs-text" style="margin-bottom: 24px;">
+                    <strong style="color: var(--color-primary);">May 2020:</strong> We launched the MVP. It was a
+                    lifeline that kept the business alive.
+                </p>
+                <p class="cs-text">
+                    <strong style="color: var(--color-accent-blue);">October 2020:</strong> Following a rapid feedback
+                    loop from our first 1,000 users,
+                    we released V1.0 — featuring the modular curriculum and automated assessment engine.
+                </p>
+            </div>
+            <div class="cs-story-visual cs-animate cs-animate--delay-2">
+                <div class="cs-story-image">[IMAGE_ADMIN_DASHBOARD]</div>
+            </div>
+        </div>
+
+        <!-- Story 3: The B2B SaaS Evolution -->
+        <div class="cs-story">
+            <div class="cs-animate">
+                <span class="cs-story-number">03</span>
+                <span class="cs-label">December 2020</span>
+                <h3 class="cs-heading-md" style="margin-bottom: 20px;">The B2B SaaS Evolution</h3>
+                <p class="cs-text" style="margin-bottom: 24px;">
+                    By year-end, we realized we had built something bigger than ourselves. I led the Whitelabeling
+                    initiative,
+                    transitioning the codebase into a true B2B SaaS model.
+                </p>
+                <p class="cs-text" style="margin-bottom: 24px;">
+                    Other institutions could now skin our platform and logic for their own students. This pivot allowed
+                    us to
+                    scale to <strong style="color: var(--color-text);">20+ agents across the Asian subcontinent</strong>
+                    almost overnight.
+                </p>
+                <p class="cs-text">
+                    What started as a survival tactic in March ended the year as a market-leading platform with
+                    <strong style="color: var(--color-primary);">5,000+ paid students</strong>.
+                </p>
+            </div>
+            <div class="cs-story-visual cs-animate cs-animate--delay-2">
+                <div class="cs-story-image">[IMAGE_WHITELABEL_CONFIG]</div>
+                <blockquote class="cs-story-quote">
+                    "We didn't just survive the pandemic; we used it as a catalyst to build a borderless, scalable
+                    EdTech empire."
+                </blockquote>
+            </div>
+        </div>
+    </section>
+
+    <div class="cs-divider"></div>
+
+    <!-- Key Metrics -->
+    <section class="cs-section">
+        <div style="text-align: center; margin-bottom: 64px;">
+            <span class="cs-label cs-animate">By The Numbers</span>
+            <h2 class="cs-heading-lg cs-animate cs-animate--delay-1">Impact Metrics</h2>
+        </div>
+
+        <div class="cs-metrics-grid">
+            <div class="cs-metric-card cs-animate">
+                <div class="cs-metric-value">5,000+</div>
+                <div class="cs-metric-label">Paid Students</div>
+            </div>
+            <div class="cs-metric-card cs-animate cs-animate--delay-1">
+                <div class="cs-metric-value">20+</div>
+                <div class="cs-metric-label">International Agents</div>
+            </div>
+            <div class="cs-metric-card cs-animate cs-animate--delay-2">
+                <div class="cs-metric-value">60</div>
+                <div class="cs-metric-label">Day MVP Delivery</div>
+            </div>
+            <div class="cs-metric-card cs-animate cs-animate--delay-3">
+                <div class="cs-metric-value">B2B</div>
+                <div class="cs-metric-label">Full Whitelabeling</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Deep Dive -->
+    <section class="cs-section cs-section--alt">
+        <div style="text-align: center; margin-bottom: 64px;">
+            <span class="cs-label cs-animate">Technical Architecture</span>
+            <h2 class="cs-heading-lg cs-animate cs-animate--delay-1">Under The Hood</h2>
+        </div>
+
+        <div class="cs-tech-grid">
+            <div class="cs-tech-card cs-animate">
+                <div class="cs-tech-card-image">[IMAGE_ADMIN_DASHBOARD]</div>
+                <div class="cs-tech-card-content">
+                    <div class="cs-tech-card-icon">🏗️</div>
+                    <h3 class="cs-heading-sm" style="margin-bottom: 12px;">Multi-Tenant Architecture</h3>
+                    <p class="cs-text" style="font-size: 15px;">
+                        Designed a tenant-isolated database architecture that allowed each agent to have their own
+                        branded instance
+                        while sharing core platform logic.
+                    </p>
+                </div>
+            </div>
+            <div class="cs-tech-card cs-animate cs-animate--delay-1">
+                <div class="cs-tech-card-image">[IMAGE_PROGRESS_REPORT]</div>
+                <div class="cs-tech-card-content">
+                    <div class="cs-tech-card-icon">📚</div>
+                    <h3 class="cs-heading-sm" style="margin-bottom: 12px;">Modular Curriculum Engine</h3>
+                    <p class="cs-text" style="font-size: 15px;">
+                        Built a flexible content management system where course modules could be assembled, reordered,
+                        and
+                        customized per tenant without code changes.
+                    </p>
+                </div>
+            </div>
+            <div class="cs-tech-card cs-animate cs-animate--delay-2">
+                <div class="cs-tech-card-image">[IMAGE_WHITELABEL_CONFIG]</div>
+                <div class="cs-tech-card-content">
+                    <div class="cs-tech-card-icon">⚡</div>
+                    <h3 class="cs-heading-sm" style="margin-bottom: 12px;">Automated Assessment Logic</h3>
+                    <p class="cs-text" style="font-size: 15px;">
+                        Implemented intelligent scoring algorithms that adapted to student performance, providing
+                        real-time feedback and personalized learning paths.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cs-section cs-cta">
+        <span class="cs-label cs-animate">Get In Touch</span>
+        <h2 class="cs-heading-lg cs-animate cs-animate--delay-1" style="margin-bottom: 16px;">
+            Let's Build Something Impactful
+        </h2>
+        <p class="cs-text cs-animate cs-animate--delay-2" style="max-width: 550px; margin: 0 auto 40px;">
+            From crisis to opportunity — I specialize in leading product teams through uncertainty to deliver
+            scalable, market-ready solutions.
+        </p>
+        <a href="../work-with-me.html" class="cs-button cs-button--primary cs-animate cs-animate--delay-3">
+            Let's Talk
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+        </a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="cs-footer">
+        <p>&copy; 2026 Aakash Sanghvi. All rights reserved.</p>
+    </footer>
+
+    <!-- Animation Script -->
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Intersection Observer for fade animations
+            const animatedElements = document.querySelectorAll('.cs-animate');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('cs-visible');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+            animatedElements.forEach(el => observer.observe(el));
+
+            // Parallax effect on hero year
+            gsap.to('.cs-hero-year', {
+                scrollTrigger: {
+                    trigger: '.cs-hero',
+                    start: 'top top',
+                    end: 'bottom top',
+                    scrub: 1
+                },
+                y: -100,
+                opacity: 0
+            });
+        });
+    </script>
+
+</body>
+
+</html>
