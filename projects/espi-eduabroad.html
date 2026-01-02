@@ -1,278 +1,734 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EduAbroad Expo App | Aakash Sanghvi</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        dark: '#0f172a', /* Deep Slate - keeping site theme */
-                        brandRed: '#dc2626', /* ESPI Red inspired */
-                        navy: '#1e3a8a', /* Deep Navy */
-                        primary: '#8b5cf6',
-                        secondary: '#06b6d4',
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <link rel="stylesheet" href="../styles.css">
-    <!-- Supabase & GSAP -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- GSAP & ScrollTrigger -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        /* ============================================
+       LIGHT THEME - PREMIUM DESIGN
+       ============================================ */
+        :root {
+            --color-bg: #ffffff;
+            --color-bg-subtle: #f8fafc;
+            --color-bg-card: #ffffff;
+            --color-bg-elevated: #f1f5f9;
+
+            --color-text: #0f172a;
+            --color-text-muted: #475569;
+            --color-text-subtle: #64748b;
+
+            --color-primary: #dc2626;
+            /* ESPI Red */
+            --color-primary-light: #ef4444;
+            --color-primary-dark: #b91c1c;
+
+            --color-accent-navy: #1e3a8a;
+            --color-accent-blue: #3b82f6;
+
+            --color-border: #e2e8f0;
+            --color-border-light: #f1f5f9;
+
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        a {
+            color: var(--color-primary);
+            text-decoration: none;
+            transition: color 0.2s var(--transition-smooth);
+        }
+
+        a:hover {
+            color: var(--color-primary-dark);
+        }
+
+        /* ============================================
+       NAVIGATION
+       ============================================ */
+        .cs-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 0 24px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--color-border);
+            transition: all 0.3s var(--transition-smooth);
+        }
+
+        .cs-nav-logo {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--color-text);
+            letter-spacing: -0.5px;
+        }
+
+        .cs-nav-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .cs-nav-links a {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--color-text-muted);
+            transition: color 0.2s;
+        }
+
+        .cs-nav-links a:hover {
+            color: var(--color-text);
+        }
+
+        @media (max-width: 640px) {
+            .cs-nav-links {
+                display: none;
+            }
+        }
+
+        /* ============================================
+       LAYOUT
+       ============================================ */
+        .cs-section {
+            padding: 120px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .cs-section--full {
+            max-width: none;
+        }
+
+        .cs-section--alt {
+            background: var(--color-bg-subtle);
+        }
+
+        @media (max-width: 768px) {
+            .cs-section {
+                padding: 80px 20px;
+            }
+        }
+
+        /* ============================================
+       TYPOGRAPHY
+       ============================================ */
+        .cs-label {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--color-primary);
+            margin-bottom: 16px;
+            display: inline-block;
+        }
+
+        .cs-heading-xl {
+            font-size: clamp(48px, 10vw, 80px);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -3px;
+            color: var(--color-text);
+        }
+
+        .cs-heading-lg {
+            font-size: clamp(36px, 6vw, 56px);
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -2px;
+            color: var(--color-text);
+        }
+
+        .cs-heading-md {
+            font-size: clamp(24px, 4vw, 36px);
+            font-weight: 600;
+            line-height: 1.25;
+            letter-spacing: -1px;
+            color: var(--color-text);
+        }
+
+        .cs-heading-sm {
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 1.4;
+            color: var(--color-text);
+        }
+
+        .cs-text {
+            font-size: 18px;
+            color: var(--color-text-muted);
+            line-height: 1.8;
+        }
+
+        .cs-text--large {
+            font-size: 22px;
+        }
+
+        .cs-gradient-text {
+            background: linear-gradient(135deg, var(--color-accent-navy) 0%, var(--color-primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ============================================
+       ANIMATIONS
+       ============================================ */
+        .cs-animate {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s var(--transition-smooth), transform 0.7s var(--transition-smooth);
+        }
+
+        .cs-animate.cs-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .cs-animate--delay-1 {
+            transition-delay: 0.1s;
+        }
+
+        .cs-animate--delay-2 {
+            transition-delay: 0.2s;
+        }
+
+        .cs-animate--delay-3 {
+            transition-delay: 0.3s;
+        }
+
+        /* ============================================
+       HERO SECTION
+       ============================================ */
+        .cs-hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 140px 24px 100px;
+            position: relative;
+            background: linear-gradient(180deg, var(--color-bg-subtle) 0%, var(--color-bg) 100%);
+        }
+
+        .cs-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background:
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(220, 38, 38, 0.1), transparent),
+                radial-gradient(ellipse 60% 40% at 80% 60%, rgba(30, 58, 138, 0.08), transparent);
+            pointer-events: none;
+        }
+
+        .cs-hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-width: 900px) {
+            .cs-hero-grid {
+                grid-template-columns: 1fr;
+                gap: 48px;
+                text-align: center;
+            }
+        }
+
+        .cs-hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 32px;
+        }
+
+        @media (max-width: 900px) {
+            .cs-hero-meta {
+                justify-content: center;
+            }
+        }
+
+        .cs-hero-meta-item {
+            padding: 12px 20px;
+            background: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+        }
+
+        .cs-hero-meta-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--color-text-subtle);
+            margin-bottom: 4px;
+        }
+
+        .cs-hero-meta-value {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--color-text);
+        }
+
+        .cs-hero-image {
+            position: relative;
+        }
+
+        .cs-hero-image img {
+            border-radius: 16px;
+            box-shadow: var(--shadow-2xl);
+            border: 1px solid var(--color-border);
+            transform: rotate(2deg);
+            transition: transform 0.5s var(--transition-smooth);
+        }
+
+        .cs-hero-image:hover img {
+            transform: rotate(0deg);
+        }
+
+        /* ============================================
+       CHALLENGE CARDS
+       ============================================ */
+        .cs-challenge-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        @media (max-width: 768px) {
+            .cs-challenge-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .cs-challenge-card {
+            background: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 20px;
+            padding: 40px 32px;
+            text-align: center;
+            transition: all 0.3s var(--transition-smooth);
+        }
+
+        .cs-challenge-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--color-primary);
+        }
+
+        .cs-challenge-value {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .cs-challenge-value--red {
+            color: var(--color-primary);
+        }
+
+        .cs-challenge-value--navy {
+            color: var(--color-accent-navy);
+        }
+
+        /* ============================================
+       WORKFLOW SECTION
+       ============================================ */
+        .cs-workflow {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            padding: 80px 0;
+        }
+
+        .cs-workflow:nth-child(even) {
+            direction: rtl;
+        }
+
+        .cs-workflow:nth-child(even)>* {
+            direction: ltr;
+        }
+
+        @media (max-width: 900px) {
+
+            .cs-workflow,
+            .cs-workflow:nth-child(even) {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                direction: ltr;
+            }
+        }
+
+        .cs-workflow-images {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .cs-workflow-images img {
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--color-border);
+            transition: transform 0.3s var(--transition-smooth);
+        }
+
+        .cs-workflow-images img:hover {
+            transform: scale(1.03);
+        }
+
+        .cs-workflow-images img:nth-child(2) {
+            margin-top: 32px;
+        }
+
+        .cs-workflow-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        .cs-workflow-list li {
+            padding: 10px 0;
+            color: var(--color-text-muted);
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cs-workflow-list li::before {
+            content: '→';
+            color: var(--color-primary);
+            font-weight: 700;
+        }
+
+        /* ============================================
+       TECH SECTION
+       ============================================ */
+        .cs-tech-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+        }
+
+        @media (max-width: 768px) {
+            .cs-tech-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .cs-tech-card {
+            background: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 16px;
+            padding: 32px;
+        }
+
+        /* ============================================
+       CTA SECTION
+       ============================================ */
+        .cs-cta {
+            text-align: center;
+            background: linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-subtle) 100%);
+        }
+
+        .cs-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 18px 36px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 100px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s var(--transition-smooth);
+            text-decoration: none;
+        }
+
+        .cs-button--primary {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent-navy));
+            color: white;
+            box-shadow: 0 10px 30px -5px rgba(220, 38, 38, 0.4);
+        }
+
+        .cs-button--primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px -5px rgba(220, 38, 38, 0.5);
+            color: white;
+        }
+
+        /* ============================================
+       FOOTER
+       ============================================ */
+        .cs-footer {
+            padding: 48px 24px;
+            text-align: center;
+            border-top: 1px solid var(--color-border);
+            background: var(--color-bg-subtle);
+        }
+
+        .cs-footer p {
+            font-size: 14px;
+            color: var(--color-text-subtle);
+        }
+    </style>
 </head>
 
-<body class="bg-dark text-slate-200 antialiased selection:bg-brandRed selection:text-white cursor-none">
-
-    <!-- Custom Cursor -->
-    <div id="cursor-dot" class="hidden md:block"></div>
-    <div id="cursor-outline" class="hidden md:block"></div>
+<body>
 
     <!-- Navigation -->
-    <nav
-        class="fixed top-0 w-full z-50 px-6 backdrop-blur-sm bg-dark/50 border-b border-white/5 transition-all duration-300 h-20">
-        <div class="nav-container max-w-7xl mx-auto flex justify-between items-center h-full">
-            <a href="../index.html"
-                class="text-xl font-bold tracking-tighter hover-magnet cursor-pointer z-50 text-white">
-                AAKASH SANGHVI.
-            </a>
-            <div class="hidden md:flex gap-8 text-sm font-medium text-white">
-                <a href="../index.html" class="hover:text-primary transition-colors hover-magnet">Back Home</a>
-                <a href="../projects.html" class="hover:text-primary transition-colors hover-magnet">All Projects</a>
-            </div>
+    <nav class="cs-nav">
+        <a href="../index.html" class="cs-nav-logo">Aakash Sanghvi</a>
+        <div class="cs-nav-links">
+            <a href="../index.html">Home</a>
+            <a href="../projects.html">Projects</a>
+            <a href="../work-with-me.html">Contact</a>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <header class="relative pt-40 pb-20 overflow-hidden">
-        <!-- Background decorative elements -->
-        <div class="absolute top-0 right-0 w-2/3 h-full bg-navy/10 blur-[120px] -z-10"></div>
-        <div class="absolute bottom-0 left-0 w-1/2 h-2/3 bg-brandRed/5 blur-[100px] -z-10"></div>
+    <section class="cs-hero">
+        <div class="cs-hero-grid">
+            <div class="cs-animate">
+                <span class="cs-label">Education Tech</span>
+                <h1 class="cs-heading-xl" style="margin-bottom: 24px;">
+                    EduAbroad <br>
+                    <span class="cs-gradient-text">Expo Manager</span>
+                </h1>
+                <p class="cs-text cs-text--large">
+                    A real-time event management system built in just <strong>10 days</strong>.
+                    Handled 2,000+ students and 50+ universities across 4 cities with zero downtime.
+                </p>
 
-        <div class="container mx-auto px-6 max-w-6xl">
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div class="space-y-6">
-                    <div
-                        class="inline-block px-4 py-1.5 bg-brandRed/10 border border-brandRed/20 rounded-full text-brandRed text-sm font-mono font-bold mb-4 fade-up">
-                        EDUCATION TECH
+                <div class="cs-hero-meta">
+                    <div class="cs-hero-meta-item">
+                        <div class="cs-hero-meta-label">Role</div>
+                        <div class="cs-hero-meta-value">Lead Developer</div>
                     </div>
-                    <h1 class="text-5xl md:text-7xl font-bold leading-tight fade-up">
-                        EduAbroad <br>
-                        <span
-                            class="text-transparent bg-clip-text bg-gradient-to-r from-navy to-brandRed via-white">Expo
-                            Manager</span>
-                    </h1>
-                    <p class="text-xl text-slate-400 leading-relaxed fade-up">
-                        A real-time event management system built in just <strong class="text-white">10 days</strong>.
-                        Handled 2,000+ students and 50+ universities across 4 cities with zero downtime.
-                    </p>
-
-                    <div class="flex flex-wrap gap-4 pt-4 fade-up">
-                        <div class="px-4 py-2 bg-slate-800 rounded-lg border border-white/5">
-                            <span class="block text-xs text-slate-500 uppercase">Role</span>
-                            <span class="font-bold">Lead Developer</span>
-                        </div>
-                        <div class="px-4 py-2 bg-slate-800 rounded-lg border border-white/5">
-                            <span class="block text-xs text-slate-500 uppercase">Speed</span>
-                            <span class="font-bold">10 Days Sprint</span>
-                        </div>
-                        <div class="px-4 py-2 bg-slate-800 rounded-lg border border-white/5">
-                            <span class="block text-xs text-slate-500 uppercase">Stack</span>
-                            <span class="font-bold">No-Code (Adalo)</span>
-                        </div>
+                    <div class="cs-hero-meta-item">
+                        <div class="cs-hero-meta-label">Speed</div>
+                        <div class="cs-hero-meta-value">10 Days Sprint</div>
                     </div>
-                </div>
-
-                <!-- Hero Image Showcase -->
-                <div class="relative fade-up delay-200">
-                    <div class="absolute inset-0 bg-brandRed/20 blur-3xl -z-10 rounded-full"></div>
-                    <!-- Using Home.png as the main hero shot -->
-                    <img src="../espi-eduabroad/Home.png" alt="EduAbroad App Interface"
-                        class="rounded-2xl shadow-2xl border border-white/10 w-full transform rotate-2 hover:rotate-0 transition-all duration-700">
+                    <div class="cs-hero-meta-item">
+                        <div class="cs-hero-meta-label">Stack</div>
+                        <div class="cs-hero-meta-value">No-Code (Adalo)</div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </header>
 
-    <!-- The Challenge Section -->
-    <section class="py-24 bg-slate-900 border-y border-white/5">
-        <div class="container mx-auto px-6 max-w-4xl text-center">
-            <h2 class="text-3xl md:text-4xl font-bold mb-12 fade-up">The Challenge</h2>
-            <div class="grid md:grid-cols-3 gap-8 text-left">
-                <div
-                    class="p-8 bg-dark rounded-2xl border border-white/5 hover:border-brandRed/30 transition-all fade-up">
-                    <h3 class="text-4xl font-bold text-brandRed mb-2">10 Days</h3>
-                    <p class="text-slate-400">To conceive, build, and deploy a robust multi-user system before the expo
-                        doors opened.</p>
-                </div>
-                <div
-                    class="p-8 bg-dark rounded-2xl border border-white/5 hover:border-brandRed/30 transition-all fade-up delay-100">
-                    <h3 class="text-4xl font-bold text-white mb-2">2,000+</h3>
-                    <p class="text-slate-400">Active students verifying identities and booking sessions in real-time.
-                    </p>
-                </div>
-                <div
-                    class="p-8 bg-dark rounded-2xl border border-white/5 hover:border-brandRed/30 transition-all fade-up delay-200">
-                    <h3 class="text-4xl font-bold text-navy mb-2">Snap-Second</h3>
-                    <p class="text-slate-400">Real-time data for management to track walk-ins and lead distribution
-                        instantly.</p>
-                </div>
+            <div class="cs-hero-image cs-animate cs-animate--delay-2">
+                <img src="../espi-eduabroad/Home.png" alt="EduAbroad App Interface">
             </div>
         </div>
     </section>
 
-    <!-- User Journeys & Gallery -->
-    <section class="py-24">
-        <div class="container mx-auto px-6 max-w-6xl">
-            <h2 class="text-4xl font-bold mb-16 text-center fade-up">Core Workflows</h2>
+    <!-- The Challenge -->
+    <section class="cs-section cs-section--alt">
+        <div style="text-align: center; margin-bottom: 64px;">
+            <span class="cs-label cs-animate">The Challenge</span>
+            <h2 class="cs-heading-lg cs-animate cs-animate--delay-1">Built Under Pressure</h2>
+        </div>
 
-            <!-- 1. Student Journey -->
-            <div class="mb-32">
-                <div class="grid md:grid-cols-2 gap-12 items-center mb-12">
-                    <div class="order-2 md:order-1 space-y-6 fade-up">
-                        <span class="text-brandRed font-mono font-bold">01. STUDENT EXPERIENCE</span>
-                        <h3 class="text-3xl font-bold">Seamless Onboarding & Engagement</h3>
-                        <p class="text-slate-400 text-lg">
-                            We replaced paper forms with digital OTP verification. Students could instantly view their
-                            matched universities, book IELTS demos, and take scholarship tests.
-                        </p>
-                        <ul class="space-y-2 text-slate-300">
-                            <li class="flex items-center gap-2"><span class="text-brandRed">→</span> WhatsApp OTP
-                                Verification</li>
-                            <li class="flex items-center gap-2"><span class="text-brandRed">→</span> Automated
-                                Scholarship Scoring</li>
-                            <li class="flex items-center gap-2"><span class="text-brandRed">→</span> Instant Slot
-                                Booking for Reps</li>
-                        </ul>
-                    </div>
-                    <div class="order-1 md:order-2 grid grid-cols-2 gap-4 fade-up">
-                        <img src="../espi-eduabroad/StudentDashboard.png"
-                            class="rounded-xl shadow-lg border border-white/10 hover:scale-105 transition-transform"
-                            alt="Dashboard">
-                        <img src="../espi-eduabroad/Student_Test2.png"
-                            class="rounded-xl shadow-lg border border-white/10 hover:scale-105 transition-transform mt-8"
-                            alt="Scholarship Test">
-                    </div>
-                </div>
+        <div class="cs-challenge-grid">
+            <div class="cs-challenge-card cs-animate">
+                <div class="cs-challenge-value cs-challenge-value--red">10 Days</div>
+                <p class="cs-text" style="font-size: 16px;">
+                    To conceive, build, and deploy a robust multi-user system before the expo doors opened.
+                </p>
             </div>
-
-            <!-- 2. Counselor Triage -->
-            <div class="mb-32">
-                <div class="grid md:grid-cols-2 gap-12 items-center mb-12">
-                    <div class="grid grid-cols-2 gap-4 fade-up">
-                        <img src="../espi-eduabroad/Counsellor_Home.png"
-                            class="rounded-xl shadow-lg border border-white/10 hover:scale-105 transition-transform"
-                            alt="Counselor Home">
-                        <img src="../espi-eduabroad/Counsellor_SelectRep.png"
-                            class="rounded-xl shadow-lg border border-white/10 hover:scale-105 transition-transform mt-8"
-                            alt="Select Rep">
-                    </div>
-                    <div class="space-y-6 fade-up">
-                        <span class="text-brandRed font-mono font-bold">02. TRIAGE SYSTEM</span>
-                        <h3 class="text-3xl font-bold">Smart Matchmaking</h3>
-                        <p class="text-slate-400 text-lg">
-                            Counselors acted as the intake layer, enriching student profiles and "triaging" them to the
-                            correct university representatives based on eligibility, ensuring high-quality leads for
-                            universities.
-                        </p>
-                    </div>
-                </div>
+            <div class="cs-challenge-card cs-animate cs-animate--delay-1">
+                <div class="cs-challenge-value">2,000+</div>
+                <p class="cs-text" style="font-size: 16px;">
+                    Active students verifying identities and booking sessions in real-time.
+                </p>
             </div>
-
-            <!-- 3. University CRM -->
-            <div class="mb-16">
-                <div class="grid md:grid-cols-2 gap-12 items-center mb-12">
-                    <div class="order-2 md:order-1 space-y-6 fade-up">
-                        <span class="text-brandRed font-mono font-bold">03. REP CRM</span>
-                        <h3 class="text-3xl font-bold">Pocket CRM for Universities</h3>
-                        <p class="text-slate-400 text-lg">
-                            University reps ditched notepads for a dedicated tablet interface. They could see their
-                            specific leads, view academic history, and log interaction remarks instantly.
-                        </p>
-                    </div>
-                    <div class="order-1 md:order-2 grid grid-cols-2 gap-4 fade-up">
-                        <img src="../espi-eduabroad/UniRep_StudentList.png"
-                            class="rounded-xl shadow-lg border border-white/10 hover:scale-105 transition-transform"
-                            alt="Rep List">
-                        <img src="../espi-eduabroad/UniRep_AddRemark.png"
-                            class="rounded-xl shadow-lg border border-white/10 hover:scale-105 transition-transform mt-8"
-                            alt="Add Remark">
-                    </div>
-                </div>
+            <div class="cs-challenge-card cs-animate cs-animate--delay-2">
+                <div class="cs-challenge-value cs-challenge-value--navy">Snap-Second</div>
+                <p class="cs-text" style="font-size: 16px;">
+                    Real-time data for management to track walk-ins and lead distribution instantly.
+                </p>
             </div>
+        </div>
+    </section>
 
+    <!-- Core Workflows -->
+    <section class="cs-section">
+        <div style="text-align: center; margin-bottom: 64px;">
+            <span class="cs-label cs-animate">Core Workflows</span>
+            <h2 class="cs-heading-lg cs-animate cs-animate--delay-1">How It Works</h2>
+        </div>
+
+        <!-- Workflow 1: Student Journey -->
+        <div class="cs-workflow">
+            <div class="cs-animate">
+                <span class="cs-label">01. Student Experience</span>
+                <h3 class="cs-heading-md" style="margin-bottom: 16px;">Seamless Onboarding & Engagement</h3>
+                <p class="cs-text">
+                    We replaced paper forms with digital OTP verification. Students could instantly view their
+                    matched universities, book IELTS demos, and take scholarship tests.
+                </p>
+                <ul class="cs-workflow-list">
+                    <li>WhatsApp OTP Verification</li>
+                    <li>Automated Scholarship Scoring</li>
+                    <li>Instant Slot Booking for Reps</li>
+                </ul>
+            </div>
+            <div class="cs-workflow-images cs-animate cs-animate--delay-2">
+                <img src="../espi-eduabroad/StudentDashboard.png" alt="Student Dashboard">
+                <img src="../espi-eduabroad/Student_Test2.png" alt="Scholarship Test">
+            </div>
+        </div>
+
+        <!-- Workflow 2: Counselor Triage -->
+        <div class="cs-workflow">
+            <div class="cs-animate">
+                <span class="cs-label">02. Triage System</span>
+                <h3 class="cs-heading-md" style="margin-bottom: 16px;">Smart Matchmaking</h3>
+                <p class="cs-text">
+                    Counselors acted as the intake layer, enriching student profiles and "triaging" them to the
+                    correct university representatives based on eligibility, ensuring high-quality leads.
+                </p>
+            </div>
+            <div class="cs-workflow-images cs-animate cs-animate--delay-2">
+                <img src="../espi-eduabroad/Counsellor_Home.png" alt="Counselor Home">
+                <img src="../espi-eduabroad/Counsellor_SelectRep.png" alt="Select Rep">
+            </div>
+        </div>
+
+        <!-- Workflow 3: University CRM -->
+        <div class="cs-workflow">
+            <div class="cs-animate">
+                <span class="cs-label">03. Rep CRM</span>
+                <h3 class="cs-heading-md" style="margin-bottom: 16px;">Pocket CRM for Universities</h3>
+                <p class="cs-text">
+                    University reps ditched notepads for a dedicated tablet interface. They could see their
+                    specific leads, view academic history, and log interaction remarks instantly.
+                </p>
+            </div>
+            <div class="cs-workflow-images cs-animate cs-animate--delay-2">
+                <img src="../espi-eduabroad/UniRep_StudentList.png" alt="Rep List">
+                <img src="../espi-eduabroad/UniRep_AddRemark.png" alt="Add Remark">
+            </div>
         </div>
     </section>
 
     <!-- Technical Details -->
-    <section class="py-24 bg-slate-900 border-t border-white/5">
-        <div class="container mx-auto px-6 max-w-4xl">
-            <h2 class="text-3xl font-bold mb-12 fade-up">Under the Hood</h2>
-            <div class="grid md:grid-cols-2 gap-12">
-                <div class="space-y-4 fade-up">
-                    <h3 class="text-xl font-bold text-white">Adalo No-Code & Database</h3>
-                    <p class="text-slate-400">
-                        Leveraged Adalo's relational database to handle complex many-to-many relationships (Students <->
-                            Universities <-> Counselors). This allowed for rapid iteration without writing boilerplate
-                                backend code.
-                    </p>
-                </div>
-                <div class="space-y-4 fade-up delay-100">
-                    <h3 class="text-xl font-bold text-white">Automated Logic</h3>
-                    <p class="text-slate-400">
-                        <strong>Scholarship Engine:</strong> Custom logic automatically calculated waivers based on test
-                        scores (1-30 scale), instantly reflecting the award on the student's dashboard.
-                    </p>
-                </div>
+    <section class="cs-section cs-section--alt">
+        <div style="text-align: center; margin-bottom: 64px;">
+            <span class="cs-label cs-animate">Under the Hood</span>
+            <h2 class="cs-heading-lg cs-animate cs-animate--delay-1">Technical Implementation</h2>
+        </div>
+
+        <div class="cs-tech-grid" style="max-width: 900px; margin: 0 auto;">
+            <div class="cs-tech-card cs-animate">
+                <h3 class="cs-heading-sm" style="margin-bottom: 16px;">Adalo No-Code & Database</h3>
+                <p class="cs-text" style="font-size: 16px;">
+                    Leveraged Adalo's relational database to handle complex many-to-many relationships
+                    (Students ↔ Universities ↔ Counselors). This allowed for rapid iteration without
+                    writing boilerplate backend code.
+                </p>
+            </div>
+            <div class="cs-tech-card cs-animate cs-animate--delay-1">
+                <h3 class="cs-heading-sm" style="margin-bottom: 16px;">Automated Logic</h3>
+                <p class="cs-text" style="font-size: 16px;">
+                    <strong>Scholarship Engine:</strong> Custom logic automatically calculated waivers based on test
+                    scores (1-30 scale), instantly reflecting the award on the student's dashboard.
+                </p>
             </div>
         </div>
     </section>
 
+    <!-- CTA -->
+    <section class="cs-section cs-cta">
+        <span class="cs-label cs-animate">Get In Touch</span>
+        <h2 class="cs-heading-lg cs-animate cs-animate--delay-1" style="margin-bottom: 16px;">
+            Ready to build something fast?
+        </h2>
+        <p class="cs-text cs-animate cs-animate--delay-2" style="max-width: 500px; margin: 0 auto 32px;">
+            I specialize in rapid prototyping and delivering production-ready systems under tight deadlines.
+        </p>
+        <a href="../work-with-me.html" class="cs-button cs-button--primary cs-animate cs-animate--delay-3">
+            Let's Talk
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+        </a>
+    </section>
+
     <!-- Footer -->
-    <footer class="py-12 border-t border-white/5 bg-dark relative z-10">
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="text-2xl font-bold mb-8">Ready to build something fast?</h2>
-            <a href="../work-with-me.html"
-                class="px-8 py-4 bg-white text-black font-bold rounded-full hover:scale-105 transition-transform inline-block">Lets
-                Talk</a>
-            <p class="text-slate-600 text-sm mt-12">
-                &copy; 2026 Aakash Sanghvi.
-            </p>
-        </div>
+    <footer class="cs-footer">
+        <p>&copy; 2026 Aakash Sanghvi. All rights reserved.</p>
     </footer>
 
-    <!-- Scripts -->
-    <script src="../config.v2.js"></script>
-    <script src="../script.js"></script>
+    <!-- Animation Script -->
     <script>
-        // Custom GSAP setup for this page since it's in a subdir
         gsap.registerPlugin(ScrollTrigger);
 
-        // Re-run fade ups
-        const fadeUps = document.querySelectorAll('.fade-up');
-        fadeUps.forEach(el => {
-            gsap.from(el, {
-                scrollTrigger: {
-                    trigger: el,
-                    start: "top 85%",
-                    toggleActions: "play none none reverse"
-                },
-                y: 50,
-                opacity: 0,
-                duration: 0.8,
-                ease: "power3.out"
+        document.addEventListener('DOMContentLoaded', () => {
+            const animatedElements = document.querySelectorAll('.cs-animate');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('cs-visible');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
             });
+            animatedElements.forEach(el => observer.observe(el));
         });
     </script>
+
 </body>
 
 </html>
