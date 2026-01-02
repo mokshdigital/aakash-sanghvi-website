@@ -159,9 +159,3 @@ nav {
     font-family: 'Inter', monospace;
     /* Fallback to monospace for alignment if needed, but Inter has good tabular nums */
 }
-
-/* Hide elements for animation init */
-.fade-up {
-    opacity: 0;
-    transform: translateY(30px);
-}
