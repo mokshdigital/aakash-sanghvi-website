@@ -153,12 +153,15 @@ if (heroSection) {
 
 
 // --- 5. Marquee Loop ---
-gsap.to(".marquee-content", {
-    xPercent: -100,
-    repeat: -1,
-    duration: 15,
-    ease: "linear"
-}).totalProgress(0.5);
+const marqueeContent = document.querySelector(".marquee-content");
+if (marqueeContent) {
+    gsap.to(".marquee-content", {
+        xPercent: -100,
+        repeat: -1,
+        duration: 15,
+        ease: "linear"
+    }).totalProgress(0.5);
+}
 
 
 // --- 6. Scroll Animations (Fade Up) ---
