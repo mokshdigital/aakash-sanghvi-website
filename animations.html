@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Webflow-Style Animations</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f0f0f;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Hide scrollbar for clean look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f0f0f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+
+        /* Hero Background Gradient Mesh */
+        .hero-mesh {
+            background: radial-gradient(circle at 50% 50%, rgba(76, 29, 149, 0.15) 0%, rgba(15, 15, 15, 0) 50%);
+            position: absolute;
+            width: 150vw;
+            height: 150vh;
+            top: -25%;
+            left: -25%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Custom Cursor styling (optional, but very "Webflow") */
+        .cursor-dot {
+            width: 12px;
+            height: 12px;
+            background-color: white;
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+        }
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9998;
+            transition: width 0.2s, height 0.2s;
+        }
+
+        /* Card 3D effect base */
+        .card-3d {
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+        }
+        
+        /* Smooth scrolling container for horizontal section */
+        .horizontal-container {
+            width: 400%;
+            display: flex;
+            flex-wrap: nowrap;
+        }
+
+        /* Text reveal mask */
+        .reveal-text-mask {
+            overflow: hidden;
+            display: block;
+        }
+        .reveal-text-line {
+            transform: translateY(100%);
+            display: block;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot hidden md:block"></div>
+    <div class="cursor-outline hidden md:block"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 px-8 py-6 flex justify-between items-center mix-blend-difference">
+        <div class="text-xl font-bold tracking-tighter">ANIMATIONS.</div>
+        <div class="hidden md:flex gap-8 text-sm font-medium">
+            <a href="#hero" class="hover:opacity-50 transition-opacity">Mouse</a>
+            <a href="#scroll" class="hover:opacity-50 transition-opacity">Scroll</a>
+            <a href="#horizontal" class="hover:opacity-50 transition-opacity">Horizontal</a>
+            <a href="#parallax" class="hover:opacity-50 transition-opacity">Parallax</a>
+        </div>
+        <button class="bg-white text-black px-5 py-2 rounded-full text-sm font-semibold hover:scale-105 transition-transform">Get Started</button>
+    </nav>
+
+    <!-- SECTION 1: HERO & MOUSE TRACKING -->
+    <section id="hero" class="relative h-screen w-full flex items-center justify-center overflow-hidden">
+        <div class="hero-mesh"></div>
+        
+        <!-- Floating Shapes (Mouse Parallax Targets) -->
+        <div class="mouse-float absolute top-1/4 left-1/4 w-24 h-24 rounded-full bg-purple-600 blur-3xl opacity-40" data-speed="2"></div>
+        <div class="mouse-float absolute bottom-1/3 right-1/4 w-40 h-40 rounded-full bg-blue-600 blur-3xl opacity-30" data-speed="-2"></div>
+        <div class="mouse-float absolute top-1/2 right-10 w-16 h-16 rounded-full bg-pink-500 blur-xl opacity-20" data-speed="4"></div>
+
+        <div class="relative z-10 text-center px-4">
+            <h1 class="text-6xl md:text-9xl font-extrabold tracking-tighter leading-none mb-6">
+                <span class="reveal-text-mask"><span class="reveal-text-line">BEYOND</span></span>
+                <span class="reveal-text-mask"><span class="reveal-text-line text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">STATIC</span></span>
+                <span class="reveal-text-mask"><span class="reveal-text-line">DESIGN</span></span>
+            </h1>
+            <p class="hero-sub text-gray-400 text-lg md:text-xl max-w-xl mx-auto opacity-0 transform translate-y-4">
+                Interactive web experiences powered by GSAP. Move your mouse to see the parallax effect.
+            </p>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 animate-bounce">
+            <span class="text-xs uppercase tracking-widest">Scroll</span>
+            <div class="w-[1px] h-8 bg-white"></div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: SCROLL REVEAL & TEXT ANIMATION -->
+    <section id="scroll" class="min-h-screen flex items-center justify-center py-20 bg-zinc-900 relative">
+        <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+            <div class="space-y-8">
+                <h2 class="text-4xl md:text-6xl font-bold leading-tight fade-up">
+                    Scroll Triggered <br>
+                    <span class="text-purple-400">Revelations.</span>
+                </h2>
+                <p class="text-gray-400 text-lg fade-up">
+                    As you scroll, elements enter the viewport with purpose. We don't just fade things in; we choreograph their entrance to guide the user's eye through the narrative.
+                </p>
+                <div class="flex gap-4 fade-up">
+                    <div class="h-24 w-24 bg-zinc-800 rounded-lg border border-zinc-700 flex items-center justify-center text-2xl">01</div>
+                    <div class="h-24 w-24 bg-zinc-800 rounded-lg border border-zinc-700 flex items-center justify-center text-2xl">02</div>
+                    <div class="h-24 w-24 bg-zinc-800 rounded-lg border border-zinc-700 flex items-center justify-center text-2xl">03</div>
+                </div>
+            </div>
+            
+            <div class="relative h-[600px] w-full bg-zinc-950 rounded-2xl overflow-hidden border border-zinc-800 shadow-2xl image-reveal-container">
+                <!-- Image simulated with div -->
+                <div class="absolute inset-0 bg-gradient-to-br from-indigo-900 to-black image-reveal-scale transform scale-125"></div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="text-center p-8 border border-white/10 bg-black/20 backdrop-blur-md rounded-xl max-w-xs">
+                        <div class="w-12 h-12 bg-indigo-500 rounded-full mb-4 mx-auto"></div>
+                        <h3 class="text-xl font-bold mb-2">Card Reveal</h3>
+                        <p class="text-sm text-gray-300">This card creates a 3D effect as it enters the viewport.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: HORIZONTAL SCROLL -->
+    <!-- This section pins vertically and scrolls horizontally -->
+    <section id="horizontal" class="h-screen w-full overflow-hidden bg-black relative">
+        <div class="pin-wrap h-full">
+            <div class="horizontal-container h-full flex items-center pl-24">
+                
+                <!-- Slide 1 -->
+                <div class="w-screen flex-shrink-0 px-12 border-r border-zinc-800 h-full flex flex-col justify-center">
+                    <span class="text-purple-500 text-sm font-mono mb-4">01 — TRANSITION</span>
+                    <h2 class="text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-800">SIDEWAYS</h2>
+                    <p class="text-2xl mt-4 max-w-md text-gray-400">We turn vertical scroll into horizontal movement, creating a distinct "gallery" feel.</p>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="w-[60vw] flex-shrink-0 px-12 h-[60vh] mx-8 bg-zinc-900 rounded-3xl border border-zinc-800 flex items-center justify-center relative group overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-purple-900/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <h3 class="text-4xl font-bold relative z-10">Project Alpha</h3>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="w-[60vw] flex-shrink-0 px-12 h-[60vh] mx-8 bg-zinc-900 rounded-3xl border border-zinc-800 flex items-center justify-center relative group overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-blue-900/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <h3 class="text-4xl font-bold relative z-10">Project Beta</h3>
+                </div>
+
+                <!-- Slide 4 -->
+                <div class="w-screen flex-shrink-0 px-12 h-full flex flex-col justify-center items-center bg-zinc-950">
+                    <h2 class="text-6xl font-bold mb-8">Keep Scrolling</h2>
+                    <div class="w-16 h-16 border-2 border-white rounded-full flex items-center justify-center animate-pulse">
+                        ↓
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: PARALLAX & MICRO-INTERACTIONS -->
+    <section id="parallax" class="py-32 relative overflow-hidden">
+        
+        <!-- Background Parallax Elements -->
+        <div class="parallax-bg absolute top-20 right-20 w-64 h-64 rounded-full border border-zinc-700 opacity-20" data-speed="0.2"></div>
+        <div class="parallax-bg absolute bottom-40 left-10 w-96 h-96 rounded-full bg-purple-900 blur-[100px] opacity-20" data-speed="0.5"></div>
+
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-24">
+                <h2 class="text-5xl font-bold mb-6">Micro Interactions</h2>
+                <p class="text-gray-400">Hover over the cards below. We use 3D tilts and tracking glares.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="card-item group relative h-96 bg-zinc-900 rounded-2xl border border-zinc-800 p-8 overflow-hidden transition-all duration-300 hover:border-zinc-600">
+                    <div class="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <!-- Mouse follow gradient glow -->
+                    <div class="card-glow absolute w-[300px] h-[300px] bg-purple-500/20 blur-[80px] rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" style="left: -150px; top: -150px;"></div>
+                    
+                    <div class="relative z-10 h-full flex flex-col justify-between">
+                        <div class="w-12 h-12 bg-zinc-800 rounded-lg flex items-center justify-center text-xl">✨</div>
+                        <div>
+                            <h3 class="text-2xl font-bold mb-2">Hover Glow</h3>
+                            <p class="text-gray-400 text-sm">The background glow follows your mouse cursor position within the card boundaries.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="card-item group relative h-96 bg-zinc-900 rounded-2xl border border-zinc-800 p-8 overflow-hidden transition-all duration-300 hover:border-zinc-600">
+                     <div class="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    
+                    <div class="relative z-10 h-full flex flex-col justify-between">
+                        <div class="w-12 h-12 bg-zinc-800 rounded-lg flex items-center justify-center text-xl">🚀</div>
+                        <div>
+                            <h3 class="text-2xl font-bold mb-2">Scale & Lift</h3>
+                            <p class="text-gray-400 text-sm">Subtle Y-axis translation and shadow expansion creates a lifting effect.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="card-item group relative h-96 bg-zinc-900 rounded-2xl border border-zinc-800 p-8 overflow-hidden transition-all duration-300 hover:border-zinc-600">
+                     <div class="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    
+                    <div class="relative z-10 h-full flex flex-col justify-between">
+                        <div class="w-12 h-12 bg-zinc-800 rounded-lg flex items-center justify-center text-xl">🎨</div>
+                        <div>
+                            <h3 class="text-2xl font-bold mb-2">Lottie Support</h3>
+                            <p class="text-gray-400 text-sm">Integrate complex JSON animations that play on hover or scroll.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: TIMELINE ANIMATION (Simulated Lottie) -->
+    <section class="min-h-[80vh] flex items-center justify-center relative bg-black border-t border-zinc-900">
+        <div class="text-center">
+            <div class="lottie-container w-64 h-64 mx-auto mb-8 relative">
+                <!-- Simple CSS/JS constructed animation to simulate a Lottie file -->
+                <svg viewBox="0 0 100 100" class="w-full h-full overflow-visible">
+                    <circle cx="50" cy="50" r="40" stroke="#4f46e5" stroke-width="2" fill="none" class="circle-anim origin-center" />
+                    <circle cx="50" cy="50" r="25" stroke="#ec4899" stroke-width="2" fill="none" class="circle-anim-2 origin-center" />
+                    <rect x="45" y="45" width="10" height="10" fill="white" class="rect-anim origin-center" />
+                </svg>
+            </div>
+            <h2 class="text-3xl font-bold">Timeline Animation</h2>
+            <p class="text-gray-500 mt-2">Scrub controlled animation logic.</p>
+        </div>
+    </section>
+
+    <footer class="py-8 text-center text-zinc-600 text-sm border-t border-zinc-900">
+        <p>Built with GSAP + Tailwind. Designed to mimic Webflow Interactions 2.0.</p>
+    </footer>
+
+    <script>
+        // Register GSAP Plugin
+        gsap.registerPlugin(ScrollTrigger);
+
+        // --- 1. MOUSE TRACKING (HERO) ---
+        const heroSection = document.getElementById('hero');
+        const floaters = document.querySelectorAll('.mouse-float');
+        
+        heroSection.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 2; // -1 to 1
+            const y = (e.clientY / window.innerHeight - 0.5) * 2; // -1 to 1
+
+            floaters.forEach(el => {
+                const speed = el.getAttribute('data-speed');
+                gsap.to(el, {
+                    x: x * 50 * speed,
+                    y: y * 50 * speed,
+                    duration: 1,
+                    ease: "power2.out"
+                });
+            });
+        });
+
+        // --- 2. TEXT REVEAL ON LOAD ---
+        const tl = gsap.timeline();
+        tl.to('.reveal-text-line', {
+            y: 0,
+            duration: 1,
+            stagger: 0.2,
+            ease: "power4.out",
+            delay: 0.2
+        })
+        .to('.hero-sub', {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power2.out"
+        }, "-=0.5");
+
+
+        // --- 3. SCROLL REVEAL (FADE UP) ---
+        const fadeUpElements = document.querySelectorAll('.fade-up');
+        fadeUpElements.forEach(el => {
+            gsap.from(el, {
+                scrollTrigger: {
+                    trigger: el,
+                    start: "top 80%", // starts when top of element hits 80% of viewport
+                    toggleActions: "play none none reverse"
+                },
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out"
+            });
+        });
+
+        // --- 4. IMAGE SCALE ON SCROLL ---
+        gsap.to('.image-reveal-scale', {
+            scrollTrigger: {
+                trigger: '.image-reveal-container',
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true
+            },
+            scale: 1, // Shrink from 1.25 to 1
+            ease: "none"
+        });
+
+
+        // --- 5. HORIZONTAL SCROLL SECTION ---
+        // We pin the container and translate the content to the left
+        const horizontalSection = document.querySelector("#horizontal");
+        const horizontalContainer = document.querySelector(".horizontal-container");
+
+        gsap.to(horizontalContainer, {
+            x: () => -(horizontalContainer.scrollWidth - window.innerWidth),
+            ease: "none",
+            scrollTrigger: {
+                trigger: horizontalSection,
+                start: "top top",
+                end: () => "+=" + horizontalContainer.scrollWidth, // The scroll distance roughly equals width
+                pin: true,
+                scrub: 1,
+                invalidateOnRefresh: true
+            }
+        });
+
+
+        // --- 6. PARALLAX ELEMENTS ---
+        const parallaxBgs = document.querySelectorAll('.parallax-bg');
+        parallaxBgs.forEach(bg => {
+            const speed = bg.getAttribute('data-speed');
+            gsap.to(bg, {
+                scrollTrigger: {
+                    trigger: "#parallax",
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: true
+                },
+                y: -100 * speed,
+                ease: "none"
+            });
+        });
+
+
+        // --- 7. CARD HOVER GLOW EFFECT (MICRO-INTERACTION) ---
+        const cards = document.querySelectorAll('.card-item');
+        cards.forEach(card => {
+            const glow = card.querySelector('.card-glow');
+            
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                gsap.to(glow, {
+                    x: x - 150, // center the glow (300px width / 2)
+                    y: y - 150,
+                    duration: 0.1, // fast response
+                    ease: "power1.out"
+                });
+                
+                // Optional: 3D Tilt
+                const xCenter = rect.width / 2;
+                const yCenter = rect.height / 2;
+                const rotateX = ((y - yCenter) / yCenter) * -5;
+                const rotateY = ((x - xCenter) / xCenter) * 5;
+
+                gsap.to(card, {
+                    rotationX: rotateX,
+                    rotationY: rotateY,
+                    transformPerspective: 1000,
+                    duration: 0.4,
+                    ease: "power2.out"
+                });
+            });
+
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card, {
+                    rotationX: 0,
+                    rotationY: 0,
+                    duration: 0.5,
+                    ease: "power2.out"
+                });
+            });
+        });
+
+
+        // --- 8. TIMELINE / SVG ANIMATION ---
+        const svgTl = gsap.timeline({
+            scrollTrigger: {
+                trigger: ".lottie-container",
+                start: "top 80%",
+                end: "bottom 20%",
+                scrub: 1
+            }
+        });
+
+        svgTl.to(".circle-anim", { strokeDasharray: "10 10", rotation: 360 })
+             .to(".circle-anim-2", { scale: 1.5, stroke: "#6366f1" }, "<")
+             .to(".rect-anim", { rotation: 45, scale: 2 }, "<");
+
+
+        // --- 9. CUSTOM CURSOR ---
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            // Dot follows instantly
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+            cursorDot.style.transform = `translate(-50%, -50%)`;
+
+            // Outline follows with slight delay via GSAP for smoothness
+            gsap.to(cursorOutline, {
+                x: posX,
+                y: posY,
+                duration: 0.15,
+                ease: "power2.out",
+                xPercent: -50,
+                yPercent: -50
+            });
+        });
+
+        // Hover states for cursor
+        const hoverables = document.querySelectorAll('a, button, .card-item');
+        hoverables.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                gsap.to(cursorOutline, { scale: 1.5, duration: 0.2 });
+            });
+            el.addEventListener('mouseleave', () => {
+                gsap.to(cursorOutline, { scale: 1, duration: 0.2 });
+            });
+        });
+
+    </script>
+</body>
+</html>
