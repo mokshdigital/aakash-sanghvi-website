@@ -4,6 +4,8 @@ import HorizontalScrollProjects from '@/components/HorizontalScrollProjects';
 import Image from 'next/image';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+
 const FALLBACK_PROJECTS = [
     {
         title: 'UCW Peer Tutoring Service',
