@@ -1,10 +1,10 @@
-import { createClient } from '@/utils/supabase/server';
+// import { createClient } from '@/utils/supabase/server';
 import { Project } from '@/components/ProjectCard';
 import HorizontalScrollProjects from '@/components/HorizontalScrollProjects';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export const dynamic = 'force-dynamic';
+// export const dynamic = 'force-dynamic'; // Reverting to static for test
 
 const FALLBACK_PROJECTS = [
     {
@@ -36,9 +36,11 @@ const FALLBACK_PROJECTS = [
     }
 ];
 
-export default async function HomePage() {
-    let projects = [];
+export default function HomePage() {
+    // Simply use fallback projects for now to ensure stability
+    const projects = FALLBACK_PROJECTS;
 
+    /*
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
@@ -61,6 +63,7 @@ export default async function HomePage() {
             projects = FALLBACK_PROJECTS;
         }
     }
+    */
 
     return (
         <div data-theme="dark" className="min-h-screen" style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-text)' }}>
