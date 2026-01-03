@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aakash Sanghvi | AI-Powered Web Developer</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0f172a',
+                        slate: {
+                            800: '#1e293b',
+                            900: '#0f172a'
+                        },
+                        primary: '#8b5cf6',
+                        secondary: '#06b6d4'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- GSAP & Plugins -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/Flip.min.js"></script>
+</head>
+
+<body class="bg-dark text-slate-200 antialiased selection:bg-primary selection:text-white">
+
+    <!-- Custom Cursor -->
+    <div id="cursor-dot" class="hidden md:block"></div>
+    <div id="cursor-outline" class="hidden md:block"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 px-6 backdrop-blur-sm bg-dark/50 border-b border-white/5 transition-all duration-300 h-20"
+        id="navbar">
+        <div class="nav-container">
+            <a href="index.html"
+                class="text-xl font-bold tracking-tighter hover-magnet cursor-pointer z-50 mix-blend-difference text-white">
+                AAKASH SANGHVI.
+            </a>
+
+            <div class="hidden md:flex gap-8 text-sm font-medium mix-blend-difference text-white">
+                <a href="#about" class="hover:text-primary transition-colors hover-magnet">About</a>
+                <a href="#skills" class="hover:text-primary transition-colors hover-magnet">Skills</a>
+                <a href="projects.html" class="hover:text-primary transition-colors hover-magnet">Projects</a>
+                <a href="work-with-me.html"
+                    class="px-5 py-2 border border-white/20 rounded-full hover:bg-white hover:text-black transition-all hover-magnet">Work
+                    With Me</a>
+            </div>
+
+            <!-- Mobile Menu Button (Hamburger) -->
+            <button class="md:hidden text-white z-50 focus:outline-none" id="menu-btn">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+                    </path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative w-full h-screen flex flex-col justify-center items-center overflow-hidden" id="hero">
+        <canvas id="hero-canvas" class="hero-canvas"></canvas>
+
+        <!-- Mouse Parallax Orbs -->
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[100px] mouse-parallax"
+            data-speed="0.05"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-secondary/10 rounded-full blur-[80px] mouse-parallax"
+            data-speed="0.08"></div>
+
+        <div class="hero-content text-center px-4 relative z-10">
+            <h1 class="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter mb-6 leading-none">
+                <div class="reveal-mask"><span class="reveal-text">CREATIVE</span></div><br>
+                <div class="reveal-mask"><span
+                        class="reveal-text text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">DEVELOPER</span>
+                </div>
+            </h1>
+
+            <p class="text-lg md:text-xl text-slate-400 max-w-xl mx-auto mb-10 hero-sub">
+                Building modern web experiences with <span class="text-white font-semibold">AI-assisted coding</span> ✨
+            </p>
+
+            <div class="hero-cta flex justify-center gap-4">
+                <a href="projects.html"
+                    class="group relative px-8 py-3 bg-white text-black font-semibold rounded-full overflow-hidden hover-magnet inline-block">
+                    <span class="relative z-10 transition-colors group-hover:text-white">View Projects</span>
+                    <div
+                        class="absolute inset-0 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300 ease-out">
+                    </div>
+                </a>
+                <a href="#about"
+                    class="px-8 py-3 border border-white/20 rounded-full hover:bg-white/10 transition-all hover-magnet">More
+                    About Me</a>
+            </div>
+        </div>
+
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 hero-scroll">
+            <span class="text-xs uppercase tracking-widest text-slate-500">Scroll</span>
+            <div class="w-[1px] h-12 bg-gradient-to-b from-slate-500 to-transparent"></div>
+        </div>
+    </header>
+
+    <!-- Marquee Section -->
+    <div class="py-12 bg-slate-900 border-y border-white/5 overflow-hidden">
+        <div class="marquee-wrapper flex whitespace-nowrap">
+            <div
+                class="marquee-content text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-700 to-slate-800 px-4 select-none">
+                AI-POWERED • WEB DEVELOPMENT • INNOVATION • PERFORMANCE • DESIGN •
+            </div>
+            <div
+                class="marquee-content text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-700 to-slate-800 px-4 select-none">
+                AI-POWERED • WEB DEVELOPMENT • INNOVATION • PERFORMANCE • DESIGN •
+            </div>
+            <div
+                class="marquee-content text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-700 to-slate-800 px-4 select-none">
+                AI-POWERED • WEB DEVELOPMENT • INNOVATION • PERFORMANCE • DESIGN •
+            </div>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <section id="about" class="min-h-screen flex items-center py-24 relative overflow-hidden">
+        <div class="container mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+
+            <div class="relative order-2 md:order-1">
+                <svg viewBox="0 0 400 300" class="w-full h-auto opacity-50" fill="none" stroke="currentColor">
+                    <!-- Decorative abstract lines -->
+                    <path class="draw-path text-primary" stroke-width="2" d="M20,150 Q100,280 200,150 T380,150" />
+                    <path class="draw-path text-secondary" stroke-width="2" d="M20,170 Q100,40 200,170 T380,170"
+                        delay="0.2" />
+                </svg>
+            </div>
+
+            <div class="order-1 md:order-2 space-y-8">
+                <h2 class="text-4xl md:text-5xl font-bold fade-up">About Me</h2>
+                <div class="space-y-6 text-slate-400 text-lg leading-relaxed">
+                    <p class="fade-up">
+                        Hey! I'm a web developer who's all about building cool stuff with <span
+                            class="text-primary font-semibold">AI-assisted coding</span>. I'm constantly learning,
+                        experimenting, and creating projects that push boundaries.
+                    </p>
+                    <p class="fade-up">
+                        Think of me as someone who's always leveling up their skills and shipping real projects that
+                        actually work. I specialize in modern web technologies and use AI tools to build efficient,
+                        scalable, and beautiful web applications faster.
+                    </p>
+                    <p class="fade-up">
+                        The future of web dev is AI-powered, and I'm here for it. Always learning, always building,
+                        always shipping.
+                    </p>
+                </div>
+                <div class="fade-up pt-4">
+                    <a href="work-with-me.html"
+                        class="magnet-btn text-white border-b border-primary pb-1 hover:text-primary transition-colors">Start
+                        a Project -></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-24 bg-dark/50 relative">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl md:text-5xl font-bold mb-16 text-center fade-up"><span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Tech Stack</span> &
+                Skills</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Skill Card 1 -->
+                <div
+                    class="card-item bg-slate-800/50 p-8 rounded-2xl border border-white/5 hover:border-primary/50 transition-colors relative overflow-hidden group fade-up">
+                    <div class="card-glow"></div>
+                    <div class="relative z-10">
+                        <div
+                            class="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center mb-6 text-2xl group-hover:scale-110 transition-transform">
+                            💻</div>
+                        <h3 class="text-xl font-bold mb-3">Frontend Development</h3>
+                        <p class="text-slate-400">Vanilla JavaScript, HTML5, CSS3. Mastery of the fundamentals to build
+                            rock-solid interfaces.</p>
+                    </div>
+                </div>
+
+                <!-- Skill Card 2 -->
+                <div
+                    class="card-item bg-slate-800/50 p-8 rounded-2xl border border-white/5 hover:border-secondary/50 transition-colors relative overflow-hidden group fade-up">
+                    <div class="card-glow"></div>
+                    <div class="relative z-10">
+                        <div
+                            class="w-12 h-12 bg-secondary/20 rounded-lg flex items-center justify-center mb-6 text-2xl group-hover:scale-110 transition-transform">
+                            ⚡</div>
+                        <h3 class="text-xl font-bold mb-3">Modern Frameworks</h3>
+                        <p class="text-slate-400">Next.js & React. Building full-stack applications with the latest and
+                            greatest tooling.</p>
+                    </div>
+                </div>
+
+                <!-- Skill Card 3 -->
+                <div
+                    class="card-item bg-slate-800/50 p-8 rounded-2xl border border-white/5 hover:border-purple-500/50 transition-colors relative overflow-hidden group fade-up">
+                    <div class="card-glow"></div>
+                    <div class="relative z-10">
+                        <div
+                            class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center mb-6 text-2xl group-hover:scale-110 transition-transform">
+                            🤖</div>
+                        <h3 class="text-xl font-bold mb-3">AI-Assisted Dev</h3>
+                        <p class="text-slate-400">Expertise in AI workflows. Using LLMs to code faster, smarter, and
+                            bug-free.</p>
+                    </div>
+                </div>
+
+                <!-- Skill Card 4 -->
+                <div
+                    class="card-item bg-slate-800/50 p-8 rounded-2xl border border-white/5 hover:border-pink-500/50 transition-colors relative overflow-hidden group fade-up">
+                    <div class="card-glow"></div>
+                    <div class="relative z-10">
+                        <div
+                            class="w-12 h-12 bg-pink-500/20 rounded-lg flex items-center justify-center mb-6 text-2xl group-hover:scale-110 transition-transform">
+                            🚀</div>
+                        <h3 class="text-xl font-bold mb-3">Deployment</h3>
+                        <p class="text-slate-400">Vercel, Netlify, Supabase. Shipping live projects that scale and
+                            perform.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience / Journey -->
+    <section id="experience" class="py-24 relative">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl md:text-5xl font-bold mb-16 text-center fade-up">My Journey</h2>
+
+            <div class="max-w-3xl mx-auto space-y-12">
+
+                <!-- Item 1 -->
+                <div class="relative pl-8 border-l border-white/10 pb-12 fade-up">
+                    <div class="absolute -left-[5px] top-0 w-2.5 h-2.5 rounded-full bg-primary ring-4 ring-dark"></div>
+                    <span class="text-sm text-primary font-mono mb-2 block">Currently</span>
+                    <h3 class="text-2xl font-bold mb-2">Freelance Web Developer</h3>
+                    <p class="text-slate-400">
+                        Building and deploying live projects using modern tech stacks. Focused on delivering
+                        high-quality, performant web applications for clients.
+                    </p>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="relative pl-8 border-l border-white/10 pb-12 fade-up">
+                    <div class="absolute -left-[5px] top-0 w-2.5 h-2.5 rounded-full bg-secondary ring-4 ring-dark">
+                    </div>
+                    <span class="text-sm text-secondary font-mono mb-2 block">Continuous</span>
+                    <h3 class="text-2xl font-bold mb-2">Learning & Evolving</h3>
+                    <p class="text-slate-400">
+                        Mastering new frameworks and AI tools. Every project is an opportunity to learn something new
+                        and improve my craft.
+                    </p>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="relative pl-8 border-l border-white/10 fade-up">
+                    <div class="absolute -left-[5px] top-0 w-2.5 h-2.5 rounded-full bg-white ring-4 ring-dark"></div>
+                    <span class="text-sm text-slate-500 font-mono mb-2 block">The Beginning</span>
+                    <h3 class="text-2xl font-bold mb-2">Discovery</h3>
+                    <p class="text-slate-400">
+                        Discovered the power of AI-assisted coding. Realized it's not about replacing skills, but
+                        amplifying them to build bigger and better things.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-white/5 bg-dark relative z-10">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-2xl font-bold mb-6">Let's Build Something Amazing.</h2>
+            <div class="flex justify-center gap-6 mb-8">
+                <a href="mailto:aakashsanghvi2791@gmail.com"
+                    class="text-slate-400 hover:text-white transition-colors">Email</a>
+                <a href="https://linkedin.com/in/aakashsanghvi" target="_blank"
+                    class="text-slate-400 hover:text-white transition-colors">LinkedIn</a>
+                <a href="work-with-me.html" class="text-slate-400 hover:text-white transition-colors">Work With Me</a>
+            </div>
+            <p class="text-slate-600 text-sm">
+                &copy; 2026 Aakash Sanghvi.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Main Script -->
+    <script src="script.js"></script>
+
+</body>
+
+</html>

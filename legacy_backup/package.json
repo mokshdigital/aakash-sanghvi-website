@@ -1,0 +1,19 @@
+{
+  "name": "aakash-sanghvi-portfolio",
+  "version": "1.0.0",
+  "description": "Aakash Sanghvi's portfolio website with Supabase backend",
+  "scripts": {
+    "dev": "python -m http.server 8000",
+    "start": "python -m http.server 8000"
+  },
+  "keywords": [
+    "portfolio",
+    "web-development",
+    "supabase"
+  ],
+  "author": "Aakash Sanghvi",
+  "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0"
+  }
+}
