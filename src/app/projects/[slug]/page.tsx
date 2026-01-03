@@ -13,11 +13,26 @@ import EEIS from '@/components/case-studies/EEIS';
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 
 export async function generateStaticParams() {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    // Fallback slugs if Supabase connection fails or keys are missing (build-time safety)
+    const fallbackSlugs = [
+        { slug: 'edustation' },
+        { slug: 'eduabroad-expo' },
+        { slug: 'homebudget-ai' },
+        { slug: 'ucw-tutor-booking-ux-case-study' },
+        { slug: 'ag-fashion-hub-headless-commerce' },
+        { slug: 'express-entry-migration-nextjs' },
+    ];
+
+    if (!supabaseUrl || !supabaseKey) {
+        console.warn('⚠️ Missing Supabase env vars. Using fallback slugs for static generation.');
+        return fallbackSlugs;
+    }
+
     // Create a direct client for static generation (no cookies needed)
-    const supabase = createSupabaseClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
+    const supabase = createSupabaseClient(supabaseUrl, supabaseKey);
 
     const { data: projects } = await supabase.from('projects').select('slug');
 
@@ -35,10 +50,20 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const { slug } = resolvedParams;
 
     // Use direct client here as well to avoid cookie issues during static generation
-    const supabase = createSupabaseClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    if (!supabaseUrl || !supabaseKey) {
+        // Fallback metadata if DB connection not possible
+        const title = slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+        return {
+            title: `${title} | Aakash Sanghvi`,
+            description: `Case study details for ${title}`,
+        };
+    }
+
+    // Use direct client here as well to avoid cookie issues during static generation
+    const supabase = createSupabaseClient(supabaseUrl, supabaseKey);
 
     const { data: project } = await supabase
         .from('projects')
