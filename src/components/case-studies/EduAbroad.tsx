@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -119,12 +120,16 @@ export default function EduAbroad() {
                         </div>
                     </div>
 
-                    <div className="relative group">
-                        <div className="aspect-[4/5] bg-neutral-900 rounded-2xl border border-white/10 flex items-center justify-center text-gray-600 overflow-hidden transform rotate-2 hover:rotate-0 transition-transform duration-500">
-                            <div className="text-center p-8">
-                                <span className="block text-5xl mb-4">📱</span>
-                                <span className="text-sm uppercase tracking-widest">App Interface</span>
-                            </div>
+                    <div className="relative group flex justify-center">
+                        <div className="relative w-[280px] md:w-[320px] transform rotate-2 hover:rotate-0 transition-transform duration-500">
+                            <Image
+                                src="/images/espi-eduabroad-expo/Home.png"
+                                alt="EduAbroad Expo App - Login Screen with OTP verification"
+                                width={1250}
+                                height={2500}
+                                className="w-full h-auto drop-shadow-2xl"
+                                priority
+                            />
                         </div>
                     </div>
                 </div>
@@ -178,16 +183,48 @@ export default function EduAbroad() {
                         </ul>
                     </div>
                     <div className="workflow-image grid grid-cols-2 gap-4">
-                        <div className="aspect-[9/16] bg-neutral-900 rounded-xl border border-white/10 flex items-center justify-center text-gray-600"><span className="text-3xl">📊</span></div>
-                        <div className="aspect-[9/16] bg-neutral-900 rounded-xl border border-white/10 flex items-center justify-center text-gray-600 mt-8"><span className="text-3xl">📝</span></div>
+                        <div className="w-full">
+                            <Image
+                                src="/images/espi-eduabroad-expo/StudentDashboard.png"
+                                alt="Student Dashboard showing matched universities"
+                                width={1250}
+                                height={2500}
+                                className="w-full h-auto drop-shadow-xl"
+                            />
+                        </div>
+                        <div className="w-full mt-8">
+                            <Image
+                                src="/images/espi-eduabroad-expo/Student_Test1.png"
+                                alt="Scholarship Test Interface"
+                                width={1250}
+                                height={2500}
+                                className="w-full h-auto drop-shadow-xl"
+                            />
+                        </div>
                     </div>
                 </div>
 
                 {/* Workflow 02 */}
                 <div ref={(el) => { workflowRefs.current[1] = el; }} className="grid md:grid-cols-2 gap-12 items-center">
                     <div className="workflow-image md:order-1 grid grid-cols-2 gap-4">
-                        <div className="aspect-[9/16] bg-neutral-900 rounded-xl border border-white/10 flex items-center justify-center text-gray-600"><span className="text-3xl">🎯</span></div>
-                        <div className="aspect-[9/16] bg-neutral-900 rounded-xl border border-white/10 flex items-center justify-center text-gray-600 mt-8"><span className="text-3xl">🔗</span></div>
+                        <div className="w-full">
+                            <Image
+                                src="/images/espi-eduabroad-expo/Counsellor_Home.png"
+                                alt="Counsellor Dashboard with student triage counters"
+                                width={1250}
+                                height={2500}
+                                className="w-full h-auto drop-shadow-xl"
+                            />
+                        </div>
+                        <div className="w-full mt-8">
+                            <Image
+                                src="/images/espi-eduabroad-expo/Counsellor_SelectRep.png"
+                                alt="Assigning student to university representative"
+                                width={1250}
+                                height={2500}
+                                className="w-full h-auto drop-shadow-xl"
+                            />
+                        </div>
                     </div>
                     <div className="workflow-text md:order-2 space-y-6">
                         <div className="text-8xl font-black opacity-10 leading-none -mb-8 select-none" style={{ color: 'var(--color-accent)' }}>02</div>
@@ -210,11 +247,174 @@ export default function EduAbroad() {
                         </div>
                     </div>
                     <div className="workflow-image grid grid-cols-2 gap-4">
-                        <div className="aspect-[9/16] bg-neutral-900 rounded-xl border border-white/10 flex items-center justify-center text-gray-600"><span className="text-3xl">📋</span></div>
-                        <div className="aspect-[9/16] bg-neutral-900 rounded-xl border border-white/10 flex items-center justify-center text-gray-600 mt-8"><span className="text-3xl">✍️</span></div>
+                        <div className="w-full">
+                            <Image
+                                src="/images/espi-eduabroad-expo/UniRep_Home.png"
+                                alt="University Rep Dashboard with lead counters"
+                                width={1250}
+                                height={2500}
+                                className="w-full h-auto drop-shadow-xl"
+                            />
+                        </div>
+                        <div className="w-full mt-8">
+                            <Image
+                                src="/images/espi-eduabroad-expo/UniRep_AddRemark.png"
+                                alt="Adding meeting remarks for a student"
+                                width={1250}
+                                height={2500}
+                                className="w-full h-auto drop-shadow-xl"
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
+
+            {/* APP SHOWCASE GALLERY */}
+            <section className="py-24 border-y border-white/5 bg-white/5 overflow-visible">
+                <div className="max-w-6xl mx-auto px-6 lg:px-12">
+                    <div className="text-center mb-16">
+                        <span className="text-xs font-bold uppercase tracking-[0.2em] gradient-text block mb-3">Complete App Experience</span>
+                        <h2 className="text-3xl md:text-4xl font-bold">Every Screen, Every Role</h2>
+                        <p className="text-lg mt-4 max-w-2xl mx-auto" style={{ color: 'var(--color-text-muted)' }}>
+                            A unified platform serving students, counsellors, and university representatives—all in real-time.
+                        </p>
+                    </div>
+                </div>
+
+                {/* Student Screens */}
+                <div className="mb-12">
+                    <div className="max-w-6xl mx-auto px-6 lg:px-12 mb-6">
+                        <h3 className="text-lg font-bold flex items-center gap-2">
+                            <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-sm">🎓</span>
+                            Student Journey
+                        </h3>
+                    </div>
+                    <div
+                        className="flex justify-center gap-6 pb-4 px-6 lg:px-12 snap-x snap-mandatory cursor-grab active:cursor-grabbing"
+                        style={{
+                            overflowX: 'auto',
+                            overflowY: 'hidden',
+                            scrollbarWidth: 'thin',
+                            scrollbarColor: 'rgba(255,255,255,0.2) transparent',
+                        }}
+                    >
+                        {[
+                            { src: '/images/espi-eduabroad-expo/Student_BookCounsellor.png', title: 'Book Counsellor', desc: 'Schedule one-on-one sessions' },
+                            { src: '/images/espi-eduabroad-expo/Student_IELTSdemo.png', title: 'IELTS Demo', desc: 'Book speaking practice slots' },
+                            { src: '/images/espi-eduabroad-expo/Student_MeetUniRep.png', title: 'Meet University Rep', desc: 'Direct booking with representatives' },
+                            { src: '/images/espi-eduabroad-expo/Student_Test2.png', title: 'Scholarship Test', desc: 'Automated scoring for waivers' },
+                        ].map((item, i) => (
+                            <div key={i} className="flex-shrink-0 w-[200px] md:w-[240px] snap-center group">
+                                <div className="relative transition-transform duration-300 hover:-translate-y-2">
+                                    <Image
+                                        src={item.src}
+                                        alt={item.title}
+                                        width={1250}
+                                        height={2500}
+                                        className="w-full h-auto drop-shadow-xl"
+                                        style={{ maxHeight: '70vh' }}
+                                    />
+                                </div>
+                                <div className="mt-3 text-center">
+                                    <h4 className="text-sm font-bold">{item.title}</h4>
+                                    <p className="text-xs mt-1" style={{ color: 'var(--color-text-muted)' }}>{item.desc}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Counsellor Screens */}
+                <div className="mb-12">
+                    <div className="max-w-6xl mx-auto px-6 lg:px-12 mb-6">
+                        <h3 className="text-lg font-bold flex items-center gap-2">
+                            <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-teal-500 flex items-center justify-center text-sm">👨‍💼</span>
+                            Counsellor Tools
+                        </h3>
+                    </div>
+                    <div
+                        className="flex justify-center gap-6 pb-4 px-6 lg:px-12 snap-x snap-mandatory cursor-grab active:cursor-grabbing"
+                        style={{
+                            overflowX: 'auto',
+                            overflowY: 'hidden',
+                            scrollbarWidth: 'thin',
+                            scrollbarColor: 'rgba(255,255,255,0.2) transparent',
+                        }}
+                    >
+                        {[
+                            { src: '/images/espi-eduabroad-expo/Counsellor_AssignStudentList.png', title: 'Student Queue', desc: 'View students awaiting triage' },
+                            { src: '/images/espi-eduabroad-expo/Counsellor_OnboardStudent.png', title: 'Onboard Student', desc: 'Capture academic profile' },
+                            { src: '/images/espi-eduabroad-expo/Counsellor_StudentDetails.png', title: 'Student Profile', desc: 'Complete student overview' },
+                        ].map((item, i) => (
+                            <div key={i} className="flex-shrink-0 w-[200px] md:w-[240px] snap-center group">
+                                <div className="relative transition-transform duration-300 hover:-translate-y-2">
+                                    <Image
+                                        src={item.src}
+                                        alt={item.title}
+                                        width={1250}
+                                        height={2500}
+                                        className="w-full h-auto drop-shadow-xl"
+                                        style={{ maxHeight: '70vh' }}
+                                    />
+                                </div>
+                                <div className="mt-3 text-center">
+                                    <h4 className="text-sm font-bold">{item.title}</h4>
+                                    <p className="text-xs mt-1" style={{ color: 'var(--color-text-muted)' }}>{item.desc}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* UniRep Screens */}
+                <div>
+                    <div className="max-w-6xl mx-auto px-6 lg:px-12 mb-6">
+                        <h3 className="text-lg font-bold flex items-center gap-2">
+                            <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-sm">🏛️</span>
+                            University Rep CRM
+                        </h3>
+                    </div>
+                    <div
+                        className="flex justify-center gap-6 pb-4 px-6 lg:px-12 snap-x snap-mandatory cursor-grab active:cursor-grabbing"
+                        style={{
+                            overflowX: 'auto',
+                            overflowY: 'hidden',
+                            scrollbarWidth: 'thin',
+                            scrollbarColor: 'rgba(255,255,255,0.2) transparent',
+                        }}
+                    >
+                        {[
+                            { src: '/images/espi-eduabroad-expo/UniRep_StudentList.png', title: 'Lead Pipeline', desc: 'View all assigned students' },
+                            { src: '/images/espi-eduabroad-expo/UniRep_StudentRemarks.png', title: 'Student Remarks', desc: 'Full interaction history' },
+                        ].map((item, i) => (
+                            <div key={i} className="flex-shrink-0 w-[200px] md:w-[240px] snap-center group">
+                                <div className="relative transition-transform duration-300 hover:-translate-y-2">
+                                    <Image
+                                        src={item.src}
+                                        alt={item.title}
+                                        width={1250}
+                                        height={2500}
+                                        className="w-full h-auto drop-shadow-xl"
+                                        style={{ maxHeight: '70vh' }}
+                                    />
+                                </div>
+                                <div className="mt-3 text-center">
+                                    <h4 className="text-sm font-bold">{item.title}</h4>
+                                    <p className="text-xs mt-1" style={{ color: 'var(--color-text-muted)' }}>{item.desc}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Scroll Hint */}
+                <div className="hidden md:flex items-center justify-center gap-2 mt-8 text-gray-500 text-sm">
+                    <svg className="w-4 h-4 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                    <span>Scroll each row to explore</span>
+                </div>
+            </section>
 
             {/* TECHNICAL */}
             <section className="py-24 px-6 lg:px-12 bg-neutral-900/30">

@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useRef } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -257,11 +258,18 @@ export default function EduStation() {
                             <p>As Product Lead, I convinced stakeholders to abandon the "wait and see" approach. We redefined the company not as a coaching institute, but as a <strong className="text-white">content-first technology platform</strong>.</p>
                         </div>
                     </div>
-                    <div className="narrative-image p-1 rounded-2xl border-gradient">
-                        <div className="aspect-[16/10] bg-neutral-900 rounded-xl flex items-center justify-center text-gray-600 overflow-hidden relative">
-                            <div className="text-center p-8">
-                                <span className="block text-4xl mb-4">📉</span>
-                                <span className="text-sm uppercase tracking-widest">Revenue Risk Analysis</span>
+                    <div className="narrative-image p-1 rounded-2xl border-gradient group">
+                        <div className="aspect-[16/10] bg-neutral-900 rounded-xl overflow-hidden relative">
+                            <Image
+                                src="/images/edustation/StudentDashboard_ProgressReport.png"
+                                alt="EduStation Student Progress Dashboard showing analytics and performance tracking"
+                                fill
+                                className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                                sizes="(max-width: 768px) 100vw, 50vw"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                            <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <span className="text-xs font-bold uppercase tracking-widest text-white/80">Student Progress Dashboard</span>
                             </div>
                         </div>
                     </div>
@@ -269,11 +277,18 @@ export default function EduStation() {
 
                 {/* Narrative 02 */}
                 <div ref={(el) => { narrativeRefs.current[1] = el; }} className="grid md:grid-cols-2 gap-12 items-center">
-                    <div className="narrative-image md:order-1 p-1 rounded-2xl border-gradient">
-                        <div className="aspect-[16/10] bg-neutral-900 rounded-xl flex items-center justify-center text-gray-600">
-                            <div className="text-center p-8">
-                                <span className="block text-4xl mb-4">⚡</span>
-                                <span className="text-sm uppercase tracking-widest">Rapid Prototyping Cycle</span>
+                    <div className="narrative-image md:order-1 p-1 rounded-2xl border-gradient group">
+                        <div className="aspect-[16/10] bg-neutral-900 rounded-xl overflow-hidden relative">
+                            <Image
+                                src="/images/edustation/SystemDashboard_CourseCurriculum.png"
+                                alt="EduStation Course Curriculum Builder showing modular content architecture"
+                                fill
+                                className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                                sizes="(max-width: 768px) 100vw, 50vw"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                            <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <span className="text-xs font-bold uppercase tracking-widest text-white/80">Modular Curriculum Builder</span>
                             </div>
                         </div>
                     </div>
@@ -300,11 +315,18 @@ export default function EduStation() {
                         </div>
                     </div>
                     <div className="narrative-image space-y-6">
-                        <div className="p-1 rounded-2xl border-gradient">
-                            <div className="aspect-[16/10] bg-neutral-900 rounded-xl flex items-center justify-center text-gray-600">
-                                <div className="text-center p-8">
-                                    <span className="block text-4xl mb-4">🚀</span>
-                                    <span className="text-sm uppercase tracking-widest">Multi-Tenant Architecture</span>
+                        <div className="p-1 rounded-2xl border-gradient group">
+                            <div className="aspect-[16/10] bg-neutral-900 rounded-xl overflow-hidden relative">
+                                <Image
+                                    src="/images/edustation/SystemDashboard_NewPackage.png"
+                                    alt="EduStation B2B Package Configuration for multi-tenant deployment"
+                                    fill
+                                    className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                                    sizes="(max-width: 768px) 100vw, 50vw"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                    <span className="text-xs font-bold uppercase tracking-widest text-white/80">B2B Package Configuration</span>
                                 </div>
                             </div>
                         </div>
@@ -315,6 +337,100 @@ export default function EduStation() {
                     </div>
                 </div>
             </div>
+
+            {/* PRODUCT SHOWCASE */}
+            <section className="py-24 border-y border-white/5 bg-white/5 overflow-visible">
+                <div className="max-w-6xl mx-auto px-6 lg:px-12">
+                    <div className="text-center mb-16">
+                        <span className="text-xs font-bold uppercase tracking-[0.2em] gradient-text block mb-3">Platform Overview</span>
+                        <h2 className="text-3xl md:text-4xl font-bold">The Complete Learning Ecosystem</h2>
+                        <p className="text-lg mt-4 max-w-2xl mx-auto" style={{ color: 'var(--color-text-muted)' }}>
+                            A unified platform serving students, tutors, and administrators with purpose-built interfaces.
+                        </p>
+                    </div>
+                </div>
+
+                {/* Horizontal Scroll Gallery - Full width container */}
+                <div
+                    className="flex gap-6 pb-6 px-6 lg:px-12 snap-x snap-mandatory cursor-grab active:cursor-grabbing"
+                    style={{
+                        overflowX: 'auto',
+                        overflowY: 'hidden',
+                        scrollbarWidth: 'thin',
+                        scrollbarColor: 'rgba(255,255,255,0.2) transparent',
+                        WebkitOverflowScrolling: 'touch',
+                    }}
+                >
+                    {[
+                        {
+                            src: '/images/edustation/StudentDashboard_paint.png',
+                            title: 'Student Dashboard',
+                            desc: 'Personalized learning interface with visual progress tracking',
+                        },
+                        {
+                            src: '/images/edustation/StudentWritingTask.png',
+                            title: 'Writing Assessment',
+                            desc: 'Interactive task interface with real-time feedback',
+                        },
+                        {
+                            src: '/images/edustation/SystemDashboard_CourseList.png',
+                            title: 'Course Management',
+                            desc: 'Comprehensive course catalog with status tracking',
+                        },
+                        {
+                            src: '/images/edustation/SystemDashboard_AgentList2.png',
+                            title: 'Tutor Network',
+                            desc: 'Agent management for distributed teaching staff',
+                        },
+                    ].map((item, i) => (
+                        <div
+                            key={i}
+                            className="flex-shrink-0 w-[85vw] md:w-[60vw] lg:w-[45vw] snap-center group"
+                        >
+                            <div className="p-1 rounded-2xl bg-gradient-to-b from-white/10 to-transparent hover:from-white/20 transition-all duration-500">
+                                <div className="bg-neutral-950 rounded-xl overflow-hidden">
+                                    {/* Browser Chrome Effect */}
+                                    <div className="flex items-center gap-2 px-4 py-3 bg-neutral-900/80 border-b border-white/5">
+                                        <div className="flex gap-1.5">
+                                            <div className="w-3 h-3 rounded-full bg-red-500/80" />
+                                            <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
+                                            <div className="w-3 h-3 rounded-full bg-green-500/80" />
+                                        </div>
+                                        <div className="flex-1 mx-4">
+                                            <div className="bg-neutral-800 rounded-md px-3 py-1 text-xs text-gray-500 text-center truncate">
+                                                edustation.app/{item.title.toLowerCase().replace(' ', '-')}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {/* Screenshot */}
+                                    <div className="relative aspect-[16/10] overflow-hidden">
+                                        <Image
+                                            src={item.src}
+                                            alt={item.title}
+                                            fill
+                                            className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                                            sizes="(max-width: 768px) 85vw, (max-width: 1024px) 60vw, 45vw"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            {/* Caption */}
+                            <div className="mt-4 px-2">
+                                <h3 className="text-lg font-bold mb-1">{item.title}</h3>
+                                <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>{item.desc}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                {/* Scroll Hint */}
+                <div className="hidden md:flex items-center justify-center gap-2 mt-6 text-gray-500 text-sm">
+                    <svg className="w-4 h-4 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                    <span>Scroll to explore</span>
+                </div>
+            </section>
 
             {/* IMPACT METRICS */}
             <section className="py-24 px-6 lg:px-12 border-y border-white/5">
