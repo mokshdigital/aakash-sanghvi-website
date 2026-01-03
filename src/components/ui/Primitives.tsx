@@ -11,7 +11,7 @@ export const Heading = ({
     children: React.ReactNode,
     className?: string
 }) => {
-    const Tag = `h${level}` as keyof JSX.IntrinsicElements;
+    const Tag = `h${level}` as React.ElementType;
     // UPDATED: Default to 'Merriweather' (serif) for that Senior Editorial look
     // Added 'tracking-tight' for sharpness
     const baseStyles = "font-serif-merriweather font-bold tracking-tight text-foreground";
