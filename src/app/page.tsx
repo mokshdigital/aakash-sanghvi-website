@@ -4,13 +4,61 @@ import HorizontalScrollProjects from '@/components/HorizontalScrollProjects';
 import Image from 'next/image';
 import Link from 'next/link';
 
+const FALLBACK_PROJECTS = [
+    {
+        title: 'UCW Peer Tutoring Service',
+        slug: 'ucw-tutor-booking-ux-case-study',
+        metric_value: '60% Faster',
+        metric_description: 'Booking Flow Time Reduced',
+        role: 'Lead UX & Product Designer',
+        display_order: 1,
+        skills: ['UX Research', 'Information Architecture', 'Prototyping', 'Usability Testing', 'Stakeholder Management']
+    },
+    {
+        title: 'AG Fashion Hub',
+        slug: 'ag-fashion-hub-headless-commerce',
+        metric_value: '100%',
+        metric_description: 'Client Autonomy via Digital Manual',
+        role: 'Lead Full-Stack Developer & Designer',
+        display_order: 2,
+        skills: ['Headless WordPress', 'GraphQL', 'Vanilla JS', 'WhatsApp Business API', 'Technical Documentation']
+    },
+    {
+        title: 'Express Entry Immigration',
+        slug: 'express-entry-migration-nextjs',
+        metric_value: '60s',
+        metric_description: 'Global Content Revalidation',
+        role: 'Lead Full-Stack Developer',
+        display_order: 3,
+        skills: ['Next.js 14', 'Headless WordPress', 'ISR', 'TypeScript', 'Tailwind CSS', 'Framer Motion']
+    }
+];
+
 export default async function HomePage() {
-    const supabase = await createClient();
-    const { data: projects } = await supabase
-        .from('projects')
-        .select('*')
-        .eq('featured', true)
-        .order('display_order', { ascending: true });
+    let projects = [];
+
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    if (!supabaseUrl || !supabaseKey) {
+        console.warn('⚠️ Missing Supabase env vars on HomePage. Using fallback data.');
+        projects = FALLBACK_PROJECTS;
+    } else {
+        try {
+            const supabase = await createClient();
+            const { data, error } = await supabase
+                .from('projects')
+                .select('*')
+                .eq('featured', true)
+                .order('display_order', { ascending: true });
+
+            if (error || !data) throw error;
+            projects = data;
+        } catch (e) {
+            console.error('⚠️ Supabase fetch failed on HomePage. Using fallback data.', e);
+            projects = FALLBACK_PROJECTS;
+        }
+    }
 
     return (
         <div data-theme="dark" className="min-h-screen" style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-text)' }}>
