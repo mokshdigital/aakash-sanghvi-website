@@ -11,7 +11,7 @@ export default function EEIS() {
     const heroContentRef = useRef<HTMLDivElement>(null);
     const contextRef = useRef<HTMLDivElement>(null);
     const techStackRef = useRef<HTMLDivElement>(null);
-    const featuresRef = useRef<HTMLDivElement>(null);
+    // featuresRef removed - was unused
     const architectureRef = useRef<HTMLDivElement>(null);
     const securityRef = useRef<HTMLDivElement>(null);
     const metricsRef = useRef<HTMLDivElement>(null);
@@ -43,14 +43,7 @@ export default function EEIS() {
                 });
             }
 
-            // Features
-            if (featuresRef.current) {
-                const cards = featuresRef.current.querySelectorAll('.feature-card');
-                gsap.fromTo(cards, { opacity: 0, y: 40 }, {
-                    opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: 'power2.out',
-                    scrollTrigger: { trigger: featuresRef.current, start: 'top 75%' },
-                });
-            }
+            // Features animation removed - no feature-card elements exist
 
             // Architecture
             if (architectureRef.current) {
@@ -131,11 +124,12 @@ export default function EEIS() {
                 <div className="mt-16 w-full max-w-6xl mx-auto">
                     <div className="rounded-2xl border border-white/10 overflow-hidden shadow-2xl hover:-translate-y-2 transition-transform duration-500">
                         <Image
-                            src="/images/eeis/hero.jpg"
+                            src="/images/eeis/desktop_home_hero.png"
                             alt="EEIS Landing Page Hero"
                             width={1920}
                             height={1080}
                             className="w-full h-auto object-cover"
+                            sizes="(max-width: 768px) 100vw, 1200px"
                             priority
                         />
                     </div>
@@ -225,9 +219,21 @@ export default function EEIS() {
                                 </li>
                             </ul>
                         </div>
-                        <div className="rounded-2xl bg-neutral-900 border border-white/10 p-2 overflow-hidden shadow-2xl">
-                            <div className="aspect-video bg-neutral-950 relative flex items-center justify-center">
-                                <span className="text-neutral-600 text-sm font-mono">[Placeholder: ISR Diagram vs Server Side Rendering]</span>
+                        <div className="rounded-2xl bg-neutral-900 border border-white/10 p-2 overflow-hidden shadow-2xl group">
+                            <div className="relative rounded-xl overflow-hidden">
+                                <Image
+                                    src="/images/eeis/ISR_Deployment.png"
+                                    alt="Vercel Deployment Summary showing ISR Functions"
+                                    width={800}
+                                    height={600}
+                                    className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
+                                    sizes="(max-width: 768px) 100vw, 800px"
+                                />
+                                {/* Overlay Gradient for smoother blend */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/20 to-transparent pointer-events-none"></div>
+                            </div>
+                            <div className="p-4 bg-neutral-950/50 text-xs text-neutral-500 font-mono text-center border-t border-white/5">
+                                Live Deployment Logs: / (ISR) • 60s Revalidation
                             </div>
                         </div>
                     </div>
@@ -247,8 +253,29 @@ export default function EEIS() {
                             </div>
                         </div>
                         <div className="md:order-1 rounded-2xl bg-neutral-900 border border-white/10 p-2 overflow-hidden shadow-2xl">
-                            <div className="aspect-video bg-neutral-950 relative flex items-center justify-center">
-                                <span className="text-neutral-600 text-sm font-mono">[Placeholder: Before/After Sanitization Code Snippet]</span>
+                            <div className="bg-neutral-950 rounded-xl overflow-hidden font-mono text-xs md:text-sm shadow-2xl border border-white/10">
+                                <div className="grid grid-cols-2 divide-x divide-white/10 border-b border-white/10">
+                                    <div className="p-3 bg-red-500/10 text-red-400 text-center font-bold">Raw Input</div>
+                                    <div className="p-3 bg-emerald-500/10 text-emerald-400 text-center font-bold">Sanitized</div>
+                                </div>
+                                <div className="grid grid-cols-2 divide-x divide-white/10">
+                                    <div className="p-4 space-y-2 text-neutral-400">
+                                        <div className="text-red-300">&lt;div&gt;</div>
+                                        <div className="pl-4">Hello World</div>
+                                        <div className="pl-4 text-red-400 bg-red-500/10 rounded">&lt;script&gt;</div>
+                                        <div className="pl-8 text-red-400 bg-red-500/10 rounded">alert('XSS');</div>
+                                        <div className="pl-4 text-red-400 bg-red-500/10 rounded">&lt;/script&gt;</div>
+                                        <div className="text-red-300">&lt;/div&gt;</div>
+                                    </div>
+                                    <div className="p-4 space-y-2 text-neutral-400">
+                                        <div className="text-emerald-300">&lt;div&gt;</div>
+                                        <div className="pl-4">Hello World</div>
+                                        <div className="pl-4 text-neutral-600 select-none opacity-50">&lt;!-- script removed --&gt;</div>
+                                        <div className="pl-4 text-neutral-600 select-none opacity-50">&nbsp;</div>
+                                        <div className="pl-4 text-neutral-600 select-none opacity-50">&nbsp;</div>
+                                        <div className="text-emerald-300">&lt;/div&gt;</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -256,8 +283,57 @@ export default function EEIS() {
                 </div>
             </section>
 
-            {/* VISUAL ARCHITECTURE */}
+            {/* RESPONSIVE EXPERIENCE */}
             <section className="py-24 px-6 lg:px-12 bg-white/5 border-y border-white/5">
+                <div className="max-w-7xl mx-auto">
+                    <div className="text-center mb-16">
+                        <span className="text-xs font-bold uppercase tracking-[0.2em] gradient-text">Mobile First</span>
+                        <h2 className="text-3xl font-bold mt-2">Responsive Excellence</h2>
+                    </div>
+
+                    <div className="flex justify-center">
+                        <div className="flex gap-6 overflow-x-auto pb-12 pt-4 px-4 md:px-6 snap-x snap-mandatory" style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgba(255,255,255,0.2) transparent' }}>
+                            {[
+                                { src: '/images/eeis/mobile_service_detail.jpg', title: 'Service Details', desc: 'Clear Hierarchy' },
+                                { src: '/images/eeis/mobile_credibility_stats.jpg', title: 'Trust Signals', desc: 'Social Proof' },
+                                { src: '/images/eeis/mobile_faq.jpg', title: 'Support', desc: 'Accordion UI' },
+                                { src: '/images/eeis/mobile_testimonials_scrolling_marquee.jpg', title: 'Testimonials', desc: 'Infinite Marquee' },
+                            ].map((item, i) => (
+                                <div key={i} className="flex-shrink-0 group snap-center">
+                                    {/* Liquid Card Style */}
+                                    <div className="relative transition-all duration-500 hover:-translate-y-4 hover:scale-[1.02]">
+                                        {/* Clean rounded container */}
+                                        <div
+                                            className="overflow-hidden"
+                                            style={{
+                                                borderRadius: '24px',
+                                                boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.08)',
+                                            }}
+                                        >
+                                            <Image
+                                                src={item.src}
+                                                alt={item.title}
+                                                width={280}
+                                                height={600}
+                                                className="h-[500px] w-auto object-cover block"
+                                                style={{ height: '500px', width: 'auto' }}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="mt-6 text-center">
+                                        <h4 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">{item.title}</h4>
+                                        <p className="text-xs mt-1 font-medium tracking-wide uppercase text-neutral-400">{item.desc}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* VISUAL ARCHITECTURE */}
+            <section className="py-24 px-6 lg:px-12">
                 <div ref={architectureRef} className="max-w-5xl mx-auto">
                     <div className="text-center mb-16">
                         <span className="text-xs font-bold uppercase tracking-[0.2em] gradient-text">System Architecture</span>
@@ -273,7 +349,7 @@ export default function EEIS() {
                             </div>
 
                             {/* Arrow */}
-                            <div className="md:col-span-1 text-2xl font-mono text-neutral-600">→</div>
+                            <div className="hidden md:block md:col-span-1 text-2xl font-mono text-neutral-600">→</div>
 
                             {/* Node 2 */}
                             <div className="md:col-span-1 p-4 rounded-xl bg-purple-900/20 border border-purple-500/30 shadow-[0_0_30px_rgba(168,85,247,0.2)]">
@@ -282,7 +358,7 @@ export default function EEIS() {
                             </div>
 
                             {/* Arrow */}
-                            <div className="md:col-span-1 text-2xl font-mono text-neutral-600">→</div>
+                            <div className="hidden md:block md:col-span-1 text-2xl font-mono text-neutral-600">→</div>
 
                             {/* Node 3 */}
                             <div className="md:col-span-1 p-4 rounded-xl bg-emerald-900/20 border border-emerald-500/30">
@@ -343,7 +419,7 @@ export default function EEIS() {
                             { val: 'A+', label: 'Security', desc: 'Zero critical issues in final audit' },
                             { val: '99/100', label: 'SEO Score', desc: 'Perfect semantic HTML structure' },
                         ].map((item, i) => (
-                            <div key={i} className="metric-item p-6 rounded-2xl bg-neutral-950 border border-white/10 text-center">
+                            <div key={i} className="metric-item p-6 rounded-2xl bg-neutral-950 border border-white/10 text-center relative overflow-hidden group">
                                 <div className="text-4xl md:text-5xl font-black gradient-text mb-2">{item.val}</div>
                                 <div className="text-sm font-bold uppercase tracking-wider mb-2">{item.label}</div>
                                 <div className="text-xs text-neutral-500">{item.desc}</div>

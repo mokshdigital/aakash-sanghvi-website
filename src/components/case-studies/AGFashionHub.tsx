@@ -115,17 +115,29 @@ export default function AGFashionHub() {
                             </div>
                         ))}
                     </div>
+
+                    {/* Live Site Button */}
+                    <Link
+                        href="#"
+                        className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 hover:scale-105"
+                    >
+                        View Live Site
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                    </Link>
                 </div>
 
                 {/* Hero Image */}
                 <div className="mt-16 w-full max-w-6xl mx-auto">
                     <div className="rounded-2xl border border-white/10 overflow-hidden shadow-2xl hover:-translate-y-2 transition-transform duration-500">
                         <Image
-                            src="/images/ag-fashion-hub/hero.jpg"
+                            src="/images/ag-fashion-hub/Home_hero.png"
                             alt="AG Fashion Hub Landing Page"
                             width={1920}
                             height={1080}
                             className="w-full h-auto"
+                            priority
                         />
                     </div>
                 </div>
@@ -204,8 +216,14 @@ export default function AGFashionHub() {
                             <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--color-text-muted)' }}>
                                 Decoupled the frontend (Vanilla JS) from WordPress. This allows <strong className="text-white">instant page transitions</strong> and filters without reloading, essentially acting as a Single Page App (SPA).
                             </p>
-                            <div className="aspect-video rounded-lg bg-neutral-800 flex items-center justify-center border border-white/5 relative overflow-hidden">
-                                <span className="text-xs text-neutral-500">[Placeholder: Performance Graph Highlighting 99/100 Mobile Score]</span>
+                            <div className="aspect-video rounded-lg bg-neutral-800 border border-white/5 relative overflow-hidden">
+                                <Image
+                                    src="/images/ag-fashion-hub/Lighthouse.png"
+                                    alt="Lighthouse Performance Score"
+                                    width={1920}
+                                    height={1080}
+                                    className="w-full h-full object-cover"
+                                />
                             </div>
                         </div>
 
@@ -218,9 +236,114 @@ export default function AGFashionHub() {
                             <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--color-text-muted)' }}>
                                 Built a custom Pods-based CMS interface. Staff can add products, manage announcements (banners), and toggle "New Arrivals" without touching a line of code.
                             </p>
-                            <div className="aspect-video rounded-lg bg-neutral-800 flex items-center justify-center border border-white/5 text-xs text-neutral-500">
-                                [Placeholder: CMS Interface Screenshot]
+                            <div className="aspect-video rounded-lg bg-neutral-800 border border-white/5 overflow-hidden">
+                                <Image
+                                    src="/images/ag-fashion-hub/WP_CMS.png"
+                                    alt="WordPress CMS Interface"
+                                    width={1920}
+                                    height={1080}
+                                    className="w-full h-full object-cover"
+                                />
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* THE EXPERIENCE - Device Showcase */}
+            <section className="py-24 px-6 lg:px-12">
+                <div className="max-w-7xl mx-auto">
+                    <div className="text-center mb-16">
+                        <span className="text-xs font-bold uppercase tracking-[0.2em] gradient-text block mb-3">Responsive Excellence</span>
+                        <h2 className="text-3xl md:text-4xl font-bold">The Complete Experience</h2>
+                        <p className="text-lg mt-4 max-w-2xl mx-auto" style={{ color: 'var(--color-text-muted)' }}>
+                            A seamless shopping journey across every device, optimized for the way customers actually browse.
+                        </p>
+                    </div>
+
+                    {/* Desktop Row */}
+                    <div className="mb-16">
+                        <h3 className="text-lg font-bold flex items-center gap-2 mb-8">
+                            <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-sm">🖥️</span>
+                            Desktop Experience
+                        </h3>
+                        <div className="flex gap-6 justify-center overflow-x-auto pb-4" style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgba(255,255,255,0.2) transparent' }}>
+                            {[
+                                { src: '/images/ag-fashion-hub/Product_detail.png', title: 'Product Detail', desc: 'High-res gallery with zoom' },
+                                { src: '/images/ag-fashion-hub/Product_detail_continued.png', title: 'Product Info', desc: 'Detailed specifications' },
+                                { src: '/images/ag-fashion-hub/Insta_feed_embed.png', title: 'Social Proof', desc: 'Live Instagram integration' },
+                            ].map((item, i) => (
+                                <div key={i} className="flex-shrink-0 group">
+                                    {/* Browser Chrome Frame */}
+                                    <div className="rounded-xl overflow-hidden shadow-2xl transition-transform duration-300 hover:-translate-y-2" style={{ maxWidth: '400px' }}>
+                                        {/* Browser Header */}
+                                        <div className="bg-neutral-800 px-4 py-3 flex items-center gap-3 border-b border-white/10">
+                                            <div className="flex gap-2">
+                                                <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
+                                                <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                                                <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
+                                            </div>
+                                        </div>
+                                        {/* Browser Content */}
+                                        <div className="bg-neutral-900">
+                                            <Image
+                                                src={item.src}
+                                                alt={item.title}
+                                                width={1920}
+                                                height={1080}
+                                                className="w-full h-auto"
+                                                style={{ maxHeight: '50vh' }}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="mt-4 text-center">
+                                        <h4 className="text-sm font-bold">{item.title}</h4>
+                                        <p className="text-xs mt-1" style={{ color: 'var(--color-text-muted)' }}>{item.desc}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Mobile Row */}
+                    <div>
+                        <h3 className="text-lg font-bold flex items-center gap-2 mb-8">
+                            <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-sm">📱</span>
+                            Mobile Experience
+                        </h3>
+                        <div className="flex gap-8 justify-center overflow-x-auto pb-4" style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgba(255,255,255,0.2) transparent' }}>
+                            {[
+                                { src: '/images/ag-fashion-hub/Home_mobile_hero.jpg', title: 'Mobile Hero', desc: 'Thumb-friendly navigation' },
+                                { src: '/images/ag-fashion-hub/Mobile_product_detail.jpg', title: 'Product View', desc: 'Swipe gallery + instant inquiry' },
+                                { src: '/images/ag-fashion-hub/Mobile_collections_filters.jpg', title: 'Smart Filters', desc: 'Easy category browsing' },
+                            ].map((item, i) => (
+                                <div key={i} className="flex-shrink-0 group">
+                                    {/* Phone Frame */}
+                                    <div
+                                        className="relative rounded-[2.5rem] p-2 transition-transform duration-300 hover:-translate-y-2"
+                                        style={{
+                                            background: 'linear-gradient(145deg, #2a2a2a, #1a1a1a)',
+                                            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255,255,255,0.1)'
+                                        }}
+                                    >
+                                        {/* Screen */}
+                                        <div className="rounded-[2rem] overflow-hidden bg-black">
+                                            <Image
+                                                src={item.src}
+                                                alt={item.title}
+                                                width={375}
+                                                height={812}
+                                                className="w-full h-auto"
+                                                style={{ maxHeight: '50vh', width: 'auto' }}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="mt-4 text-center">
+                                        <h4 className="text-sm font-bold">{item.title}</h4>
+                                        <p className="text-xs mt-1" style={{ color: 'var(--color-text-muted)' }}>{item.desc}</p>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
@@ -238,7 +361,7 @@ export default function AGFashionHub() {
                         <div className="grid md:grid-cols-3 gap-8 items-center text-center relative z-10">
                             {/* WP */}
                             <div className="space-y-4">
-                                <div className="h-20 w-20 mx-auto rounded-2xl bg-[#0073AA] flex items-center justify-center text-4xl shadow-lg shadow-blue-500/20">
+                                <div className="h-20 w-20 mx-auto rounded-2xl flex items-center justify-center text-4xl shadow-lg shadow-blue-500/20" style={{ backgroundColor: '#0073AA' }}>
                                     W
                                 </div>
                                 <div>
@@ -256,7 +379,7 @@ export default function AGFashionHub() {
 
                             {/* Frontend */}
                             <div className="space-y-4">
-                                <div className="h-20 w-20 mx-auto rounded-2xl bg-[#F7DF1E] flex items-center justify-center text-4xl text-black font-bold shadow-lg shadow-yellow-500/20">
+                                <div className="h-20 w-20 mx-auto rounded-2xl flex items-center justify-center text-4xl text-black font-bold shadow-lg shadow-yellow-500/20" style={{ backgroundColor: '#F7DF1E' }}>
                                     JS
                                 </div>
                                 <div>
