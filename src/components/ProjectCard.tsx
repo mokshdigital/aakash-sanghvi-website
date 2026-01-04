@@ -28,10 +28,10 @@ export default function ProjectCard({
 }: ProjectCardProps) {
 
     return (
-        <div className="border-gradient p-10 md:p-16 group hover:-translate-y-1 transition-all duration-300">
+        <div className="border-gradient p-6 md:p-10 lg:p-16 group hover:-translate-y-1 transition-all duration-300">
             <div className="space-y-8">
                 <div className="space-y-2">
-                    <span className="text-6xl md:text-7xl font-black gradient-text">{metric_value}</span>
+                    <span className="text-4xl md:text-6xl lg:text-7xl font-black gradient-text">{metric_value}</span>
                     <p className="text-xl md:text-2xl font-light" style={{ color: 'var(--color-text-muted)' }}>
                         {metric_description}
                     </p>
@@ -39,12 +39,12 @@ export default function ProjectCard({
 
                 <div className="pt-6 border-t space-y-3" style={{ borderColor: 'var(--color-border)' }}>
                     <h3 className="text-xl font-semibold">{title}</h3>
-                    <div className="flex items-center gap-3 w-full">
+                    <div className="flex flex-wrap items-center gap-2 md:gap-3 w-full">
                         <span className="inline-block px-2 py-1 rounded text-white font-bold text-xs uppercase tracking-wider shrink-0" style={{ backgroundColor: 'var(--color-accent)' }}>
                             {role}
                         </span>
                         {skills && skills.length > 0 && (
-                            <span className="text-xs font-medium uppercase tracking-wider truncate opacity-60" style={{ color: 'var(--color-text-muted)' }}>
+                            <span className="text-xs font-medium uppercase tracking-wider opacity-60 hidden sm:inline" style={{ color: 'var(--color-text-muted)' }}>
                                 <span className="mr-2">•</span>
                                 {skills.slice(0, 3).join(' • ')}
                             </span>

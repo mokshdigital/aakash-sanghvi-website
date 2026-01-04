@@ -25,7 +25,7 @@ export default async function ProjectsPage() {
                 </Link>
             </nav>
 
-            <main className="flex-grow pt-32 px-6 lg:px-12 pb-24">
+            <main className="flex-grow pt-24 md:pt-32 px-6 lg:px-12 pb-16 md:pb-24">
                 <div className="max-w-6xl mx-auto space-y-16">
 
                     {/* Header */}
