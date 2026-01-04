@@ -1,5 +1,6 @@
 import { createClient } from '@/utils/supabase/server';
 import ProjectCard, { Project } from '@/components/ProjectCard';
+import ProjectsGrid from '@/components/ProjectsGrid';
 import Link from 'next/link';
 
 export const metadata = {
@@ -41,21 +42,14 @@ export default async function ProjectsPage() {
                         </p>
                     </div>
 
-                    {/* Projects Grid */}
-                    <div className="grid gap-12">
-                        {projects && projects.length > 0 ? (
-                            projects.map((project: Project) => (
-                                <ProjectCard
-                                    key={project.id || project.slug}
-                                    {...project}
-                                />
-                            ))
-                        ) : (
-                            <div className="py-20 text-center text-gray-500 border border-dashed border-gray-800 rounded-xl">
-                                <p>Loading projects...</p>
-                            </div>
-                        )}
-                    </div>
+                    {/* Projects Grid with Filters */}
+                    {projects && projects.length > 0 ? (
+                        <ProjectsGrid initialProjects={projects} />
+                    ) : (
+                        <div className="py-20 text-center text-gray-500 border border-dashed border-gray-800 rounded-xl">
+                            <p>Loading projects...</p>
+                        </div>
+                    )}
 
                 </div>
             </main>

@@ -12,6 +12,8 @@ export interface Project {
     slug: string;
     skills?: string[];
     tech_stack?: string[];
+    tags?: string[];
+    category?: string;
 }
 
 interface ProjectCardProps extends Omit<Project, 'id' | 'description'> {
@@ -25,6 +27,7 @@ export default function ProjectCard({
     role,
     slug,
     skills = [],
+    tags = [],
 }: ProjectCardProps) {
 
     return (
@@ -43,9 +46,17 @@ export default function ProjectCard({
                         <span className="inline-block px-2 py-1 rounded text-white font-bold text-xs uppercase tracking-wider shrink-0" style={{ backgroundColor: 'var(--color-accent)' }}>
                             {role}
                         </span>
+
+                        {/* Tags */}
+                        {tags && tags.map((tag, i) => (
+                            <span key={i} className="inline-block px-2 py-1 rounded border border-white/10 bg-white/5 text-xs font-medium uppercase tracking-wider text-neutral-400">
+                                {tag}
+                            </span>
+                        ))}
+
                         {skills && skills.length > 0 && (
                             <span className="text-xs font-medium uppercase tracking-wider opacity-60 hidden sm:inline" style={{ color: 'var(--color-text-muted)' }}>
-                                <span className="mr-2">•</span>
+                                <span className="mx-2">•</span>
                                 {skills.slice(0, 3).join(' • ')}
                             </span>
                         )}
