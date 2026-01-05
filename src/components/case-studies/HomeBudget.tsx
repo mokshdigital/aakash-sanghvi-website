@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -130,14 +131,47 @@ export default function HomeBudget() {
                     </div>
                 </div>
 
-                {/* Hero Image Placeholder */}
-                <div className="mt-16 w-full max-w-5xl mx-auto">
-                    <div className="aspect-video bg-neutral-900 rounded-2xl border border-white/10 flex items-center justify-center text-gray-600 shadow-2xl hover:-translate-y-2 transition-transform duration-500">
-                        <div className="text-center p-8">
-                            <span className="block text-5xl mb-4">📊</span>
-                            <span className="text-sm uppercase tracking-widest">Dashboard Screenshot</span>
+                {/* Hero Image */}
+                <div className="mt-16 w-full max-w-5xl mx-auto px-6">
+                    <div
+                        className="relative mx-auto shadow-xl overflow-hidden"
+                        style={{
+                            width: '300px',
+                            height: '600px',
+                            background: '#1f2937',
+                            padding: '14px',
+                            borderRadius: '2.5rem'
+                        }}
+                    >
+                        <div
+                            className="overflow-hidden relative w-full h-full"
+                            style={{ borderRadius: '2rem' }}
+                        >
+                            <Image
+                                src="/images/myhomebudget_io/mobile_dashboard_hero.png"
+                                alt="HomeBudgetAI Mobile Dashboard"
+                                width={272}
+                                height={572}
+                                className="object-cover w-full h-full"
+                                priority
+                            />
                         </div>
                     </div>
+                </div>
+
+                {/* View Live Button (Hero) */}
+                <div className="pt-12">
+                    <a
+                        href="https://myhomebudget.io"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold border border-white/20 hover:border-white/40 hover:bg-white/5 transition-all duration-300"
+                    >
+                        <span>View Live Project</span>
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                    </a>
                 </div>
             </section>
 
@@ -161,27 +195,61 @@ export default function HomeBudget() {
                 </div>
             </section>
 
-            {/* OVERVIEW */}
-            <section className="py-24 px-6 lg:px-12">
-                <div className="max-w-6xl mx-auto">
+            {/* APP GALLERY */}
+            <section className="py-24 border-y border-white/5 bg-white/5 overflow-visible">
+                <div className="max-w-6xl mx-auto px-6 lg:px-12">
                     <div className="text-center mb-16">
-                        <span className="text-xs font-bold uppercase tracking-[0.2em] gradient-text block mb-3">Project Overview</span>
-                        <h2 className="text-3xl md:text-4xl font-bold">The Challenge & Solution</h2>
+                        <span className="text-xs font-bold uppercase tracking-[0.2em] gradient-text block mb-3">App Gallery</span>
+                        <h2 className="text-3xl md:text-4xl font-bold">Mobile-First Experience</h2>
+                        <p className="text-lg mt-4 max-w-2xl mx-auto" style={{ color: 'var(--color-text-muted)' }}>
+                            Designed to be quick, intuitive, and accessible from anywhere.
+                        </p>
                     </div>
+                </div>
 
-                    <div ref={overviewCardsRef} className="grid md:grid-cols-3 gap-8">
-                        {[
-                            { icon: '🎯', title: 'The Problem', desc: 'Existing budget apps were either too simple (just expense tracking) or too complex (full accounting suites). I needed something in between.' },
-                            { icon: '💡', title: 'The Solution', desc: 'A modern web app with separate tracking for expenses, income, and savings. Quick data entry forms with inline creation of categories.' },
-                            { icon: '🚀', title: 'The Impact', desc: 'I now have complete visibility into my finances. Data entry takes seconds, and the app has become part of my daily routine.' },
-                        ].map((card, i) => (
-                            <div key={i} className="overview-card p-8 rounded-2xl bg-neutral-900/50 border border-white/5 hover:-translate-y-2 hover:border-white/20 transition-all duration-300">
-                                <div className="text-4xl mb-6 bg-neutral-800 w-14 h-14 rounded-xl flex items-center justify-center">{card.icon}</div>
-                                <h3 className="text-xl font-bold mb-3">{card.title}</h3>
-                                <p className="text-sm leading-relaxed" style={{ color: 'var(--color-text-muted)' }}>{card.desc}</p>
+                <div
+                    className="flex justify-center gap-8 pb-8 px-6 lg:px-12 snap-x snap-mandatory cursor-grab active:cursor-grabbing"
+                    style={{
+                        overflowX: 'auto',
+                        overflowY: 'hidden',
+                        scrollbarWidth: 'thin',
+                        scrollbarColor: 'rgba(255,255,255,0.2) transparent',
+                    }}
+                >
+                    {[
+                        { src: '/images/myhomebudget_io/mobile_dashboard_hero.png', title: 'Dashboard', desc: 'At-a-glance financial health' },
+                        { src: '/images/myhomebudget_io/mobile_ai_scan_demo.png', title: 'AI Scanning', desc: 'Receipt data extraction' },
+                        { src: '/images/myhomebudget_io/mobile_add_expense_drawer.png', title: 'Quick Add', desc: 'Frictionless data entry' },
+                        { src: '/images/myhomebudget_io/mobile_budgets.png', title: 'Smart Budgets', desc: 'Goal tracking & limits' },
+                        { src: '/images/myhomebudget_io/mobile_app_settings.png', title: 'Customization', desc: 'Personalized settings' },
+                    ].map((item, i) => (
+                        <div key={i} className="flex-shrink-0 snap-center group" style={{ width: '260px' }}>
+                            {/* Phone Frame */}
+                            <div
+                                className="relative rounded-3xl shadow-xl transition-transform duration-300 group-hover:-translate-y-2 overflow-hidden"
+                                style={{
+                                    height: '520px',
+                                    background: '#1f2937',
+                                    padding: '10px',
+                                    borderRadius: '2rem'
+                                }}
+                            >
+                                <div className="rounded-2xl overflow-hidden w-full h-full relative">
+                                    <Image
+                                        src={item.src}
+                                        alt={item.title}
+                                        width={240}
+                                        height={500}
+                                        className="object-cover w-full h-full"
+                                    />
+                                </div>
                             </div>
-                        ))}
-                    </div>
+                            <div className="mt-6 text-center">
+                                <h4 className="text-lg font-bold">{item.title}</h4>
+                                <p className="text-sm font-light" style={{ color: 'var(--color-text-muted)' }}>{item.desc}</p>
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </section>
 
@@ -326,10 +394,15 @@ export default function HomeBudget() {
                         </svg>
                     </Link>
                     <a
-                        href="#"
+                        href="https://myhomebudget.io"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold border border-white/20 hover:border-white/40 hover:bg-white/5 transition-all duration-300"
                     >
-                        View Live Demo
+                        View Live Project
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
                     </a>
                 </div>
             </section>
