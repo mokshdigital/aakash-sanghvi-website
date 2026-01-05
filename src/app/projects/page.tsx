@@ -2,10 +2,24 @@ import { createClient } from '@/utils/supabase/server';
 import ProjectCard, { Project } from '@/components/ProjectCard';
 import ProjectsGrid from '@/components/ProjectsGrid';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+import { ProjectsCollectionSchema } from '@/components/JsonLd';
 
-export const metadata = {
-    title: 'Projects | Aakash Sanghvi',
-    description: 'A collection of my work in Product Management, Design, and Engineering.',
+export const metadata: Metadata = {
+    title: 'Projects',
+    description: 'A collection of case studies showcasing my work in Product Management, UX Design, and Full-Stack Engineering. From fintech apps to education platforms.',
+    openGraph: {
+        title: 'Projects | Aakash Sanghvi',
+        description: 'Case studies showcasing Product Management, UX Design, and Full-Stack Engineering work.',
+        url: '/projects',
+    },
+    twitter: {
+        title: 'Projects | Aakash Sanghvi',
+        description: 'Case studies in Product Management, UX Design, and Engineering.',
+    },
+    alternates: {
+        canonical: '/projects',
+    },
 };
 
 export default async function ProjectsPage() {
@@ -17,6 +31,8 @@ export default async function ProjectsPage() {
 
     return (
         <div data-theme="dark" className="min-h-screen flex flex-col" style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-text)' }}>
+            {/* JSON-LD Structured Data for Projects Collection */}
+            <ProjectsCollectionSchema />
 
             {/* Navigation */}
             <nav className="fixed top-0 left-0 right-0 z-50 px-6 lg:px-12 py-6 flex justify-between items-center backdrop-blur-md bg-black/50 border-b border-white/5">

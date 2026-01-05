@@ -2,6 +2,7 @@ import { createClient } from '@/utils/supabase/server';
 import HorizontalScrollProjects from '@/components/HorizontalScrollProjects';
 import Image from 'next/image';
 import Link from 'next/link';
+import { ProfilePageSchema } from '@/components/JsonLd';
 
 export const dynamic = 'force-dynamic';
 
@@ -63,6 +64,8 @@ export default async function HomePage() {
 
     return (
         <div data-theme="dark" className="min-h-screen" style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-text)' }}>
+            {/* JSON-LD Structured Data for Homepage */}
+            <ProfilePageSchema />
 
             {/* ========== HERO SECTION (Restored) ========== */}
             <section className="min-h-screen flex items-center px-6 lg:px-12 pt-32 pb-24 relative">

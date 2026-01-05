@@ -1,9 +1,30 @@
 import React from 'react';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+import { ContactPageSchema } from '@/components/JsonLd';
+
+export const metadata: Metadata = {
+    title: 'Work With Me',
+    description: 'Ready to build something great? Book a call with Aakash Sanghvi to discuss product strategy, UX design, or full-stack development for your next project.',
+    openGraph: {
+        title: 'Work With Aakash Sanghvi',
+        description: 'Book a call to discuss product strategy, UX design, or full-stack development for your next project.',
+        url: '/work-with-me',
+    },
+    twitter: {
+        title: 'Work With Aakash Sanghvi',
+        description: 'Book a call to discuss product strategy, UX design, or full-stack development.',
+    },
+    alternates: {
+        canonical: '/work-with-me',
+    },
+};
 
 export default function WorkWithMePage() {
     return (
         <div data-theme="dark" className="min-h-screen flex flex-col" style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-text)' }}>
+            {/* JSON-LD Structured Data for Contact Page */}
+            <ContactPageSchema />
 
             {/* Navigation (Simplified for now, matching style) */}
             <nav className="fixed top-0 left-0 right-0 z-50 px-6 lg:px-12 py-6 flex justify-between items-center backdrop-blur-md bg-black/50 border-b border-white/5">
