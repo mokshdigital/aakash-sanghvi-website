@@ -118,7 +118,7 @@ export default function AGFashionHub() {
 
                     {/* Live Site Button */}
                     <Link
-                        href="#"
+                        href="amitojenterprisesltd.ca/index2.html"
                         className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 hover:scale-105"
                     >
                         View Live Site
