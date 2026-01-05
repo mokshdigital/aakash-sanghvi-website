@@ -31,8 +31,8 @@ export default function ProjectCard({
 }: ProjectCardProps) {
 
     return (
-        <div className="border-gradient p-6 md:p-10 lg:p-16 group hover:-translate-y-1 transition-all duration-300">
-            <div className="space-y-8">
+        <div className="h-full border-gradient p-6 md:p-10 lg:p-16 group hover:-translate-y-1 transition-all duration-300">
+            <div className="h-full flex flex-col space-y-8">
                 <div className="space-y-2">
                     <span className="text-4xl md:text-6xl lg:text-7xl font-black gradient-text">{metric_value}</span>
                     <p className="text-xl md:text-2xl font-light" style={{ color: 'var(--color-text-muted)' }}>

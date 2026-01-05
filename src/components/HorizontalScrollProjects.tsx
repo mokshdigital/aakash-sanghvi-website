@@ -72,10 +72,10 @@ export default function HorizontalScrollProjects({ projects }: HorizontalScrollP
 
                 <div
                     ref={sliderRef}
-                    className="flex gap-8 px-6 lg:px-12 w-max"
+                    className="flex items-stretch gap-8 px-6 lg:px-12 w-max"
                 >
                     {projects.map((project) => (
-                        <div key={project.id || project.slug} className="w-[85vw] md:w-[70vw] lg:w-[55vw] flex-shrink-0">
+                        <div key={project.id || project.slug} className="w-[85vw] md:w-[70vw] lg:w-[55vw] flex-shrink-0 h-full">
                             <ProjectCard {...project} />
                         </div>
                     ))}

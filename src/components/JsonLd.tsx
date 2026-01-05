@@ -30,9 +30,7 @@ export function PersonSchema() {
             'Digital Product Strategy',
         ],
         sameAs: [
-            // Add social profiles here when available
-            // 'https://linkedin.com/in/aakashsanghvi',
-            // 'https://github.com/aakashsanghvi',
+            'https://www.linkedin.com/in/aakashsanghvi/',
         ],
     };
 
