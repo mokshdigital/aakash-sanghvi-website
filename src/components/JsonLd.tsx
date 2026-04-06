@@ -137,6 +137,12 @@ export function ProjectsCollectionSchema() {
                     url: `${BASE_URL}/projects/express-entry-migration-nextjs`,
                     name: 'Express Entry Immigration',
                 },
+                {
+                    '@type': 'ListItem',
+                    position: 7,
+                    url: `${BASE_URL}/projects/fieldops-os-enterprise-platform`,
+                    name: 'FieldOps OS',
+                },
             ],
         },
         author: {

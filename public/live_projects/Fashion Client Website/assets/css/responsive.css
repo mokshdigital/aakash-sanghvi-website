@@ -1,0 +1,422 @@
+/**
+ * AG Fashion Hub - Responsive Utilities
+ * Additional responsive helpers and media query overrides
+ * 
+ * This file provides:
+ * - Responsive visibility utilities
+ * - Touch-friendly sizing for mobile
+ * - Print styles
+ * - Additional breakpoint-specific adjustments
+ */
+
+
+/* ==================== RESPONSIVE VISIBILITY ==================== */
+
+/**
+ * Hide elements on specific screen sizes
+ */
+.hide-on-mobile {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .hide-on-mobile {
+    display: block;
+  }
+  
+  .hide-on-tablet {
+    display: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hide-on-tablet {
+    display: block;
+  }
+  
+  .hide-on-desktop {
+    display: none;
+  }
+}
+
+/**
+ * Show elements only on specific screen sizes
+ */
+.show-on-mobile {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .show-on-mobile {
+    display: none;
+  }
+}
+
+.show-on-tablet {
+  display: none;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .show-on-tablet {
+    display: block;
+  }
+}
+
+.show-on-desktop {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .show-on-desktop {
+    display: block;
+  }
+}
+
+
+/* ==================== MOBILE TOUCH OPTIMIZATIONS ==================== */
+
+/**
+ * Ensure all interactive elements are touch-friendly (min 44x44px)
+ */
+@media (max-width: 767px) {
+  button,
+  a.btn,
+  .nav__list a,
+  .mobile-menu__list a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Increase spacing for easier touch targets */
+  .designs-grid {
+    gap: var(--spacing-sm);
+  }
+  
+  /* Stack filters vertically on mobile */
+  .filter-bar {
+    flex-direction: column;
+  }
+  
+  .filter-group {
+    width: 100%;
+    
+  }
+}
+
+
+/* ==================== TABLET ADJUSTMENTS ==================== */
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Optimize hero for tablets */
+  .hero {
+    min-height: 60vh;
+  }
+  
+  /* Adjust product layout for tablets */
+  .product-layout {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xl);
+  }
+  
+  /* Blog layout stays single column on tablet */
+  .blog-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ==================== DESKTOP ENHANCEMENTS ==================== */
+
+@media (min-width: 1024px) {
+  /* Larger hero on desktop */
+  .hero {
+    min-height: 80vh;
+  }
+  
+  /* Enhanced hover effects on desktop (where hover is reliable) */
+  .collection-card:hover,
+  .design-card:hover,
+  .blog-card:hover {
+    transform: translateY(-8px);
+  }
+  
+  /* Sticky sidebar on desktop */
+  .blog-sidebar {
+    position: sticky;
+    top: calc(var(--spacing-xl) + 60px);
+    align-self: start;
+  }
+}
+
+
+/* ==================== LARGE SCREENS ==================== */
+
+@media (min-width: 1280px) {
+  /* Increase max container width on very large screens */
+  .container {
+    max-width: 1280px;
+  }
+  
+  /* 4 columns for design grid on extra large screens */
+  .designs-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+
+/* ==================== PRINT STYLES ==================== */
+
+@media print {
+  /* Hide unnecessary elements when printing */
+  .header,
+  .footer,
+  .whatsapp-float,
+  .carousel__btn,
+  .filter-bar,
+  .breadcrumbs,
+  .share-buttons,
+  .btn {
+    display: none !important;
+  }
+  
+  /* Optimize text for print */
+  body {
+    font-size: 12pt;
+    line-height: 1.5;
+    color: #000;
+    background: #fff;
+  }
+  
+  /* Ensure links show URLs */
+  a[href]:after {
+    content: " (" attr(href) ")";
+    font-size: 10pt;
+    color: #666;
+  }
+  
+  /* Avoid page breaks inside elements */
+  .collection-card,
+  .design-card,
+  .blog-card,
+  .product-info {
+    page-break-inside: avoid;
+  }
+  
+  /* Add page breaks before major sections */
+  h1, h2 {
+    page-break-after: avoid;
+  }
+  
+  h1 {
+    page-break-before: always;
+  }
+  
+  h1:first-child {
+    page-break-before: avoid;
+  }
+}
+
+
+/* ==================== REDUCED MOTION ==================== */
+
+/**
+ * Respect user's preference for reduced motion
+ * Disable animations for users with motion sensitivity
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+/* ==================== HIGH CONTRAST MODE ==================== */
+
+/**
+ * Enhance visibility in high contrast mode
+ */
+@media (prefers-contrast: high) {
+  .btn {
+    border: 2px solid currentColor;
+  }
+  
+  .card,
+  .modal__content,
+  .filter-bar {
+    border: 1px solid currentColor;
+  }
+}
+
+
+/* ==================== LANDSCAPE MOBILE ==================== */
+
+/**
+ * Adjust layouts for mobile devices in landscape orientation
+ */
+@media (max-width: 767px) and (orientation: landscape) {
+  .hero {
+    min-height: 100vh;
+  }
+  
+  .mobile-menu {
+    padding-top: var(--spacing-xl);
+  }
+  
+  .mobile-menu__list {
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+}
+
+
+/* ==================== RESPONSIVE TYPOGRAPHY ==================== */
+
+/**
+ * Additional font size adjustments for readability
+ */
+@media (max-width: 374px) {
+  /* Extra small phones */
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 1440px) {
+  /* Large desktops */
+  html {
+    font-size: 18px;
+  }
+}
+
+
+/* ==================== GRID SYSTEM UTILITIES ==================== */
+
+/**
+ * Responsive grid utilities for quick layouts
+ */
+.grid-auto {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+@media (max-width: 767px) {
+  .grid-auto {
+    grid-template-columns: 1fr;
+  }
+}
+
+/**
+ * Responsive flex utilities
+ */
+.flex-mobile-column {
+  display: flex;
+}
+
+@media (max-width: 767px) {
+  .flex-mobile-column {
+    flex-direction: column;
+  }
+}
+
+.flex-tablet-column {
+  display: flex;
+}
+
+@media (max-width: 1023px) {
+  .flex-tablet-column {
+    flex-direction: column;
+  }
+}
+
+
+/* ==================== ASPECT RATIO UTILITIES ==================== */
+
+/**
+ * Maintain aspect ratios for responsive images
+ */
+.aspect-ratio-16-9 {
+  position: relative;
+  padding-top: 56.25%; /* 16:9 */
+}
+
+.aspect-ratio-4-3 {
+  position: relative;
+  padding-top: 75%; /* 4:3 */
+}
+
+.aspect-ratio-3-4 {
+  position: relative;
+  padding-top: 133.33%; /* 3:4 (portrait) */
+}
+
+.aspect-ratio-1-1 {
+  position: relative;
+  padding-top: 100%; /* Square */
+}
+
+.aspect-ratio-16-9 > *,
+.aspect-ratio-4-3 > *,
+.aspect-ratio-3-4 > *,
+.aspect-ratio-1-1 > * {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+/* ==================== RESPONSIVE SPACING ==================== */
+
+/**
+ * Adjust spacing on smaller screens
+ */
+@media (max-width: 767px) {
+  section {
+    padding-top: var(--spacing-xl);
+    padding-bottom: var(--spacing-xl);
+  }
+  
+  .featured-collection,
+  .collections-carousel,
+  .instagram-feed,
+  .blog-highlights {
+    padding: var(--spacing-xl) 0;
+  }
+}
+
+
+/* ==================== SAFE AREA INSETS (for notched devices) ==================== */
+
+/**
+ * Support for devices with notches (iPhone X, etc.)
+ */
+@supports (padding: max(0px)) {
+  .container {
+    padding-left: max(var(--spacing-md), env(safe-area-inset-left));
+    padding-right: max(var(--spacing-md), env(safe-area-inset-right));
+  }
+  
+  .header {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+  
+  .footer {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: max(var(--spacing-lg), env(safe-area-inset-bottom));
+  }
+  
+  .whatsapp-float {
+    right: max(20px, env(safe-area-inset-right));
+    bottom: max(20px, env(safe-area-inset-bottom));
+  }
+}

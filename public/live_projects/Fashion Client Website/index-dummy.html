@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>AG FASHION HUB - WEBSITE</title>
+  
+  <!-- Same asset links so nothing breaks -->
+  <link rel="stylesheet" href="/assets/css/variables.css">
+  <link rel="stylesheet" href="/assets/css/base.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="stylesheet" href="/assets/css/pages.css">
+  <link rel="stylesheet" href="/assets/css/responsive.css">
+  
+  <!-- Inline terrible CSS to override everything -->
+  <style>
+    * {
+      font-family: 'Comic Sans MS', cursive, sans-serif !important;
+    }
+    
+    body {
+      background: linear-gradient(45deg, #ff00ff, #00ffff, #ffff00, #ff00ff) !important;
+      background-size: 400% 400% !important;
+      animation: rainbow 3s ease infinite !important;
+      margin: 0 !important;
+      padding: 20px !important;
+    }
+    
+    @keyframes rainbow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    .header {
+      background: linear-gradient(to right, red, orange, yellow, green, blue, purple) !important;
+      padding: 10px !important;
+      text-align: center !important;
+      border: 10px dashed hotpink !important;
+    }
+    
+    .header__logo img {
+      animation: spin 2s linear infinite !important;
+      width: 100px !important;
+    }
+    
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    .hero {
+      background: repeating-linear-gradient(
+        45deg,
+        #ff0000,
+        #ff0000 10px,
+        #00ff00 10px,
+        #00ff00 20px
+      ) !important;
+      padding: 50px !important;
+      text-align: center !important;
+      border: 15px solid lime !important;
+      margin: 20px 0 !important;
+    }
+    
+    .hero__title {
+      font-size: 72px !important;
+      color: yellow !important;
+      text-shadow: 5px 5px 10px red, -5px -5px 10px blue !important;
+      animation: blink 0.5s infinite !important;
+      font-weight: bold !important;
+    }
+    
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+    
+    .section-title {
+      font-size: 48px !important;
+      color: red !important;
+      text-decoration: underline wavy lime !important;
+      text-align: center !important;
+      background: yellow !important;
+      padding: 20px !important;
+      border: 5px dotted blue !important;
+      animation: shake 0.5s infinite !important;
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+    
+    .designs-grid {
+      display: grid !important;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+      gap: 20px !important;
+      margin: 20px 0 !important;
+    }
+    
+    .design-card {
+      background: linear-gradient(135deg, orange, pink, purple) !important;
+      border: 8px solid red !important;
+      padding: 10px !important;
+      transform: rotate(${Math.random() * 10 - 5}deg) !important;
+      transition: all 0.3s !important;
+    }
+    
+    .design-card:hover {
+      transform: rotate(${Math.random() * 20 - 10}deg) scale(1.5) !important;
+      z-index: 999 !important;
+    }
+    
+    .design-card img {
+      border: 5px dashed yellow !important;
+      width: 100% !important;
+      filter: hue-rotate(180deg) saturate(3) !important;
+    }
+    
+    .design-card__code {
+      font-size: 32px !important;
+      color: lime !important;
+      text-shadow: 3px 3px red !important;
+      font-weight: bold !important;
+    }
+    
+    .btn {
+      background: radial-gradient(circle, red, yellow, lime, blue) !important;
+      color: white !important;
+      font-size: 24px !important;
+      padding: 20px 40px !important;
+      border: 10px solid hotpink !important;
+      border-radius: 50px !important;
+      cursor: pointer !important;
+      animation: bounce 1s infinite !important;
+      text-decoration: none !important;
+      display: inline-block !important;
+      margin: 10px !important;
+    }
+    
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+    
+    .footer {
+      background: linear-gradient(to bottom, black, gray, white) !important;
+      color: lime !important;
+      padding: 30px !important;
+      text-align: center !important;
+      border: 10px double red !important;
+      font-size: 20px !important;
+    }
+    
+    marquee {
+      font-size: 36px !important;
+      color: red !important;
+      background: yellow !important;
+      padding: 20px !important;
+      border: 5px solid blue !important;
+    }
+    
+    .sparkle {
+      display: inline-block !important;
+      animation: sparkle 0.5s infinite alternate !important;
+    }
+    
+    @keyframes sparkle {
+      from { color: red; transform: scale(1); }
+      to { color: yellow; transform: scale(1.5); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Annoying Header -->
+  <header class="header">
+    <div class="container">
+      <div class="header__inner">
+        <a href="https://amitojenterprises.ca/index2.html" class="header__logo">
+          <img src="/assets/images/logo.svg" alt="LOGO SPINNING!!!">
+        </a>
+        <marquee behavior="scroll" direction="left">
+          🎉 WELCOME TO THE BEST WEBSITE EVER MADE 🎉 UNDER CONSTRUCTION 🚧 PLEASE WAIT 🚧
+        </marquee>
+      </div>
+    </div>
+  </header>
+
+  <!-- Terrible Hero Section -->
+  <section class="hero">
+    <h1 class="hero__title">
+      ✨ <span class="sparkle">W</span><span class="sparkle">E</span><span class="sparkle">L</span><span class="sparkle">C</span><span class="sparkle">O</span><span class="sparkle">M</span><span class="sparkle">E</span> ✨
+    </h1>
+    <p style="font-size: 48px; color: lime; text-decoration: underline;">
+      TO AG FASHION HUB WEBSITE!!!
+    </p>
+    <p style="font-size: 24px; color: red; background: yellow; padding: 20px; border: 5px solid blue;">
+      ⚠️ THIS IS THE BEST WEBSITE YOU HAVE EVER SEEN ⚠️
+    </p>
+    <a href="#collections" class="btn">
+      👗 CLICK HERE FOR DRESSES 👗
+    </a>
+    <a href="#" class="btn">
+      📞 CALL US NOW!!! 📞
+    </a>
+  </section>
+
+  <!-- Terrible Collections Section -->
+  <section style="margin: 50px 0;">
+    <h2 class="section-title" id="collections">
+      🌟 OUR AMAZING COLLECTIONS 🌟
+    </h2>
+    
+    <marquee behavior="alternate" scrollamount="20">
+      <img src="/assets/images/logo.svg" width="100" alt="Logo flying">
+      <img src="/assets/images/logo.svg" width="100" alt="Logo flying">
+      <img src="/assets/images/logo.svg" width="100" alt="Logo flying">
+    </marquee>
+    
+    <div class="designs-grid">
+      <div class="design-card" style="transform: rotate(5deg);">
+        <img src="/assets/images/placeholder.jpg" alt="Design">
+        <h3 class="design-card__code">DRESS #1</h3>
+        <p style="color: yellow; font-size: 28px;">₹999,999</p>
+        <button class="btn" style="font-size: 18px;">BUY NOW!!!</button>
+      </div>
+      
+      <div class="design-card" style="transform: rotate(-7deg);">
+        <img src="/assets/images/placeholder.jpg" alt="Design">
+        <h3 class="design-card__code">DRESS #2</h3>
+        <p style="color: yellow; font-size: 28px;">₹888,888</p>
+        <button class="btn" style="font-size: 18px;">BUY NOW!!!</button>
+      </div>
+      
+      <div class="design-card" style="transform: rotate(3deg);">
+        <img src="/assets/images/placeholder.jpg" alt="Design">
+        <h3 class="design-card__code">DRESS #3</h3>
+        <p style="color: yellow; font-size: 28px;">₹777,777</p>
+        <button class="btn" style="font-size: 18px;">BUY NOW!!!</button>
+      </div>
+      
+      <div class="design-card" style="transform: rotate(-5deg);">
+        <img src="/assets/images/placeholder.jpg" alt="Design">
+        <h3 class="design-card__code">DRESS #4</h3>
+        <p style="color: yellow; font-size: 28px;">₹666,666</p>
+        <button class="btn" style="font-size: 18px;">BUY NOW!!!</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Annoying Text Section -->
+  <section style="text-align: center; margin: 50px 0;">
+    <marquee behavior="scroll" direction="right" scrollamount="15">
+      <span style="font-size: 48px; color: red;">
+        🔥🔥🔥 BEST PRICES GUARANTEED!!! 🔥🔥🔥
+      </span>
+    </marquee>
+    
+    <div style="background: repeating-linear-gradient(90deg, yellow, yellow 20px, black 20px, black 40px); padding: 30px; border: 10px ridge lime;">
+      <h2 style="font-size: 64px; color: red; animation: blink 0.3s infinite;">
+        ⚠️ SPECIAL OFFER ⚠️
+      </h2>
+      <p style="font-size: 36px; color: blue; background: white; padding: 20px;">
+        BUY 1 GET 100 FREE!!!<br>
+        LIMITED TIME ONLY!!!<br>
+        CALL NOW: 1-800-FASHION<br>
+        (NOT A REAL NUMBER)
+      </p>
+    </div>
+  </section>
+
+  <!-- Counter (90s style) -->
+  <div style="text-align: center; background: black; color: lime; padding: 30px; border: 10px outset silver;">
+    <p style="font-size: 32px;">
+      🎊 VISITOR COUNTER 🎊
+    </p>
+    <p style="font-size: 72px; font-family: 'Courier New', monospace; color: red; background: black; padding: 20px; border: 5px inset gray;">
+      000042069
+    </p>
+    <p style="font-size: 24px; color: yellow;">
+      ⭐ YOU ARE VISITOR #42069! YOU WIN NOTHING! ⭐
+    </p>
+  </div>
+
+  <!-- Terrible Footer -->
+  <footer class="footer">
+    <marquee behavior="scroll" direction="up" height="200" scrollamount="10">
+      <p style="font-size: 36px; color: red;">
+        🌈 THANK YOU FOR VISITING 🌈
+      </p>
+      <p style="font-size: 28px; color: yellow;">
+        ✨ BEST WEBSITE EVER ✨
+      </p>
+      <p style="font-size: 24px; color: lime;">
+        💖 MADE WITH LOVE AND MICROSOFT FRONTPAGE 💖
+      </p>
+      <p style="font-size: 32px; color: hotpink;">
+        📧 EMAIL: definitely_real_email@aol.com 📧
+      </p>
+      <p style="font-size: 28px; color: cyan;">
+        🎵 NOW PLAYING: HAMSTER DANCE 🎵
+      </p>
+    </marquee>
+    
+    <div style="background: yellow; padding: 20px; border: 5px dashed red; margin-top: 20px;">
+      <p style="font-size: 18px; color: black;">
+        © 1995-2025 AG FASHION HUB | ALL RIGHTS RESERVED<br>
+        BEST VIEWED IN NETSCAPE NAVIGATOR 4.0<br>
+        OPTIMIZED FOR 800x600 RESOLUTION<br>
+        <blink>THIS SITE USES COOKIES (THE CHOCOLATE CHIP KIND)</blink>
+      </p>
+    </div>
+    
+    <img src="https://web.archive.org/web/19990427104901im_/http://www.netscape.com/img/buttons/now_navi_3.0.gif" alt="Netscape Now!" style="margin: 10px;">
+    <img src="https://web.archive.org/web/20091020042137im_/http://www.geocities.com/images/geocities_sm.gif" alt="GeoCities" style="margin: 10px;">
+  </footer>
+
+  <!-- Invisible audio (commented out for mercy) -->
+  <!-- <audio autoplay loop>
+    <source src="hamsterdance.mp3" type="audio/mpeg">
+  </audio> -->
+
+  <script>
+    // Random popup messages (commented out for now - too evil)
+    // setTimeout(() => alert("WELCOME TO MY WEBSITE!!!"), 1000);
+    // setTimeout(() => alert("DON'T FORGET TO LIKE AND SUBSCRIBE!!!"), 3000);
+    // setTimeout(() => alert("YOU ARE THE 1000000TH VISITOR!!!"), 5000);
+    
+    // Console message
+    console.log("🎉 Welcome to the best website ever made! 🎉");
+    console.log("If you can read this, you are a REAL programmer!");
+    console.log("Made with ❤️ and lots of Comic Sans");
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Components Test - AG Fashion Hub</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- CSS Files -->
+  <!-- CSS Files - Order matters! -->
+<link rel="stylesheet" href="/assets/css/variables.css">
+<link rel="stylesheet" href="/assets/css/base.css">
+<link rel="stylesheet" href="/assets/css/components.css">
+<link rel="stylesheet" href="/assets/css/pages.css">
+<link rel="stylesheet" href="/assets/css/responsive.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="header__inner">
+        <a href="https://amitojenterprises.ca/index2.html" class="header__logo">
+          <img src="https://via.placeholder.com/150x50/A12390/FFFFFF?text=AG+Fashion" alt="AG Fashion Hub">
+        </a>
+        
+        <nav class="header__nav">
+          <ul class="nav__list">
+            <li><a href="https://amitojenterprises.ca/index2.html">Home</a></li>
+            <li><a href="/collections.html">Collections</a></li>
+            <li><a href="/blogs.html">Blog</a></li>
+            <li><a href="#size-guide">Size Guide</a></li>
+          </ul>
+        </nav>
+        
+        <a href="#" class="btn btn--whatsapp header__whatsapp">
+          <span>WhatsApp</span>
+        </a>
+        
+        <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+          <span class="hamburger__line"></span>
+          <span class="hamburger__line"></span>
+          <span class="hamburger__line"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+  
+  <!-- Mobile Menu -->
+  <div class="mobile-menu">
+    <nav class="mobile-menu__nav">
+      <ul class="mobile-menu__list">
+        <li><a href="https://amitojenterprises.ca/index2.html">Home</a></li>
+        <li><a href="/collections.html">Collections</a></li>
+        <li><a href="/blogs.html">Blog</a></li>
+        <li><a href="#size-guide">Size Guide</a></li>
+        <li><a href="#" class="btn btn--whatsapp btn--block">Contact on WhatsApp</a></li>
+      </ul>
+    </nav>
+  </div>
+  
+  <!-- Main Content -->
+  <main>
+    <!-- Breadcrumbs -->
+    <div class="breadcrumbs">
+      <div class="container">
+        <nav aria-label="Breadcrumb">
+          <ol>
+            <li><a href="https://amitojenterprises.ca/index2.html">Home</a></li>
+            <li><a href="/collections.html">Collections</a></li>
+            <li>Wedding Collection</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+    
+    <div class="container">
+      <h1 class="page-title mt-xl">Component Showcase</h1>
+      <p class="page-subtitle">Testing all UI components</p>
+      
+      <!-- Buttons Section -->
+      <section class="mt-2xl">
+        <h2 class="section-title">Buttons</h2>
+        <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 2rem;">
+          <button class="btn btn--primary">Primary Button</button>
+          <button class="btn btn--secondary">Secondary Button</button>
+          <button class="btn btn--whatsapp">WhatsApp</button>
+          <button class="btn btn--outline">Outline Button</button>
+          <button class="btn btn--primary btn--small">Small Button</button>
+          <button class="btn btn--primary btn--large">Large Button</button>
+        </div>
+      </section>
+      
+      <!-- Badges Section -->
+      <section class="mt-2xl">
+        <h2 class="section-title">Badges</h2>
+        <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 2rem;">
+          <span class="badge badge--success">In Stock</span>
+          <span class="badge badge--danger">Out of Stock</span>
+          <span class="badge badge--warning">Low Stock</span>
+          <span class="badge badge--info">New Arrival</span>
+        </div>
+      </section>
+      
+      <!-- Collection Cards Section -->
+      <section class="mt-2xl">
+        <h2 class="section-title">Collection Cards</h2>
+        <div class="collections-grid">
+          <a href="#" class="collection-card">
+            <div class="collection-card__image">
+              <img src="https://via.placeholder.com/400x300/A12390/FFFFFF?text=Collection+1" alt="Wedding Collection">
+            </div>
+            <div class="collection-card__content">
+              <h3 class="collection-card__title">Wedding Collection</h3>
+              <p class="collection-card__description">Elegant bridal wear with intricate embroidery and luxurious fabrics.</p>
+            </div>
+          </a>
+          
+          <a href="#" class="collection-card">
+            <div class="collection-card__image">
+              <img src="https://via.placeholder.com/400x300/4BA4AE/FFFFFF?text=Collection+2" alt="Festive Collection">
+            </div>
+            <div class="collection-card__content">
+              <h3 class="collection-card__title">Festive Collection</h3>
+              <p class="collection-card__description">Vibrant designs perfect for Diwali and special occasions.</p>
+            </div>
+          </a>
+          
+          <a href="#" class="collection-card">
+            <div class="collection-card__image">
+              <img src="https://via.placeholder.com/400x300/25D366/FFFFFF?text=Collection+3" alt="Casual Collection">
+            </div>
+            <div class="collection-card__content">
+              <h3 class="collection-card__title">Casual Collection</h3>
+              <p class="collection-card__description">Comfortable everyday wear with modern style.</p>
+            </div>
+          </a>
+        </div>
+      </section>
+      
+      <!-- Design Cards Section -->
+      <section class="mt-2xl">
+        <h2 class="section-title">Design Cards</h2>
+        <div class="designs-grid">
+          <div class="design-card">
+            <a href="#" class="design-card__link">
+              <div class="design-card__image">
+                <img src="https://via.placeholder.com/300x400/A12390/FFFFFF?text=Design+1" alt="Design ABC123">
+              </div>
+              <div class="design-card__content">
+                <h3 class="design-card__code">ABC123</h3>
+                <p class="design-card__price">₹15,999</p>
+                <span class="badge badge--success">In Stock</span>
+              </div>
+            </a>
+          </div>
+          
+          <div class="design-card">
+            <a href="#" class="design-card__link">
+              <div class="design-card__image">
+                <img src="https://via.placeholder.com/300x400/4BA4AE/FFFFFF?text=Design+2" alt="Design XYZ456">
+              </div>
+              <div class="design-card__content">
+                <h3 class="design-card__code">XYZ456</h3>
+                <p class="design-card__price">₹12,500</p>
+                <span class="badge badge--danger">Out of Stock</span>
+              </div>
+            </a>
+          </div>
+          
+          <div class="design-card">
+            <a href="#" class="design-card__link">
+              <div class="design-card__image">
+                <img src="https://via.placeholder.com/300x400/25D366/FFFFFF?text=Design+3" alt="Design LMN789">
+              </div>
+              <div class="design-card__content">
+                <h3 class="design-card__code">LMN789</h3>
+                <p class="design-card__price">₹18,750</p>
+                <span class="badge badge--success">In Stock</span>
+              </div>
+            </a>
+          </div>
+          
+          <div class="design-card">
+            <a href="#" class="design-card__link">
+              <div class="design-card__image">
+                <img src="https://via.placeholder.com/300x400/FF9800/FFFFFF?text=Design+4" alt="Design PQR012">
+              </div>
+              <div class="design-card__content">
+                <h3 class="design-card__code">PQR012</h3>
+                <p class="design-card__price">₹21,000</p>
+                <span class="badge badge--success">In Stock</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Blog Cards Section -->
+      <section class="mt-2xl mb-2xl">
+        <h2 class="section-title">Blog Cards</h2>
+        <div class="blog-grid">
+          <a href="#" class="blog-card">
+            <div class="blog-card__image">
+              <img src="https://via.placeholder.com/600x338/A12390/FFFFFF?text=Blog+Post+1" alt="Blog Post">
+            </div>
+            <div class="blog-card__content">
+              <div class="blog-card__meta">
+                <span class="blog-card__date">Nov 10, 2025</span>
+              </div>
+              <h3 class="blog-card__title">Latest Fashion Trends for Wedding Season</h3>
+              <p class="blog-card__excerpt">Discover the hottest trends in ethnic wear for the upcoming wedding season, from vibrant colors to intricate embroidery.</p>
+            </div>
+          </a>
+          
+          <a href="#" class="blog-card">
+            <div class="blog-card__image">
+              <img src="https://via.placeholder.com/600x338/4BA4AE/FFFFFF?text=Blog+Post+2" alt="Blog Post">
+            </div>
+            <div class="blog-card__content">
+              <div class="blog-card__meta">
+                <span class="blog-card__date">Nov 8, 2025</span>
+              </div>
+              <h3 class="blog-card__title">How to Choose the Perfect Saree</h3>
+              <p class="blog-card__excerpt">A comprehensive guide to selecting the right saree for your body type, occasion, and personal style preferences.</p>
+            </div>
+          </a>
+          
+          <a href="#" class="blog-card">
+            <div class="blog-card__image">
+              <img src="https://via.placeholder.com/600x338/25D366/FFFFFF?text=Blog+Post+3" alt="Blog Post">
+            </div>
+            <div class="blog-card__content">
+              <div class="blog-card__meta">
+                <span class="blog-card__date">Nov 5, 2025</span>
+              </div>
+              <h3 class="blog-card__title">Caring for Your Ethnic Wear</h3>
+              <p class="blog-card__excerpt">Essential tips and tricks to maintain the quality and beauty of your precious ethnic garments for years to come.</p>
+            </div>
+          </a>
+        </div>
+      </section>
+    </div>
+  </main>
+  
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+        <div class="footer__logo">
+          <img src="https://via.placeholder.com/150x50/FFFFFF/A12390?text=AG+Fashion" alt="AG Fashion Hub">
+        </div>
+        
+        <div class="footer__links">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="https://amitojenterprises.ca/index2.html">Home</a></li>
+            <li><a href="/collections.html">Collections</a></li>
+            <li><a href="/blogs.html">Blog</a></li>
+            <li><a href="#size-guide">Size Guide</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer__legal">
+          <h3>Legal</h3>
+          <ul>
+            <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="/terms-conditions.html">Terms & Conditions</a></li>
+            <li><a href="/exchange-refund-policy.html">Exchange & Refund Policy</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer__social">
+          <h3>Follow Us</h3>
+          <div class="social-icons">
+            <a href="#" aria-label="Instagram">
+              <img src="https://via.placeholder.com/20x20/FFFFFF/000000?text=IG" alt="Instagram">
+            </a>
+            <a href="#" aria-label="Facebook">
+              <img src="https://via.placeholder.com/20x20/FFFFFF/000000?text=FB" alt="Facebook">
+            </a>
+            <a href="https://www.tiktok.com/@a.g.fashion.hub" aria-label="TikTok">
+              <img src="/assets/icons/tiktok.svg" alt="TikTok" width="24" height="24">
+            </a>
+            <a href="#" aria-label="Snapchat">
+              <img src="/assets/icons/snapchat.svg" alt="Snapchat" width="24" height="24">
+            </a>
+          </div>
+          <div class="footer__cta">
+            <a href="#" class="btn btn--whatsapp btn--large">Contact Us on WhatsApp</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer__bottom">
+        <p>&copy; 2025 AG Fashion Hub (a unit of Amitoj Enterprises Ltd). All rights reserved.</p>
+        <br><p>Made with love by </p><a href="https://mokshdigital.com" target="_blank">Moksh Digital</a>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- Floating WhatsApp Button -->
+  <a href="#" class="whatsapp-float" aria-label="Contact us on WhatsApp">
+    <img src="https://via.placeholder.com/32x32/FFFFFF/000000?text=WA" alt="WhatsApp">
+  </a>
+  
+  <!-- Simple JS for hamburger menu (temporary for testing) -->
+  <script>
+    const hamburger = document.querySelector('.hamburger');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    
+    hamburger.addEventListener('click', () => {
+      const isOpen = hamburger.getAttribute('aria-expanded') === 'true';
+      hamburger.setAttribute('aria-expanded', !isOpen);
+      mobileMenu.classList.toggle('active');
+    });
+  </script>
+</body>
+</html>

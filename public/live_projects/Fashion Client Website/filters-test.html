@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Filters & Utilities Test - AG Fashion Hub</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="/assets/css/variables.css">
+  <link rel="stylesheet" href="/assets/css/base.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="stylesheet" href="/assets/css/pages.css">
+  <link rel="stylesheet" href="/assets/css/responsive.css">
+</head>
+<body>
+  
+  <div class="container">
+    <h1 class="page-title mt-xl">Filters & Utilities Test</h1>
+    <p class="page-subtitle">Test filtering, lazy loading, and analytics</p>
+    
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <div class="filter-group">
+        <label for="filter-price">Price</label>
+        <select id="filter-price" class="filter-select">
+          <option value="">All Prices</option>
+          <option value="0-5000">Under ₹5,000</option>
+          <option value="5000-10000">₹5,000 - ₹10,000</option>
+          <option value="10000-20000">₹10,000 - ₹20,000</option>
+          <option value="20000+">Above ₹20,000</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <label for="filter-color">Color</label>
+        <select id="filter-color" class="filter-select">
+          <option value="">All Colors</option>
+          <!-- Populated dynamically -->
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <label for="filter-occasion">Occasion</label>
+        <select id="filter-occasion" class="filter-select">
+          <option value="">All Occasions</option>
+          <!-- Populated dynamically -->
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <label for="filter-availability">Availability</label>
+        <select id="filter-availability" class="filter-select">
+          <option value="">All</option>
+          <option value="true">In Stock</option>
+          <option value="false">Out of Stock</option>
+        </select>
+      </div>
+      
+      <button class="btn btn--secondary btn--small" id="clear-filters">Clear Filters</button>
+    </div>
+    
+    <!-- Designs Grid -->
+    <div class="designs-grid" id="designs-grid">
+      <!-- Populated by JavaScript -->
+    </div>
+    
+    <!-- No Results Message -->
+    <div class="no-results" id="no-results" style="display: none;">
+      <p>No designs match your current filters. Try adjusting your selections.</p>
+    </div>
+    
+    <!-- Test: Lazy Loading -->
+    <section class="mt-2xl">
+      <h2>Lazy Loading Test</h2>
+      <p>Scroll down to see images load as they enter the viewport</p>
+      <div class="designs-grid mt-lg">
+        <div class="design-card">
+          <div class="design-card__image">
+            <img src="https://via.placeholder.com/300x400/A12390/FFFFFF?text=Lazy+1" alt="Lazy 1" loading="lazy">
+          </div>
+        </div>
+        <div class="design-card">
+          <div class="design-card__image">
+            <img src="https://via.placeholder.com/300x400/4BA4AE/FFFFFF?text=Lazy+2" alt="Lazy 2" loading="lazy">
+          </div>
+        </div>
+        <div class="design-card">
+          <div class="design-card__image">
+            <img src="https://via.placeholder.com/300x400/25D366/FFFFFF?text=Lazy+3" alt="Lazy 3" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Test: Analytics -->
+    <section class="mt-2xl mb-2xl">
+      <h2>Analytics Test</h2>
+      <p>Open browser console to see tracking events (dev mode)</p>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <a href="https://wa.me/16047500648
+" class="btn btn--whatsapp" data-location="test-page" data-design-code="TEST123">
+          WhatsApp Click Test
+        </a>
+        <a href="https://instagram.com" class="btn btn--primary" target="_blank">
+          Social Click Test
+        </a>
+        <button class="btn btn--secondary" onclick="testAnalyticsEvent()">
+          Custom Event Test
+        </button>
+      </div>
+    </section>
+  </div>
+  
+  <!-- JavaScript Files -->
+  <script src="/assets/js/config.js"></script>
+  <script src="/assets/js/graphql-client.js"></script>
+  <script src="/assets/js/filters.js"></script>
+  <script src="/assets/js/lazy-load.js"></script>
+  <script src="/assets/js/analytics.js"></script>
+  
+  <script>
+    // Sample design data for testing filters
+    const sampleDesigns = [
+      {
+        slug: 'design-001',
+        designcode: 'RED001',
+        title: 'Red Wedding Lehenga',
+        price: '₹25,000',
+        color: 'Red',
+        occasion: ['Wedding', 'Festival'],
+        availability: true,
+        designgallery: [{
+          sourceUrl: 'https://via.placeholder.com/300x400/FF0000/FFFFFF?text=RED001',
+          mediaDetails: { sizes: [] }
+        }]
+      },
+      {
+        slug: 'design-002',
+        designcode: 'BLUE002',
+        title: 'Blue Casual Dress',
+        price: '₹8,500',
+        color: 'Blue',
+        occasion: ['Casual', 'Party'],
+        availability: true,
+        designgallery: [{
+          sourceUrl: 'https://via.placeholder.com/300x400/0000FF/FFFFFF?text=BLUE002',
+          mediaDetails: { sizes: [] }
+        }]
+      },
+      {
+        slug: 'design-003',
+        designcode: 'GREEN003',
+        title: 'Green Festival Saree',
+        price: '₹15,000',
+        color: 'Green',
+        occasion: ['Festival', 'Wedding'],
+        availability: false,
+        designgallery: [{
+          sourceUrl: 'https://via.placeholder.com/300x400/00FF00/FFFFFF?text=GREEN003',
+          mediaDetails: { sizes: [] }
+        }]
+      },
+      {
+        slug: 'design-004',
+        designcode: 'PINK004',
+        title: 'Pink Party Dress',
+        price: '₹12,000',
+        color: 'Pink',
+        occasion: ['Party', 'Casual'],
+        availability: true,
+        designgallery: [{
+          sourceUrl: 'https://via.placeholder.com/300x400/FFC0CB/FFFFFF?text=PINK004',
+          mediaDetails: { sizes: [] }
+        }]
+      },
+      {
+        slug: 'design-005',
+        designcode: 'GOLD005',
+        title: 'Gold Wedding Dress',
+        price: '₹30,000',
+        color: 'Gold',
+        occasion: ['Wedding'],
+        availability: true,
+        designgallery: [{
+          sourceUrl: 'https://via.placeholder.com/300x400/FFD700/FFFFFF?text=GOLD005',
+          mediaDetails: { sizes: [] }
+        }]
+      },
+      {
+        slug: 'design-006',
+        designcode: 'BLUE006',
+        title: 'Blue Evening Gown',
+        price: '₹18,000',
+        color: 'Blue',
+        occasion: ['Party', 'Wedding'],
+        availability: false,
+        designgallery: [{
+          sourceUrl: 'https://via.placeholder.com/300x400/0000FF/FFFFFF?text=BLUE006',
+          mediaDetails: { sizes: [] }
+        }]
+      }
+    ];
+    
+    // Initialize filters with sample data
+    document.addEventListener('DOMContentLoaded', () => {
+      window.designFilters = initFilters(sampleDesigns);
+      
+      console.log('Test page loaded with', sampleDesigns.length, 'sample designs');
+    });
+    
+    // Test analytics event
+    function testAnalyticsEvent() {
+      trackEvent('test_event', {
+        event_category: 'test',
+        event_label: 'button_click',
+        value: 1
+      });
+      alert('Check console for analytics event (dev mode)');
+    }
+  </script>
+</body>
+</html>

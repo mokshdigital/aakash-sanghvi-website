@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Test - AG Fashion Hub</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="/assets/css/variables.css">
+  <link rel="stylesheet" href="/assets/css/base.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="stylesheet" href="/assets/css/pages.css">
+  <link rel="stylesheet" href="/assets/css/responsive.css">
+</head>
+<body>
+  
+  <!-- Main Content -->
+  <main class="home">
+    <div class="container">
+      <h1 class="page-title mt-xl">Home Page Test</h1>
+      <p class="page-subtitle">Testing dynamic content loading</p>
+      
+      <!-- Collections Carousel Section -->
+      <section class="collections-carousel mt-2xl">
+        <h2 class="section-title">Collections Carousel</h2>
+        <div class="carousel" id="collections-carousel">
+          <div class="carousel__track" id="collections-carousel-track">
+            <!-- Populated by JavaScript -->
+          </div>
+          <button class="carousel__btn carousel__btn--prev" aria-label="Previous">‹</button>
+          <button class="carousel__btn carousel__btn--next" aria-label="Next">›</button>
+        </div>
+      </section>
+      
+      <!-- Featured Designs Section -->
+      <section class="featured-collection mt-2xl">
+        <h2 class="section-title">New Arrivals</h2>
+        <div class="designs-grid" id="new-arrivals-grid">
+          <!-- Populated by JavaScript -->
+        </div>
+      </section>
+      
+      <!-- Blog Highlights Section -->
+      <section class="blog-highlights mt-2xl mb-2xl">
+        <h2 class="section-title">From Our Blog</h2>
+        <div class="blog-grid" id="blog-highlights-grid">
+          <!-- Populated by JavaScript -->
+        </div>
+      </section>
+    </div>
+  </main>
+  
+  <!-- JavaScript Files - Order is important! -->
+  <script src="/assets/js/config.js"></script>
+  <script src="/assets/js/graphql-client.js"></script>
+  <script src="/assets/js/menu.js"></script>
+  <script src="/assets/js/modal.js"></script>
+  <script src="/assets/js/carousel.js?v=9"></script>
+  <script src="/assets/js/lightbox.js"></script>
+  <script src="/assets/js/filters.js"></script>
+  <script src="/assets/js/lazy-load.js"></script>
+  <script src="/assets/js/analytics.js"></script>
+  <script src="/assets/js/main.js?v=8"></script>
+  
+  <script>
+    // Initialize home page when DOM is ready
+    document.addEventListener('DOMContentLoaded', () => {
+      initHomePage();
+    });
+  </script>
+</body>
+</html>

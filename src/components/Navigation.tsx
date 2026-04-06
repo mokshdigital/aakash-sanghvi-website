@@ -20,6 +20,7 @@ export default function Navigation() {
 
     const navLinks = [
         { href: '/projects', label: 'Projects' },
+        { href: '/playground', label: 'Playground' },
         { href: '/work-with-me', label: 'Work With Me' },
     ];
 

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AG Fashion Hub - Indian Ethnic Wear</title>
+  
+  <!-- Same asset links -->
+  <link rel="stylesheet" href="/assets/css/variables.css">
+  <link rel="stylesheet" href="/assets/css/base.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="stylesheet" href="/assets/css/pages.css">
+  <link rel="stylesheet" href="/assets/css/responsive.css">
+  
+  <!-- Subtle but noticeable issues -->
+  <style>
+    /* Slightly wrong colors */
+    :root {
+      --color-primary: #8B008B; /* Darker purple, slightly off */
+      --color-accent: #C71585; /* Different pink shade */
+    }
+    
+    /* Inconsistent spacing */
+    .container {
+      padding: 0 15px !important;
+    }
+    
+    /* Headers slightly misaligned */
+    .header {
+      padding: 12px 0 !important;
+    }
+    
+    .header__logo img {
+      width: 120px !important; /* Slightly smaller */
+    }
+    
+    /* Hero section issues */
+    .hero {
+      min-height: 350px !important; /* Shorter */
+      padding: 40px 20px !important;
+    }
+    
+    .hero__title {
+      font-size: 2.2rem !important; /* Smaller than it should be */
+      margin-bottom: 0.8rem !important;
+    }
+    
+    .hero__subtitle {
+      font-size: 1rem !important; /* Too small */
+      margin-bottom: 1.5rem !important;
+    }
+    
+    /* Section titles inconsistent */
+    .section-title {
+      font-size: 1.8rem !important; /* Inconsistent sizing */
+      margin-bottom: 1rem !important;
+      text-align: left !important; /* Not centered */
+    }
+    
+    /* Cards slightly broken */
+    .design-card {
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important; /* Weak shadow */
+    }
+    
+    .design-card__image {
+      height: 280px !important; /* Inconsistent height */
+    }
+    
+    .design-card__code {
+      font-size: 0.95rem !important; /* Too small */
+    }
+    
+    .design-card__price {
+      font-size: 1.1rem !important;
+      color: #666 !important; /* Wrong color */
+    }
+    
+    /* Buttons slightly off */
+    .btn {
+      padding: 10px 24px !important; /* Slightly wrong padding */
+      font-size: 0.95rem !important;
+    }
+    
+    .btn--whatsapp {
+      background-color: #20BA5E !important; /* Slightly wrong green */
+    }
+    
+    /* Footer cramped */
+    .footer {
+      padding: 30px 0 !important; /* Less padding */
+      font-size: 0.85rem !important; /* Smaller text */
+    }
+    
+    /* Flip boxes issues */
+    .collections-flip-grid {
+      gap: 1rem !important; /* Less gap */
+    }
+    
+    .flip-card {
+      border-radius: 8px !important; /* Less rounded */
+    }
+    
+    .flip-card-title {
+      font-size: 1.2rem !important; /* Smaller */
+      padding: 1rem !important;
+    }
+    
+    /* Typography slightly off */
+    body {
+      line-height: 1.5 !important; /* Slightly cramped */
+      letter-spacing: 0 !important;
+    }
+    
+    h1, h2, h3 {
+      font-weight: 500 !important; /* Not bold enough */
+    }
+    
+    /* Images not optimized */
+    img {
+      image-rendering: auto !important;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header - slightly misaligned -->
+  <header class="header" style="border-bottom: 1px solid #ddd;">
+    <div class="container">
+      <div class="header__inner">
+        <a href="https://amitojenterprises.ca/index2.html" class="header__logo">
+          <img src="/assets/images/logo.svg" alt="AG Fashion Hub">
+        </a>
+        
+        <nav class="header__nav">
+          <ul class="nav__list">
+            <li><a href="https://amitojenterprises.ca/index2.html">Home</a></li>
+            <li><a href="/collections.html">Collections</a></li>
+            <li><a href="/blogs.html">Blog</a></li>
+            <li><a href="#">Size Guide</a></li>
+          </ul>
+        </nav>
+        
+        <a href="https://wa.me/16047500648
+" class="btn btn--whatsapp header__whatsapp" target="_blank">
+          <span>WhatsApp</span>
+        </a>
+        
+        <button class="hamburger">
+          <span class="hamburger__line"></span>
+          <span class="hamburger__line"></span>
+          <span class="hamburger__line"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero - noticeably smaller and less impactful -->
+  <section class="hero" style="background: linear-gradient(to right, #8B008B, #C71585);">
+    <div class="hero__content">
+      <h1 class="hero__title">Welcome to AG Fashion Hub</h1>
+      <p class="hero__subtitle">Indian Ethnic Wear Collection</p>
+      <a href="https://wa.me/16047500648
+" class="btn btn--whatsapp" target="_blank">
+        Contact Us
+      </a>
+    </div>
+  </section>
+
+  <!-- Collections - basic grid, no flip effect -->
+  <section style="padding: 40px 0;">
+    <div class="container">
+      <h2 class="section-title">Our Collections</h2>
+      <p style="color: #666; font-size: 0.9rem; margin-bottom: 25px;">Browse our collection categories</p>
+      
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px;">
+        
+        <div style="background: white; border: 1px solid #ddd; border-radius: 6px; overflow: hidden;">
+          <div style="height: 250px; background: #f5f5f5;">
+            <img src="/assets/images/placeholder.jpg" alt="Collection" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+          <div style="padding: 15px;">
+            <h3 style="font-size: 1.1rem; margin-bottom: 8px; color: #333;">Wedding Collection</h3>
+            <p style="font-size: 0.85rem; color: #666; margin-bottom: 12px;">Elegant designs for your special day</p>
+            <a href="#" style="color: #8B008B; font-size: 0.9rem; text-decoration: underline;">View Collection →</a>
+          </div>
+        </div>
+        
+        <div style="background: white; border: 1px solid #ddd; border-radius: 6px; overflow: hidden;">
+          <div style="height: 250px; background: #f5f5f5;">
+            <img src="/assets/images/placeholder.jpg" alt="Collection" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+          <div style="padding: 15px;">
+            <h3 style="font-size: 1.1rem; margin-bottom: 8px; color: #333;">Festival Collection</h3>
+            <p style="font-size: 0.85rem; color: #666; margin-bottom: 12px;">Perfect for festive occasions</p>
+            <a href="#" style="color: #8B008B; font-size: 0.9rem; text-decoration: underline;">View Collection →</a>
+          </div>
+        </div>
+        
+        <div style="background: white; border: 1px solid #ddd; border-radius: 6px; overflow: hidden;">
+          <div style="height: 250px; background: #f5f5f5;">
+            <img src="/assets/images/placeholder.jpg" alt="Collection" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+          <div style="padding: 15px;">
+            <h3 style="font-size: 1.1rem; margin-bottom: 8px; color: #333;">Casual Collection</h3>
+            <p style="font-size: 0.85rem; color: #666; margin-bottom: 12px;">Comfortable everyday wear</p>
+            <a href="#" style="color: #8B008B; font-size: 0.9rem; text-decoration: underline;">View Collection →</a>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+
+  <!-- New Arrivals - basic cards -->
+  <section style="padding: 40px 0; background: #fafafa;">
+    <div class="container">
+      <h2 class="section-title">New Arrivals</h2>
+      <p style="color: #666; font-size: 0.9rem; margin-bottom: 25px;">Check out our latest designs</p>
+      
+      <div class="designs-grid" style="gap: 18px;">
+        
+        <div class="design-card">
+          <div class="design-card__image">
+            <img src="/assets/images/placeholder.jpg" alt="Design" loading="lazy">
+          </div>
+          <div class="design-card__content" style="padding: 12px;">
+            <h3 class="design-card__code">Design 001</h3>
+            <p class="design-card__price">₹12,000</p>
+            <span class="badge badge--success" style="font-size: 0.75rem;">Available</span>
+          </div>
+        </div>
+        
+        <div class="design-card">
+          <div class="design-card__image">
+            <img src="/assets/images/placeholder.jpg" alt="Design" loading="lazy">
+          </div>
+          <div class="design-card__content" style="padding: 12px;">
+            <h3 class="design-card__code">Design 002</h3>
+            <p class="design-card__price">₹15,000</p>
+            <span class="badge badge--success" style="font-size: 0.75rem;">Available</span>
+          </div>
+        </div>
+        
+        <div class="design-card">
+          <div class="design-card__image">
+            <img src="/assets/images/placeholder.jpg" alt="Design" loading="lazy">
+          </div>
+          <div class="design-card__content" style="padding: 12px;">
+            <h3 class="design-card__code">Design 003</h3>
+            <p class="design-card__price">₹18,000</p>
+            <span class="badge badge--danger" style="font-size: 0.75rem;">Sold Out</span>
+          </div>
+        </div>
+        
+        <div class="design-card">
+          <div class="design-card__image">
+            <img src="/assets/images/placeholder.jpg" alt="Design" loading="lazy">
+          </div>
+          <div class="design-card__content" style="padding: 12px;">
+            <h3 class="design-card__code">Design 004</h3>
+            <p class="design-card__price">₹14,500</p>
+            <span class="badge badge--success" style="font-size: 0.75rem;">Available</span>
+          </div>
+        </div>
+        
+      </div>
+      
+      <div style="text-align: center; margin-top: 30px;">
+        <a href="/collections.html" class="btn btn--primary">View All</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer - cramped and basic -->
+  <footer class="footer" style="background: #2c2c2c; color: #aaa;">
+    <div class="container">
+      <div class="footer__inner" style="display: flex; justify-content: space-between; gap: 30px;">
+        
+        <div style="flex: 1;">
+          <img src="/assets/images/logo.svg" alt="AG Fashion Hub" style="width: 130px; margin-bottom: 12px; filter: brightness(0) invert(1);">
+          <p style="font-size: 0.85rem; line-height: 1.5;">Premium Indian ethnic wear for every occasion.</p>
+        </div>
+        
+        <div style="flex: 1;">
+          <h3 style="font-size: 1rem; margin-bottom: 10px; color: #fff;">Quick Links</h3>
+          <ul style="list-style: none; padding: 0; font-size: 0.85rem;">
+            <li style="margin-bottom: 6px;"><a href="https://amitojenterprises.ca/index2.html" style="color: #aaa;">Home</a></li>
+            <li style="margin-bottom: 6px;"><a href="/collections.html" style="color: #aaa;">Collections</a></li>
+            <li style="margin-bottom: 6px;"><a href="/blogs.html" style="color: #aaa;">Blog</a></li>
+          </ul>
+        </div>
+        
+        <div style="flex: 1;">
+          <h3 style="font-size: 1rem; margin-bottom: 10px; color: #fff;">Contact</h3>
+          <p style="font-size: 0.85rem; margin-bottom: 12px;">Get in touch with us</p>
+          <a href="https://wa.me/16047500648
+" class="btn btn--whatsapp" style="padding: 8px 20px; font-size: 0.85rem;" target="_blank">
+            WhatsApp
+          </a>
+        </div>
+        
+      </div>
+      
+      <div style="text-align: center; margin-top: 25px; padding-top: 20px; border-top: 1px solid #444; font-size: 0.8rem;">
+        <p>© 2025 AG Fashion Hub. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating WhatsApp - slightly off position -->
+  <a href="https://wa.me/16047500648
+" 
+     style="position: fixed; bottom: 25px; right: 25px; background: #20BA5E; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.2); z-index: 999;"
+     target="_blank">
+    <img src="/assets/icons/whatsapp.svg" alt="WhatsApp" width="28" height="28">
+  </a>
+
+  <!-- Minimal scripts -->
+  <script src="/assets/js/config.js"></script>
+  <script>
+    // Hamburger menu basic functionality
+    document.querySelector('.hamburger')?.addEventListener('click', function() {
+      alert('Mobile menu coming soon!');
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collection Test - AG Fashion Hub</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="/assets/css/variables.css">
+  <link rel="stylesheet" href="/assets/css/base.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="stylesheet" href="/assets/css/pages.css">
+  <link rel="stylesheet" href="/assets/css/responsive.css">
+</head>
+<body>
+  
+  <!-- Breadcrumbs -->
+  <div class="breadcrumbs">
+    <div class="container">
+      <nav aria-label="Breadcrumb">
+        <ol itemscope itemtype="https://schema.org/BreadcrumbList" id="breadcrumb-list">
+          <!-- Populated by JavaScript -->
+        </ol>
+      </nav>
+    </div>
+  </div>
+  
+  <!-- Main Content -->
+  <main class="collection-single">
+    <div class="container">
+      <!-- Collection Header -->
+      <div class="collection-header">
+        <h1 class="page-title" id="collection-title">Loading...</h1>
+        <div class="collection-description" id="collection-description"></div>
+      </div>
+      
+      <!-- Filter Bar -->
+      <div class="filter-bar">
+        <div class="filter-group">
+          <label for="filter-price">Price</label>
+          <select id="filter-price" class="filter-select">
+            <option value="">All Prices</option>
+            <option value="0-5000">Under ₹5,000</option>
+            <option value="5000-10000">₹5,000 - ₹10,000</option>
+            <option value="10000-20000">₹10,000 - ₹20,000</option>
+            <option value="20000+">Above ₹20,000</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label for="filter-color">Color</label>
+          <select id="filter-color" class="filter-select">
+            <option value="">All Colors</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label for="filter-occasion">Occasion</label>
+          <select id="filter-occasion" class="filter-select">
+            <option value="">All Occasions</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label for="filter-availability">Availability</label>
+          <select id="filter-availability" class="filter-select">
+            <option value="">All</option>
+            <option value="true">In Stock</option>
+            <option value="false">Out of Stock</option>
+          </select>
+        </div>
+        
+        <button class="btn btn--secondary btn--small" id="clear-filters">Clear Filters</button>
+      </div>
+      
+      <!-- Designs Grid -->
+      <div class="designs-grid" id="designs-grid">
+        <!-- Populated by JavaScript -->
+      </div>
+      
+      <!-- No Results Message -->
+      <div class="no-results" id="no-results" style="display: none;">
+        <p>No designs match your current filters. Try adjusting your selections.</p>
+      </div>
+    </div>
+  </main>
+  
+  <!-- JavaScript Files -->
+  <script src="/assets/js/config.js"></script>
+  <script src="/assets/js/graphql-client.js"></script>
+  <script src="/assets/js/menu.js"></script>
+  <script src="/assets/js/modal.js"></script>
+  <script src="/assets/js/carousel.js"></script>
+  <script src="/assets/js/lightbox.js"></script>
+  <script src="/assets/js/filters.js"></script>
+  <script src="/assets/js/lazy-load.js"></script>
+  <script src="/assets/js/analytics.js"></script>
+  <script src="/assets/js/main.js?v=3"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initCollectionSinglePage();
+    });
+  </script>
+</body>
+</html>

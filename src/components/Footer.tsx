@@ -11,6 +11,7 @@ export default function Footer() {
                         className="text-slate-400 hover:text-white transition-colors">Email</a>
                     <a href="https://linkedin.com/in/aakashsanghvi" target="_blank" rel="noopener noreferrer"
                         className="text-slate-400 hover:text-white transition-colors">LinkedIn</a>
+                    <Link href="/playground" className="text-slate-400 hover:text-white transition-colors">Playground</Link>
                     <Link href="/work-with-me" className="text-slate-400 hover:text-white transition-colors">Work With Me</Link>
                 </div>
                 <p className="text-slate-600 text-sm">

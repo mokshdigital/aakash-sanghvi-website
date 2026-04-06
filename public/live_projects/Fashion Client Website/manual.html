@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AG Fashion Hub - User Manual</title>
+    <style>
+        :root {
+            --primary-color: #8B4513;
+            --secondary-color: #D4AF37;
+            --accent-color: #FFD700;
+            --danger-color: #dc3545;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --dark: #333;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --border-radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #fef5e7 0%, #fff 100%);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #A0522D 100%);
+            color: white;
+            padding: 2rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header-meta {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Navigation */
+        .nav-wrapper {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+
+        .nav-item {
+            background: var(--light);
+            color: var(--dark);
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            border: 1px solid #e9ecef;
+            font-weight: 500;
+        }
+
+        .nav-item:hover {
+            background: var(--secondary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            border-color: var(--secondary-color);
+        }
+
+        .nav-item.active-section {
+            background: #fff3cd;
+            border-color: var(--secondary-color);
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 20px;
+        }
+
+        .section {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section h3 {
+            color: var(--dark);
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            padding-left: 0.5rem;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            overflow-x: auto;
+            display: block;
+        }
+
+        table thead {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        table th, table td {
+            padding: 0.75rem;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table tbody tr:nth-child(even) {
+            background: var(--light);
+        }
+
+        table tbody tr:hover {
+            background: #fff3cd;
+        }
+
+        /* Alert Boxes */
+        .alert {
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: var(--border-radius);
+            border-left: 4px solid;
+        }
+
+        .alert-danger {
+            background: #f8d7da;
+            border-color: var(--danger-color);
+            color: #721c24;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            border-color: var(--success-color);
+            color: #155724;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            border-color: var(--warning-color);
+            color: #856404;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            border-color: var(--info-color);
+            color: #0c5460;
+        }
+
+        /* Icons */
+        .icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 0.5rem;
+            vertical-align: middle;
+        }
+
+        .check { color: var(--success-color); }
+        .cross { color: var(--danger-color); }
+        .warning { color: var(--warning-color); }
+        .info { color: var(--info-color); }
+
+        /* Lists */
+        ul, ol {
+            margin: 1rem 0 1rem 2rem;
+        }
+
+        li {
+            margin: 0.5rem 0;
+        }
+
+        /* Code blocks */
+        code {
+            background: var(--light);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: var(--danger-color);
+        }
+
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        /* Buttons */
+        .button {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        /* Quick Reference Card */
+        .quick-reference {
+            background: linear-gradient(135deg, #fef5e7 0%, #fff 100%);
+            border: 2px solid var(--secondary-color);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            margin: 2rem 0;
+        }
+
+        .checklist {
+            background: white;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin: 1rem 0;
+        }
+
+        .checklist input[type="checkbox"] {
+            margin-right: 0.5rem;
+        }
+
+        /* Collapsible */
+        .collapsible {
+            cursor: pointer;
+            background: var(--light);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin: 0.5rem 0;
+            transition: all 0.3s;
+        }
+
+        .collapsible:hover {
+            background: #e9ecef;
+        }
+
+        .collapsible:after {
+            content: '\25BC';
+            float: right;
+            transition: transform 0.3s;
+        }
+
+        .collapsible.active:after {
+            transform: rotate(180deg);
+        }
+
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s;
+        }
+
+        .collapsible-content.show {
+            max-height: 2000px;
+            padding: 1rem 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .header-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .nav {
+                justify-content: center;
+            }
+
+            .section {
+                padding: 1rem;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            table th, table td {
+                padding: 0.5rem;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .nav-wrapper {
+                display: none;
+            }
+
+            .section {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* Special Elements */
+        .url-box {
+            background: var(--light);
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            font-family: monospace;
+            display: inline-block;
+            margin: 0.5rem 0;
+        }
+
+        .do-dont-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .do-box, .dont-box {
+            padding: 1rem;
+            border-radius: var(--border-radius);
+        }
+
+        .do-box {
+            background: #d4edda;
+            border: 2px solid var(--success-color);
+        }
+
+        .dont-box {
+            background: #f8d7da;
+            border: 2px solid var(--danger-color);
+        }
+
+        @media (max-width: 768px) {
+            .do-dont-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1>AG Fashion Hub - User Manual</h1>
+            <p>Complete Content Management System Guide</p>
+            <div class="header-meta">
+                <span>📅 Version 2.0</span>
+                <span>🔄 Updated: November 28, 2025</span>
+                <span>🌐 <a href="https://amitojenterprises.ca/index2.html" style="color: white;">Visit Website</a></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav-wrapper">
+        <div class="nav">
+            <a href="#introduction" class="nav-item">📖 Introduction</a>
+            <a href="#login" class="nav-item">🔐 Login</a>
+            <a href="#collections" class="nav-item">📁 Collections</a>
+            <a href="#designs" class="nav-item">👗 Designs</a>
+            <a href="#blog" class="nav-item">📝 Blog Posts</a>
+            <a href="#announcements" class="nav-item">📢 Announcements</a>
+            <a href="#whatsapp" class="nav-item">💬 WhatsApp</a>
+            <a href="#images" class="nav-item">🖼️ Images</a>
+            <a href="#errors" class="nav-item">⚠️ Common Errors</a>
+            <a href="#quick-reference" class="nav-item">⚡ Quick Reference</a>
+            <a href="#support" class="nav-item">🆘 Support</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Introduction -->
+        <section id="introduction" class="section">
+            <h2>📖 Introduction</h2>
+            <p>Welcome to the AG Fashion Hub Content Management System. This manual will guide you through managing your website content efficiently and safely.</p>
+            
+            <div class="alert alert-info">
+                <strong>Important:</strong> Changes you make in the CMS appear on the live website immediately after saving. Always double-check your content before publishing!
+            </div>
+
+            <h3>Content Types You Can Manage</h3>
+            <ul>
+                <li><strong>Dress Collections</strong> - Categories of clothing (e.g., "Sarees", "Lehengas")</li>
+                <li><strong>Dress Designs</strong> - Individual products within collections</li>
+                <li><strong>Blog Posts</strong> - Articles and updates for your customers</li>
+                <li><strong>Announcements</strong> - Site-wide banners for promotions and updates</li>
+            </ul>
+
+            <div class="url-box">
+                <strong>CMS URL:</strong> https://cms.amitojenterprisesltd.ca/wp-admin
+            </div>
+        </section>
+
+        <!-- Login Section -->
+        <section id="login" class="section">
+            <h2>🔐 Logging In</h2>
+            
+            <h3>Steps to Access Your CMS</h3>
+            <ol>
+                <li>Open your web browser (Chrome, Safari, or Firefox recommended)</li>
+                <li>Go to: <code>https://cms.amitojenterprisesltd.ca/wp-admin</code></li>
+                <li>Enter your username</li>
+                <li>Enter your password</li>
+                <li>Click <strong>"Log In"</strong></li>
+            </ol>
+
+            <div class="alert alert-warning">
+                <strong>⚠️ Security Tips:</strong>
+                <ul>
+                    <li>Never share your login credentials</li>
+                    <li>Use a strong password (at least 12 characters)</li>
+                    <li>Always log out when finished, especially on shared computers</li>
+                    <li>If you forget your password, click "Lost your password?" on the login page</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Collections Section -->
+        <section id="collections" class="section">
+            <h2>📁 Managing Dress Collections</h2>
+            <p>Collections are categories that group similar products together (e.g., "Wedding Sarees", "Party Lehengas").</p>
+
+            <h3>Adding a New Collection</h3>
+            <ol>
+                <li>Click <strong>"Pods Admin" → "Dress Collections"</strong></li>
+                <li>Click <strong>"Add New"</strong> at the top</li>
+                <li>Fill in all required fields (see table below)</li>
+                <li>Click <strong>"Publish"</strong> when ready</li>
+            </ol>
+
+            <h3>Collection Fields Guide</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Field Name</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                        <th>Example</th>
+                        <th>Common Errors</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Title</strong></td>
+                        <td>✅ Yes</td>
+                        <td>Main collection name</td>
+                        <td>Wedding Lehengas</td>
+                        <td>❌ Don't use special characters like @, #, $</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Collection Name</strong></td>
+                        <td>✅ Yes</td>
+                        <td>Display name on website</td>
+                        <td>Wedding Lehengas Collection</td>
+                        <td>❌ Don't leave blank</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hero Image</strong></td>
+                        <td>✅ Yes</td>
+                        <td>Main image for collection card</td>
+                        <td>Upload high-quality image</td>
+                        <td>❌ Don't use images smaller than 800x600px</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Description</strong></td>
+                        <td>⚠️ Optional</td>
+                        <td>Brief description</td>
+                        <td>Elegant wedding lehengas for your special day</td>
+                        <td>Keep under 200 characters</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Meta Title</strong></td>
+                        <td>⚠️ Optional</td>
+                        <td>SEO title for search engines</td>
+                        <td>Wedding Lehengas - AG Fashion Hub</td>
+                        <td>Keep under 60 characters</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Meta Description</strong></td>
+                        <td>⚠️ Optional</td>
+                        <td>SEO description</td>
+                        <td>Browse our exclusive collection...</td>
+                        <td>Keep under 160 characters</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="alert alert-danger">
+                <strong>⚠️ Critical Errors to Avoid:</strong>
+                <ul>
+                    <li>❌ Never leave "Title" or "Collection Name" blank</li>
+                    <li>❌ Don't use duplicate collection names</li>
+                    <li>❌ Don't delete collections that have designs linked to them</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Designs Section -->
+        <section id="designs" class="section">
+            <h2>👗 Managing Dress Designs (Products)</h2>
+            <p>Designs are individual products that appear on your website.</p>
+
+            <h3>Adding a New Design</h3>
+            <ol>
+                <li>Click <strong>"Pods Admin" → "Dress Designs"</strong></li>
+                <li>Click <strong>"Add New"</strong></li>
+                <li>Fill in all required fields</li>
+                <li>Click <strong>"Publish"</strong></li>
+            </ol>
+
+            <h3>Design Fields Guide</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Field Name</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Title</strong></td>
+                        <td>✅ Yes</td>
+                        <td>Product name</td>
+                        <td>Red Bridal Lehenga</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Design Code</strong></td>
+                        <td>✅ Yes</td>
+                        <td>Unique product code</td>
+                        <td>AG-LEH-001</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Design Gallery</strong></td>
+                        <td>✅ Yes</td>
+                        <td>Product images (3-10 images)</td>
+                        <td>Upload multiple photos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Price</strong></td>
+                        <td>⚠️ Optional</td>
+                        <td>Product price (numbers only!)</td>
+                        <td>299.99</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Linked Collection</strong></td>
+                        <td>✅ Yes</td>
+                        <td>Select collection from dropdown</td>
+                        <td>Choose from list</td>
+                    </tr>
+                    <tr style="background: #fff3cd;">
+                        <td><strong>Availability</strong></td>
+                        <td>⚠️ Optional</td>
+                        <td><strong>CHECKBOX</strong> - Check for In Stock</td>
+                        <td>✅ = In Stock, ❌ = Out of Stock</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Show in New Arrivals</strong></td>
+                        <td>⚠️ Optional</td>
+                        <td>Feature on homepage</td>
+                        <td>✅ = Featured</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="alert alert-danger">
+                <strong>🚨 CRITICAL: Most Common Errors</strong>
+            </div>
+
+            <div class="do-dont-grid">
+                <div class="dont-box">
+                    <h4>❌ DON'T</h4>
+                    <ul>
+                        <li>Use duplicate design codes</li>
+                        <li>Include $ in price (just 299.99)</li>
+                        <li>Type "In Stock" as text</li>
+                        <li>Upload less than 3 images</li>
+                        <li>Leave collection unselected</li>
+                    </ul>
+                </div>
+                <div class="do-box">
+                    <h4>✅ DO</h4>
+                    <ul>
+                        <li>Use unique codes (AG-001, AG-002)</li>
+                        <li>Enter price as numbers only</li>
+                        <li>Use the checkbox for availability</li>
+                        <li>Upload 3-10 quality images</li>
+                        <li>Always select a collection</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="alert alert-warning">
+                <strong>📌 Remember:</strong> The Availability field is a <strong>CHECKBOX</strong>, not a text field! 
+                Check the box for "In Stock", leave unchecked for "Out of Stock".
+            </div>
+        </section>
+
+        <!-- Blog Section -->
+        <section id="blog" class="section">
+            <h2>📝 Managing Blog Posts</h2>
+            
+            <h3>Creating a New Blog Post</h3>
+            <ol>
+                <li>Go to <strong>"Posts" → "Add New"</strong></li>
+                <li>Enter your post title</li>
+                <li>Write your content in the editor</li>
+                <li>Set a featured image (click "Set featured image" in the right panel)</li>
+                <li>Select categories and tags</li>
+                <li>Click <strong>"Publish"</strong></li>
+            </ol>
+
+            <h3>Blog Writing Tips</h3>
+            <ul>
+                <li>Start with an engaging introduction</li>
+                <li>Use subheadings to break up content</li>
+                <li>Include relevant product links</li>
+                <li>Add high-quality images throughout</li>
+                <li>End with a call-to-action (e.g., "Shop the collection")</li>
+            </ul>
+        </section>
+
+        <!-- Announcements Section -->
+        <section id="announcements" class="section">
+            <h2>📢 Managing Announcements</h2>
+            <p>Announcements are site-wide banners displayed at the top of your website pages.</p>
+
+            <h3>Creating an Announcement</h3>
+            <ol>
+                <li>Go to <strong>"Pods Admin" → "Announcements"</strong></li>
+                <li>Click <strong>"Add New"</strong></li>
+                <li>Fill in the required fields</li>
+                <li>Check the <strong>"Is Active"</strong> box to display it</li>
+                <li>Set the Priority (higher numbers show first)</li>
+                <li>Click <strong>"Publish"</strong></li>
+            </ol>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Field</th>
+                        <th>Purpose</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Title</strong></td>
+                        <td>Internal reference (not shown to users)</td>
+                        <td>Holiday Sale 2025</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Message</strong></td>
+                        <td>Text displayed in banner</td>
+                        <td>🎉 Holiday Sale - 30% OFF on all items!</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Type</strong></td>
+                        <td>Visual style (info/warning/error/success)</td>
+                        <td>success (for promotions)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Is Active</strong></td>
+                        <td>Controls visibility</td>
+                        <td>✅ Checked = Shows on website</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Priority</strong></td>
+                        <td>Display order</td>
+                        <td>10 (higher = shows first)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- WhatsApp Section -->
+        <section id="whatsapp" class="section">
+            <h2>💬 WhatsApp Inquiry Feature</h2>
+            
+            <p>Each product automatically includes a WhatsApp inquiry button that pre-fills a message with product details.</p>
+
+            <h3>What Gets Sent</h3>
+            <ul>
+                <li>Product name and code</li>
+                <li>Direct link to the product</li>
+                <li>Price (if set)</li>
+                <li>Pre-written inquiry message</li>
+            </ul>
+
+            <div class="alert alert-info">
+                <strong>💡 Tip:</strong> Always test the WhatsApp button after adding a new product to ensure the design code and price are correctly formatted.
+            </div>
+        </section>
+
+        <!-- Image Guidelines Section -->
+        <section id="images" class="section">
+            <h2>🖼️ Image Upload Guidelines</h2>
+
+            <h3>Image Requirements</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Aspect</th>
+                        <th>Requirement</th>
+                        <th>Best Practice</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Format</strong></td>
+                        <td>JPG, PNG, or WebP</td>
+                        <td>Use JPG for photos, PNG for graphics</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Minimum Size</strong></td>
+                        <td>800x800px</td>
+                        <td>1200x1200px or larger recommended</td>
+                    </tr>
+                    <tr>
+                        <td><strong>File Size</strong></td>
+                        <td>Under 5MB per image</td>
+                        <td>Optimize to 200-500KB for fast loading</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Quality</strong></td>
+                        <td>Clear, well-lit photos</td>
+                        <td>Professional photography preferred</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Optimization Steps</h3>
+            <ol>
+                <li>Use an image editing tool to resize (maintain aspect ratio)</li>
+                <li>Compress images using tools like TinyPNG or Squoosh</li>
+                <li>Name files descriptively (e.g., "red-bridal-lehenga-front.jpg")</li>
+                <li>Ensure consistent lighting and background across product photos</li>
+            </ol>
+        </section>
+
+        <!-- Common Errors Section -->
+        <section id="errors" class="section">
+            <h2>⚠️ Common Errors & How to Avoid Them</h2>
+
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <strong>Error 1: Duplicate Design Codes</strong>
+            </div>
+            <div class="collapsible-content">
+                <div class="alert alert-danger">
+                    <strong>Problem:</strong> Using the same code for multiple products<br>
+                    <strong>Solution:</strong> Each product must have a unique code (AG-001, AG-002, AG-003, etc.)
+                </div>
+            </div>
+
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <strong>Error 2: Price Formatting Issues</strong>
+            </div>
+            <div class="collapsible-content">
+                <div class="alert alert-danger">
+                    <strong>Problem:</strong> Including $ symbol or text in price field<br>
+                    <strong>Wrong:</strong> $299.99, CAD 299, 299 dollars<br>
+                    <strong>Correct:</strong> 299.99 (numbers only)
+                </div>
+            </div>
+
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <strong>Error 3: Availability Field Confusion</strong>
+            </div>
+            <div class="collapsible-content">
+                <div class="alert alert-danger">
+                    <strong>Problem:</strong> Trying to type "In Stock" as text<br>
+                    <strong>Solution:</strong> It's a CHECKBOX! Check = In Stock, Unchecked = Out of Stock
+                </div>
+            </div>
+
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <strong>Error 4: Insufficient Gallery Images</strong>
+            </div>
+            <div class="collapsible-content">
+                <div class="alert alert-danger">
+                    <strong>Problem:</strong> Uploading less than 3 images<br>
+                    <strong>Solution:</strong> Always upload 3-10 high-quality images per product
+                </div>
+            </div>
+
+            <div class="collapsible" onclick="toggleCollapsible(this)">
+                <strong>Error 5: No Collection Selected</strong>
+            </div>
+            <div class="collapsible-content">
+                <div class="alert alert-danger">
+                    <strong>Problem:</strong> Leaving "Linked Collection" field empty<br>
+                    <strong>Solution:</strong> Always select a collection from the dropdown
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Reference Section -->
+        <section id="quick-reference" class="section quick-reference">
+            <h2>⚡ Quick Reference Card</h2>
+            <p><strong>Print this section and keep it near your computer!</strong></p>
+
+            <div class="checklist">
+                <h3>🔐 Login URL</h3>
+                <div class="url-box">https://cms.amitojenterprisesltd.ca/wp-admin</div>
+            </div>
+
+            <div class="checklist">
+                <h3>✅ Required Fields Checklist</h3>
+                
+                <h4>Collections:</h4>
+                <label><input type="checkbox"> Title</label><br>
+                <label><input type="checkbox"> Collection Name</label><br>
+                <label><input type="checkbox"> Hero Image</label><br>
+
+                <h4>Designs:</h4>
+                <label><input type="checkbox"> Title</label><br>
+                <label><input type="checkbox"> Design Code (UNIQUE!)</label><br>
+                <label><input type="checkbox"> Gallery (3-10 images)</label><br>
+                <label><input type="checkbox"> Linked Collection</label><br>
+
+                <h4>Announcements:</h4>
+                <label><input type="checkbox"> Title</label><br>
+                <label><input type="checkbox"> Message</label><br>
+                <label><input type="checkbox"> Is Active (CHECK to display)</label><br>
+            </div>
+
+            <div class="alert alert-danger">
+                <h3>⚠️ Top 5 Errors to Avoid</h3>
+                <ol>
+                    <li>❌ Duplicate design codes</li>
+                    <li>❌ Price with $ symbol (use numbers only: 299.99)</li>
+                    <li>❌ Typing availability as text (it's a CHECKBOX!)</li>
+                    <li>❌ Less than 3 gallery images</li>
+                    <li>❌ No linked collection selected</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Support Section -->
+        <section id="support" class="section">
+            <h2>🆘 Contact Support</h2>
+
+            <h3>Before Contacting Support</h3>
+            <p>Please provide the following information:</p>
+            <ol>
+                <li>What you were trying to do</li>
+                <li>What went wrong</li>
+                <li>Screenshots of the error (if applicable)</li>
+                <li>Which browser you're using</li>
+                <li>When the issue started</li>
+            </ol>
+
+            <div class="alert alert-info">
+                <h4>Support Contacts</h4>
+                <ul>
+                    <li><strong>Technical Support:</strong> [Your Developer Contact]</li>
+                    <li><strong>Response Time:</strong> 24-48 hours</li>
+                    <li><strong>Hosting Provider:</strong> Hostinger</li>
+                    <li><strong>Website:</strong> amitojenterprisesltd.ca</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="section" style="text-align: center; background: var(--light);">
+            <p><strong>AG Fashion Hub User Manual</strong></p>
+            <p>Version 2.0 | Last Updated: November 28, 2025</p>
+            <hr style="margin: 2rem auto; width: 50%; border: 1px solid #dee2e6;">
+            <p><strong>Manual and Project Development</strong></p>
+            <p style="font-size: 1.1rem; color: var(--primary-color);">
+                <strong>Aakash Sanghvi - Moksh Digital</strong>
+            </p>
+            <p>For questions or support, please email: <a href="mailto:aakash@mokshdigital.com" style="color: var(--primary-color); text-decoration: none; font-weight: bold;">aakash@mokshdigital.com</a></p>
+            <div style="margin-top: 2rem;">
+                <button class="button" onclick="window.print()">🖨️ Print Manual</button>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Collapsible sections
+        function toggleCollapsible(element) {
+            element.classList.toggle('active');
+            const content = element.nextElementSibling;
+            content.classList.toggle('show');
+        }
+
+        // Highlight current section in navigation
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.section');
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 100)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navItems.forEach(item => {
+                item.classList.remove('active-section');
+                if (item.getAttribute('href') === `#${current}`) {
+                    item.classList.add('active-section');
+                }
+            });
+        });
+
+        // Print friendly version
+        window.addEventListener('beforeprint', () => {
+            document.querySelectorAll('.collapsible-content').forEach(content => {
+                content.classList.add('show');
+            });
+        });
+
+        window.addEventListener('afterprint', () => {
+            document.querySelectorAll('.collapsible-content').forEach(content => {
+                content.classList.remove('show');
+            });
+        });
+    </script>
+</body>
+</html>

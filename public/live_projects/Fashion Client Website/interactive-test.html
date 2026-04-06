@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Features Test - AG Fashion Hub</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="/assets/css/variables.css">
+  <link rel="stylesheet" href="/assets/css/base.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="stylesheet" href="/assets/css/pages.css">
+  <link rel="stylesheet" href="/assets/css/responsive.css">
+</head>
+<body>
+  
+  <!-- Header with Mobile Menu -->
+  <header class="header">
+    <div class="container">
+      <div class="header__inner">
+        <a href="https://amitojenterprises.ca/index2.html" class="header__logo">
+          <img src="https://via.placeholder.com/150x50/A12390/FFFFFF?text=AG+Fashion" alt="AG Fashion Hub">
+        </a>
+        
+        <nav class="header__nav">
+          <ul class="nav__list">
+            <li><a href="https://amitojenterprises.ca/index2.html">Home</a></li>
+            <li><a href="/collections.html">Collections</a></li>
+            <li><a href="/blogs.html">Blog</a></li>
+            <li><a href="#" data-modal="size-guide-modal">Size Guide</a></li>
+          </ul>
+        </nav>
+        
+        <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+          <span class="hamburger__line"></span>
+          <span class="hamburger__line"></span>
+          <span class="hamburger__line"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+  
+  <!-- Mobile Menu -->
+  <div class="mobile-menu">
+    <nav class="mobile-menu__nav">
+      <ul class="mobile-menu__list">
+        <li><a href="https://amitojenterprises.ca/index2.html">Home</a></li>
+        <li><a href="/collections.html">Collections</a></li>
+        <li><a href="/blogs.html">Blog</a></li>
+        <li><a href="#" data-modal="size-guide-modal">Size Guide</a></li>
+      </ul>
+    </nav>
+  </div>
+  
+  <!-- Main Content -->
+  <main>
+    <div class="container">
+      <h1 class="page-title mt-xl">Interactive Features Test</h1>
+      <p class="page-subtitle">Test menu, modal, carousel, and lightbox</p>
+      
+      <!-- Test Section 1: Mobile Menu -->
+      <section class="mt-2xl">
+        <h2>Test 1: Mobile Menu</h2>
+        <p>Click the hamburger icon in the header (visible on mobile or resize browser to see it)</p>
+        <ul>
+          <li>✅ Menu should slide in from right</li>
+          <li>✅ Clicking a link should close menu</li>
+          <li>✅ Clicking outside should close menu</li>
+          <li>✅ Pressing ESC should close menu</li>
+        </ul>
+      </section>
+      
+      <!-- Test Section 2: Modal -->
+      <section class="mt-2xl">
+        <h2>Test 2: Modal System</h2>
+        <button class="btn btn--primary" data-modal="test-modal">Open Test Modal</button>
+        <button class="btn btn--secondary" data-modal="size-guide-modal">Open Size Guide Modal</button>
+        <ul class="mt-md">
+          <li>✅ Modal should open with overlay</li>
+          <li>✅ Clicking outside should close</li>
+          <li>✅ Clicking X button should close</li>
+          <li>✅ Pressing ESC should close</li>
+          <li>✅ Tabs should switch in size guide</li>
+        </ul>
+      </section>
+      
+      <!-- Test Section 3: Carousel -->
+      <section class="mt-2xl">
+        <h2>Test 3: Carousel</h2>
+        <div class="carousel" id="test-carousel">
+          <div class="carousel__track">
+            <div class="collection-card">
+              <div class="collection-card__image">
+                <img src="https://via.placeholder.com/400x300/A12390/FFFFFF?text=Slide+1" alt="Slide 1">
+              </div>
+              <div class="collection-card__content">
+                <h3 class="collection-card__title">Collection 1</h3>
+              </div>
+            </div>
+            <div class="collection-card">
+              <div class="collection-card__image">
+                <img src="https://via.placeholder.com/400x300/4BA4AE/FFFFFF?text=Slide+2" alt="Slide 2">
+              </div>
+              <div class="collection-card__content">
+                <h3 class="collection-card__title">Collection 2</h3>
+              </div>
+            </div>
+            <div class="collection-card">
+              <div class="collection-card__image">
+                <img src="https://via.placeholder.com/400x300/25D366/FFFFFF?text=Slide+3" alt="Slide 3">
+              </div>
+              <div class="collection-card__content">
+                <h3 class="collection-card__title">Collection 3</h3>
+              </div>
+            </div>
+            <div class="collection-card">
+              <div class="collection-card__image">
+                <img src="https://via.placeholder.com/400x300/FF9800/FFFFFF?text=Slide+4" alt="Slide 4">
+              </div>
+              <div class="collection-card__content">
+                <h3 class="collection-card__title">Collection 4</h3>
+              </div>
+            </div>
+          </div>
+          <button class="carousel__btn carousel__btn--prev" aria-label="Previous">‹</button>
+          <button class="carousel__btn carousel__btn--next" aria-label="Next">›</button>
+        </div>
+        <ul class="mt-md">
+          <li>✅ Carousel should auto-scroll</li>
+          <li>✅ Pause on hover</li>
+          <li>✅ Clicking arrows should navigate</li>
+          <li>✅ Should loop infinitely</li>
+          <li>✅ Swipe on mobile should work</li>
+        </ul>
+      </section>
+      
+      <!-- Test Section 4: Lightbox -->
+      <section class="mt-2xl mb-2xl">
+        <h2>Test 4: Lightbox</h2>
+        <button class="btn btn--primary" onclick="testLightbox()">Open Lightbox Gallery</button>
+        <ul class="mt-md">
+          <li>✅ Should open full-screen</li>
+          <li>✅ Clicking outside should close</li>
+          <li>✅ X button should close</li>
+          <li>✅ Arrow keys should navigate</li>
+          <li>✅ Arrow buttons should navigate</li>
+          <li>✅ ESC should close</li>
+          <li>✅ Swipe should work on mobile</li>
+        </ul>
+      </section>
+      
+    </div>
+  </main>
+  
+  <!-- Test Modal -->
+  <div id="test-modal" class="modal">
+    <div class="modal__overlay" data-close-modal></div>
+    <div class="modal__content">
+      <div class="modal__header">
+        <h2>Test Modal</h2>
+        <button class="modal__close" data-close-modal aria-label="Close">×</button>
+      </div>
+      <div class="modal__body">
+        <p>This is a test modal. You can put any content here!</p>
+        <p>Try clicking outside, pressing ESC, or clicking the X to close.</p>
+        <button class="btn btn--primary mt-md" data-close-modal>Close Modal</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Size Guide Modal -->
+  <div id="size-guide-modal" class="modal">
+    <div class="modal__overlay" data-close-modal></div>
+    <div class="modal__content">
+      <div class="modal__header">
+        <h2>Size Guide</h2>
+        <button class="modal__close" data-close-modal aria-label="Close">×</button>
+      </div>
+      <div class="modal__body">
+        <!-- Tabs -->
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="dress">Dress</button>
+          <button class="tab-btn" data-tab="saree">Saree</button>
+          <button class="tab-btn" data-tab="lehenga">Lehenga</button>
+        </div>
+        
+        <!-- Tab Content -->
+        <div class="tab-content mt-lg">
+          <div id="tab-dress" class="tab-pane active">
+            <h3>Dress Sizing</h3>
+            <p>Standard dress sizes and measurements...</p>
+            <table style="width: 100%; margin-top: 1rem; border-collapse: collapse;">
+              <tr style="border-bottom: 1px solid #e0e0e0;">
+                <th style="padding: 0.5rem; text-align: left;">Size</th>
+                <th style="padding: 0.5rem; text-align: left;">Bust</th>
+                <th style="padding: 0.5rem; text-align: left;">Waist</th>
+              </tr>
+              <tr style="border-bottom: 1px solid #e0e0e0;">
+                <td style="padding: 0.5rem;">S</td>
+                <td style="padding: 0.5rem;">32-34"</td>
+                <td style="padding: 0.5rem;">26-28"</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #e0e0e0;">
+                <td style="padding: 0.5rem;">M</td>
+                <td style="padding: 0.5rem;">36-38"</td>
+                <td style="padding: 0.5rem;">30-32"</td>
+              </tr>
+            </table>
+          </div>
+          
+          <div id="tab-saree" class="tab-pane">
+            <h3>Saree Sizing</h3>
+            <p>Saree sizing information...</p>
+          </div>
+          
+          <div id="tab-lehenga" class="tab-pane">
+            <h3>Lehenga Sizing</h3>
+            <p>Lehenga sizing information...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- JavaScript Files -->
+  <script src="/assets/js/config.js"></script>
+  <script src="/assets/js/menu.js"></script>
+  <script src="/assets/js/modal.js"></script>
+  <script src="/assets/js/carousel.js"></script>
+  <script src="/assets/js/lightbox.js"></script>
+  
+  <script>
+    // Test lightbox function
+    function testLightbox() {
+      const images = [
+        'https://via.placeholder.com/800x600/A12390/FFFFFF?text=Image+1',
+        'https://via.placeholder.com/800x600/4BA4AE/FFFFFF?text=Image+2',
+        'https://via.placeholder.com/800x600/25D366/FFFFFF?text=Image+3',
+        'https://via.placeholder.com/800x600/FF9800/FFFFFF?text=Image+4'
+      ];
+      
+      openLightbox(images, 0);
+    }
+  </script>
+</body>
+</html>
