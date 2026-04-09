@@ -8,6 +8,7 @@ import HomeBudget from '@/components/case-studies/HomeBudget';
 import UCWPeerTutoring from '@/components/case-studies/UCWPeerTutoring';
 import AGFashionHub from '@/components/case-studies/AGFashionHub';
 import EEIS from '@/components/case-studies/EEIS';
+import FieldOpsPlatform from '@/components/case-studies/FieldOpsPlatform';
 import { CaseStudySchema, BreadcrumbSchema } from '@/components/JsonLd';
 
 // Function to generate static routes at build time
@@ -19,6 +20,7 @@ const PROJECT_SCHEMA_DATA: Record<string, {
     description: string;
     skills: string[];
     image?: string;
+    datePublished?: string;
 }> = {
     'edustation': {
         title: 'EduStation',
@@ -56,6 +58,13 @@ const PROJECT_SCHEMA_DATA: Record<string, {
         skills: ['Next.js 14', 'ISR', 'TypeScript', 'Headless WordPress', 'Performance Optimization'],
         image: '/images/eeis/landing.png',
     },
+    'fieldops-os-enterprise-platform': {
+        title: 'FieldOps OS',
+        description: 'A confidential enterprise field operations platform built from scratch as sole developer and product owner. Replaced fragmented spreadsheet workflows with a unified SaaS covering work orders, dispatch, timesheets, billing, RBAC, realtime sync, and AI-powered work order generation and natural language reporting.',
+        skills: ['Enterprise SaaS', 'Next.js 15', 'Supabase', 'PostgreSQL', 'AI Integration', 'RBAC', 'Realtime Sync', 'Field Service Management', 'AI Report Generation', 'Multimodal AI'],
+        image: '/images/field-os/desktop-hero.png',
+        datePublished: '2025-01-01',
+    },
 };
 
 export async function generateStaticParams() {
@@ -70,6 +79,7 @@ export async function generateStaticParams() {
         { slug: 'ucw-tutor-booking-ux-case-study' },
         { slug: 'ag-fashion-hub-headless-commerce' },
         { slug: 'express-entry-migration-nextjs' },
+        { slug: 'fieldops-os-enterprise-platform' },
     ];
 
     if (!supabaseUrl || !supabaseKey) {
@@ -99,8 +109,25 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
+    // Hardcoded fallbacks for key projects when Supabase is unreachable
+    const METADATA_FALLBACKS: Record<string, { title: string; description: string }> = {
+        'fieldops-os-enterprise-platform': {
+            title: 'FieldOps OS | Aakash Sanghvi',
+            description: 'A confidential enterprise field operations platform built from scratch — covering work orders, dispatch, timesheets, billing, RBAC, realtime sync, and AI-powered tools for the specialty construction industry.',
+        },
+        'edustation': {
+            title: 'EduStation | Aakash Sanghvi',
+            description: 'A comprehensive B2B SaaS LMS designed for educational institutions with student progress tracking and multi-tenant architecture.',
+        },
+        'homebudget-ai': {
+            title: 'HomeBudget AI | Aakash Sanghvi',
+            description: 'A personal finance application with AI-powered receipt scanning to track expenses, manage budgets, and gain spending insights.',
+        },
+    };
+
     if (!supabaseUrl || !supabaseKey) {
-        // Fallback metadata if DB connection not possible
+        const fallback = METADATA_FALLBACKS[slug];
+        if (fallback) return fallback;
         const title = slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
         return {
             title: `${title} | Aakash Sanghvi`,
@@ -119,16 +146,26 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
     if (!project) return { title: 'Project Not Found' };
 
+    const metaTitle = `${project.title} | Aakash Sanghvi`;
+    const metaDesc = project.description || `Case study for ${project.title}`;
+
     return {
-        title: `${project.title} | Aakash Sanghvi`,
-        description: project.description || `Case study for ${project.title}`,
+        title: metaTitle,
+        description: metaDesc,
         alternates: {
             canonical: `/projects/${slug}`,
         },
         openGraph: {
-            title: `${project.title} | Aakash Sanghvi`,
-            description: project.description || `Case study for ${project.title}`,
+            title: metaTitle,
+            description: metaDesc,
             url: `/projects/${slug}`,
+            type: 'article',
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: metaTitle,
+            description: metaDesc,
+            creator: '@aakashsanghvi',
         },
     };
 }
@@ -155,6 +192,8 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                 return <AGFashionHub />;
             case 'express-entry-migration-nextjs':
                 return <EEIS />;
+            case 'fieldops-os-enterprise-platform':
+                return <FieldOpsPlatform />;
             default:
                 return notFound();
         }
@@ -171,6 +210,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                         description={projectData.description}
                         skills={projectData.skills}
                         image={projectData.image}
+                        datePublished={(projectData as typeof projectData & { datePublished?: string }).datePublished}
                     />
                     <BreadcrumbSchema
                         items={[

@@ -8,6 +8,15 @@ export const dynamic = 'force-dynamic';
 
 const FALLBACK_PROJECTS = [
     {
+        title: 'FieldOps OS',
+        slug: 'fieldops-os-enterprise-platform',
+        metric_value: '20+',
+        metric_description: 'Custom Platform Modules',
+        role: 'Solo Developer & Product Owner',
+        display_order: 1,
+        skills: ['Enterprise SaaS', 'Supabase', 'Next.js', 'AI Generators', 'Role-Based Access']
+    },
+    {
         title: 'UCW Peer Tutoring Service',
         slug: 'ucw-tutor-booking-ux-case-study',
         metric_value: '60% Faster',
@@ -180,6 +189,144 @@ export default async function HomePage() {
                                 <li>Architecture-level understanding</li>
                                 <li>AI as a force multiplier</li>
                             </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+
+            {/* ========== CROWN JEWEL: FIELDOPS OS ========== */}
+            <section
+                className="py-24 lg:py-32 px-6 lg:px-12 border-t overflow-hidden relative"
+                style={{ borderColor: 'var(--color-border)' }}
+            >
+                {/* Ambient glow */}
+                <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{
+                        background: 'radial-gradient(ellipse 60% 50% at 70% 50%, rgba(99,102,241,0.08), transparent)',
+                    }}
+                />
+
+                <div className="max-w-6xl mx-auto relative z-10">
+                    <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
+
+                        {/* Text Content */}
+                        <div className="space-y-8">
+                            <div
+                                className="inline-flex items-center gap-2 px-5 py-2 rounded-full border bg-white/5 font-semibold text-sm uppercase tracking-wide"
+                                style={{ borderColor: 'rgba(255,255,255,0.1)', color: 'var(--color-accent)' }}
+                            >
+                                <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: 'var(--color-accent)' }} />
+                                Flagship Project
+                            </div>
+
+                            <div className="space-y-4">
+                                <span className="text-xs font-bold uppercase tracking-[0.2em] gradient-text block">
+                                    Enterprise SaaS · AI-Powered · Field Operations
+                                </span>
+                                <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-[1.05]">
+                                    FieldOps OS
+                                </h2>
+                                <p className="text-lg md:text-xl font-light leading-relaxed max-w-xl" style={{ color: 'var(--color-text-muted)' }}>
+                                    A custom enterprise operating system built from scratch for the specialty construction industry — replacing an entire fragmented toolstack with a single, unified platform.
+                                </p>
+                            </div>
+
+                            <div className="grid grid-cols-3 gap-6 pt-8 border-t" style={{ borderColor: 'var(--color-border)' }}>
+                                {[
+                                    { val: '20+', label: 'Platform Modules' },
+                                    { val: '6+', label: 'User Roles' },
+                                    { val: 'AI', label: 'Work Order Engine' },
+                                ].map((stat) => (
+                                    <div key={stat.label}>
+                                        <div className="text-3xl font-black gradient-text mb-1">{stat.val}</div>
+                                        <div className="text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--color-text-muted)' }}>
+                                            {stat.label}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div>
+                                <Link
+                                    href="/projects/fieldops-os-enterprise-platform"
+                                    className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-semibold text-white transition-all duration-300 hover:scale-105 active:scale-95 glow"
+                                    style={{ background: 'var(--gradient-accent)' }}
+                                >
+                                    Read the Case Study
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                    </svg>
+                                </Link>
+                            </div>
+                        </div>
+
+                        {/* Floating Device Mockups */}
+                        <div
+                            className="relative h-[360px] md:h-[440px] lg:h-[520px]"
+                            style={{ perspective: '1200px' }}
+                        >
+                            {/* Desktop Frame */}
+                            <div
+                                className="absolute right-0 w-[90%] md:w-[85%] aspect-video rounded-xl border overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.6)] bg-neutral-900"
+                                style={{
+                                    top: '5%',
+                                    borderColor: 'var(--color-border)',
+                                    transform: 'rotateY(-12deg) rotateX(4deg) scale(0.94)',
+                                    transformStyle: 'preserve-3d',
+                                    zIndex: 10,
+                                }}
+                            >
+                                <div className="h-7 flex items-center px-3 gap-1.5 border-b" style={{ backgroundColor: 'var(--color-bg-elevated)', borderColor: 'var(--color-border)' }}>
+                                    <div className="w-2 h-2 rounded-full bg-red-500/40" />
+                                    <div className="w-2 h-2 rounded-full bg-yellow-500/40" />
+                                    <div className="w-2 h-2 rounded-full bg-green-500/40" />
+                                    <div className="ml-3 flex-1 h-3.5 rounded-full border text-[8px] font-mono flex items-center justify-center" style={{ borderColor: 'var(--color-border)', color: 'var(--color-text-muted)' }}>
+                                        fieldops-os.com/dashboard
+                                    </div>
+                                </div>
+                                <div className="flex-1 h-full relative bg-neutral-950 overflow-hidden">
+                                    <Image
+                                        src="/images/field-os/desktop-hero.png"
+                                        alt="FieldOps OS Dashboard"
+                                        fill
+                                        className="object-cover object-top"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-transparent pointer-events-none" />
+                                </div>
+                            </div>
+
+                            {/* Mobile Frame */}
+                            <div
+                                className="absolute overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.7)] bg-neutral-900"
+                                style={{
+                                    bottom: '4%',
+                                    left: '0%',
+                                    width: '28%',
+                                    maxWidth: '155px',
+                                    aspectRatio: '9 / 19.5',
+                                    borderRadius: '2rem',
+                                    border: '4px solid #333',
+                                    transform: 'rotateY(16deg) rotateX(-5deg) translateY(-5%) scale(1.06)',
+                                    transformStyle: 'preserve-3d',
+                                    zIndex: 20,
+                                }}
+                            >
+                                <div className="absolute top-0 inset-x-0 flex justify-center z-10">
+                                    <div className="w-2/5 h-5 rounded-b-xl" style={{ backgroundColor: '#333' }} />
+                                </div>
+                                <div className="w-full h-full relative bg-neutral-950 overflow-hidden">
+                                    <Image
+                                        src="/images/field-os/mobile-hero.jpeg"
+                                        alt="FieldOps OS Mobile"
+                                        fill
+                                        className="object-cover"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-tr from-fuchsia-500/15 to-transparent pointer-events-none" />
+                                </div>
+                            </div>
                         </div>
 
                     </div>

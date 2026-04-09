@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Study — Field Operations Platform | Aakash Sanghvi</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            --bg: #09090b;
+            --bg-elevated: #18181b;
+            --bg-card: #1c1c21;
+            --text: #fafafa;
+            --text-muted: #a1a1aa;
+            --text-dim: #71717a;
+            --accent-start: #6366f1;
+            --accent-end: #a855f7;
+            --accent-alt: #22d3ee;
+            --border: #27272a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto;
+            padding: 48px 52px;
+            page-break-after: always;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-start), var(--accent-end), var(--accent-alt));
+        }
+
+        /* Cover Page */
+        .cover {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 297mm;
+            padding: 48px 52px;
+        }
+
+        .cover-tags {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .cover-tag {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            padding: 6px 14px;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+        }
+
+        .cover h1 {
+            font-size: 42px;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 20px;
+            max-width: 580px;
+        }
+
+        .cover h1 .gradient {
+            background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .cover-sub {
+            font-size: 16px;
+            color: var(--text-muted);
+            max-width: 500px;
+            margin-bottom: 48px;
+            line-height: 1.7;
+        }
+
+        .cover-meta {
+            display: flex;
+            gap: 40px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border);
+        }
+
+        .cover-meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .cover-meta-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-dim);
+        }
+
+        .cover-meta-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        /* Section Headers */
+        .section-number {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent-start);
+            margin-bottom: 8px;
+        }
+
+        h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .section-intro {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 28px;
+            max-width: 520px;
+        }
+
+        h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            line-height: 1.7;
+        }
+
+        /* Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .card-icon {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .card h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text);
+        }
+
+        .card p {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 0;
+            line-height: 1.6;
+        }
+
+        /* Timeline */
+        .timeline {
+            display: flex;
+            gap: 0;
+            margin-bottom: 28px;
+            position: relative;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            top: 14px;
+            left: 20px;
+            right: 20px;
+            height: 2px;
+            background: var(--border);
+            z-index: 0;
+        }
+
+        .timeline-item {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .timeline-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+            margin: 9px auto 10px;
+        }
+
+        .timeline-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-dim);
+        }
+
+        .timeline-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text);
+            margin-top: 4px;
+        }
+
+        .timeline-desc {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Screenshot placeholder */
+        .screenshot {
+            background: var(--bg-elevated);
+            border: 1px dashed var(--border);
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .screenshot-label {
+            font-size: 12px;
+            color: var(--text-dim);
+            font-weight: 500;
+        }
+
+        .screenshot.wide {
+            padding: 60px 20px;
+        }
+
+        .screenshot.split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            padding: 24px;
+        }
+
+        .screenshot.split .screenshot-half {
+            background: var(--bg-card);
+            border: 1px dashed var(--border);
+            border-radius: 8px;
+            padding: 36px 16px;
+            text-align: center;
+        }
+
+        /* Metrics */
+        .metrics-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .metric {
+            text-align: center;
+            padding: 20px 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .metric-value {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .metric-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        /* Tech stack pills */
+        .tech-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .tech-pill {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            padding: 6px 14px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+        }
+
+        /* Bullet list */
+        ul {
+            padding-left: 18px;
+            margin-bottom: 16px;
+        }
+
+        ul li {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .page-footer {
+            position: absolute;
+            bottom: 32px;
+            left: 52px;
+            right: 52px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: var(--text-dim);
+        }
+
+        /* Comparison table */
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .comparison-col h4 {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text);
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .comparison-col ul {
+            padding-left: 16px;
+        }
+
+        .comparison-col li {
+            font-size: 12px;
+        }
+
+        @media print {
+            body { background: var(--bg); }
+            .page { margin: 0; padding: 48px 52px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- PAGE 1: COVER -->
+<div class="page cover">
+    <div class="cover-tags">
+        <span class="cover-tag">Enterprise SaaS</span>
+        <span class="cover-tag">Field Operations</span>
+        <span class="cover-tag">AI-Powered</span>
+    </div>
+
+    <h1>
+        Building a <span class="gradient">Custom Operating System</span> for a Field Services Company
+    </h1>
+
+    <p class="cover-sub">
+        A company running on spreadsheets, emails, and disconnected tools needed a single source of truth. I embedded on-site as the sole developer and product owner — talking to every user, shipping daily, and building a platform that replaced their entire operational stack.
+    </p>
+
+    <div class="cover-meta">
+        <div class="cover-meta-item">
+            <span class="cover-meta-label">Role</span>
+            <span class="cover-meta-value">Developer & Product Owner</span>
+        </div>
+        <div class="cover-meta-item">
+            <span class="cover-meta-label">Duration</span>
+            <span class="cover-meta-value">2025 – 2026</span>
+        </div>
+        <div class="cover-meta-item">
+            <span class="cover-meta-label">Type</span>
+            <span class="cover-meta-value">Solo Build, Full Stack</span>
+        </div>
+        <div class="cover-meta-item">
+            <span class="cover-meta-label">Industry</span>
+            <span class="cover-meta-value">Signage & Lighting</span>
+        </div>
+    </div>
+
+    <div class="page-footer">
+        <span>Aakash Sanghvi — aakashsanghvi.com</span>
+        <span>Page 1</span>
+    </div>
+</div>
+
+<!-- PAGE 2: THE PROBLEM & APPROACH -->
+<div class="page">
+    <div class="section-number">01 — Context</div>
+    <h2>The Problem</h2>
+    <p class="section-intro">A growing field services company with multiple offices, dozens of technicians, and hundreds of active work orders — held together by spreadsheets and tribal knowledge.</p>
+
+    <div class="card-grid">
+        <div class="card">
+            <div class="card-icon">📋</div>
+            <h4>Fragmented Tools</h4>
+            <p>Work orders in one system, scheduling in another, timesheets on paper, invoicing in spreadsheets. No connection between them.</p>
+        </div>
+        <div class="card">
+            <div class="card-icon">🔀</div>
+            <h4>Scheduling Conflicts</h4>
+            <p>Dispatchers had no visibility into tech availability or workload. Double-bookings were common.</p>
+        </div>
+        <div class="card">
+            <div class="card-icon">⏳</div>
+            <h4>Delayed Invoicing</h4>
+            <p>Weeks between job completion and invoice prep. Missing information meant constant back-and-forth.</p>
+        </div>
+        <div class="card">
+            <div class="card-icon">👥</div>
+            <h4>Multiple User Types</h4>
+            <p>Admins, dispatchers, office staff, field techs, and clients — each with different needs, no unified system.</p>
+        </div>
+    </div>
+
+    <div class="section-number" style="margin-top: 28px;">My Approach</div>
+    <h3>Embedded, Not Remote</h3>
+    <p>I didn't build from a spec document. I went on-site, sat with dispatchers, watched techs in the field, and talked to management. Every feature came from a real conversation, not a ticket. As both the product owner and developer, I could make a decision at 10am and ship it by 3pm.</p>
+
+    <div class="comparison">
+        <div class="comparison-col">
+            <h4>Traditional Approach</h4>
+            <ul>
+                <li>Requirements doc → weeks of dev → demo → feedback</li>
+                <li>Decisions made in meetings</li>
+                <li>Feedback filtered through PMs</li>
+                <li>Sprint cycles (2–4 weeks)</li>
+            </ul>
+        </div>
+        <div class="comparison-col">
+            <h4>My Approach</h4>
+            <ul>
+                <li>Conversation → build → ship → feedback → iterate</li>
+                <li>Decisions made face-to-face with users</li>
+                <li>Direct observation of workflows</li>
+                <li>Daily shipping cycles</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="page-footer">
+        <span>Aakash Sanghvi — aakashsanghvi.com</span>
+        <span>Page 2</span>
+    </div>
+</div>
+
+<!-- PAGE 3: PLATFORM OVERVIEW -->
+<div class="page">
+    <div class="section-number">02 — The Platform</div>
+    <h2>What I Built</h2>
+    <p class="section-intro">A complete operations platform covering the full job lifecycle — from work order creation to invoicing — with role-specific views for every user type.</p>
+
+    <div class="timeline">
+        <div class="timeline-item">
+            <div class="timeline-label">Phase 1</div>
+            <div class="timeline-dot"></div>
+            <div class="timeline-title">Foundation</div>
+            <div class="timeline-desc">WOs, RBAC, Users</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-label">Phase 2</div>
+            <div class="timeline-dot"></div>
+            <div class="timeline-title">Scheduling</div>
+            <div class="timeline-desc">Calendar, Dispatch</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-label">Phase 3</div>
+            <div class="timeline-dot"></div>
+            <div class="timeline-title">Field Tools</div>
+            <div class="timeline-desc">Tech Dashboard</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-label">Phase 4</div>
+            <div class="timeline-dot"></div>
+            <div class="timeline-title">Intelligence</div>
+            <div class="timeline-desc">AI Reports & WO Gen</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-label">Phase 5</div>
+            <div class="timeline-dot"></div>
+            <div class="timeline-title">Scale</div>
+            <div class="timeline-desc">Multi-Office, Portal</div>
+        </div>
+    </div>
+
+    <div class="card-grid">
+        <div class="card">
+            <div class="card-icon">📝</div>
+            <h4>Work Order Lifecycle</h4>
+            <p>9-status pipeline from creation to invoicing. Status-based UI locking controls what each role can do at each stage.</p>
+        </div>
+        <div class="card">
+            <div class="card-icon">📅</div>
+            <h4>Calendar & Dispatch</h4>
+            <p>Week/month/day views with drag-and-drop. Tech load board with overload warnings. Print-ready dispatch sheets.</p>
+        </div>
+        <div class="card">
+            <div class="card-icon">⏱️</div>
+            <h4>Timesheets & Approvals</h4>
+            <p>Per-job time logging, two-tier approval workflow, automated daily email reports for missing entries.</p>
+        </div>
+        <div class="card">
+            <div class="card-icon">💰</div>
+            <h4>Billing & Invoicing</h4>
+            <p>Billing classification, invoice file management, PO tracking, charge types — bridging field work to accounting.</p>
+        </div>
+        <div class="card">
+            <div class="card-icon">🔐</div>
+            <h4>RBAC & Permissions</h4>
+            <p>Granular role-based access mapped to real org hierarchy. Job status transition gates. Per-resource permissions.</p>
+        </div>
+        <div class="card">
+            <div class="card-icon">🌐</div>
+            <h4>Client Portal</h4>
+            <p>External-facing portal for project managers. File access, status visibility, scoped to their assigned jobs.</p>
+        </div>
+    </div>
+
+    <div class="screenshot wide">
+        <span class="screenshot-label">[ Screenshot: Work Order Detail Page — showing status, tasks, files, team ]</span>
+    </div>
+
+    <div class="page-footer">
+        <span>Aakash Sanghvi — aakashsanghvi.com</span>
+        <span>Page 3</span>
+    </div>
+</div>
+
+<!-- PAGE 4: TECH DASHBOARD -->
+<div class="page">
+    <div class="section-number">03 — Deep Dive</div>
+    <h2>Two Products, One Codebase</h2>
+    <p class="section-intro">The office team needs a full desktop ops platform. Field technicians need a phone-first tool they can use on a ladder in the sun. Same data, completely different experience.</p>
+
+    <div class="screenshot split">
+        <div class="screenshot-half">
+            <span class="screenshot-label">[ Screenshot: Desktop — Calendar Dispatch Board ]</span>
+        </div>
+        <div class="screenshot-half">
+            <span class="screenshot-label">[ Screenshot: Mobile — Tech Dashboard Job List ]</span>
+        </div>
+    </div>
+
+    <h3>The Tech Dashboard</h3>
+    <p>A separate mobile-first product built for non-technical field workers. Designed from on-site observation — watching technicians try to use the system with gloves on, in direct sunlight, between tasks.</p>
+
+    <div class="card-grid">
+        <div class="card">
+            <div class="card-icon">📱</div>
+            <h4>Mobile-First UX</h4>
+            <p>Large tap targets, minimal text input, quick-select buttons for common values. No training manual needed.</p>
+        </div>
+        <div class="card">
+            <div class="card-icon">✅</div>
+            <h4>Task Execution</h4>
+            <p>See assigned tasks, mark complete/blocked with attribution, upload site photos and safety docs per task.</p>
+        </div>
+        <div class="card">
+            <div class="card-icon">⏱️</div>
+            <h4>Field Time Logging</h4>
+            <p>Log hours per job per date. Quick-select buttons (0.5, 1, 2, 4, 8h). Status-aware — greyed out when day is submitted.</p>
+        </div>
+        <div class="card">
+            <div class="card-icon">🔧</div>
+            <h4>Materials Tracking</h4>
+            <p>Log materials used on-site with receipt photo upload. Source tracking (purchased vs shop inventory). Reimbursement requests.</p>
+        </div>
+    </div>
+
+    <h3>Realtime Sync</h3>
+    <p>When dispatch updates a work order, reassigns a tech, or adds a task — the field tech sees it instantly without refreshing. Supabase realtime subscriptions across tasks, assignments, comments, and day notes keep everyone in sync.</p>
+
+    <div class="screenshot wide">
+        <span class="screenshot-label">[ Screenshot: Tech Dashboard — Task Detail with Files and Checklist ]</span>
+    </div>
+
+    <div class="page-footer">
+        <span>Aakash Sanghvi — aakashsanghvi.com</span>
+        <span>Page 4</span>
+    </div>
+</div>
+
+<!-- PAGE 5: AI TOOLS -->
+<div class="page">
+    <div class="section-number">04 — AI Integration</div>
+    <h2>AI-Powered Tools</h2>
+    <p class="section-intro">Two AI features that save hours of manual work — with human-in-the-loop safety so the AI assists but never acts alone.</p>
+
+    <h3>Natural Language Report Generator</h3>
+    <p>Users ask a question in plain English — "Show me all active jobs in Vancouver with more than 20 logged hours" — and get a fully composed dashboard with charts, tables, and KPI cards. No SQL knowledge needed.</p>
+
+    <div class="screenshot wide">
+        <span class="screenshot-label">[ Screenshot: AI Report Generator — prompt input + generated dashboard with charts ]</span>
+    </div>
+
+    <ul>
+        <li><strong>How it works:</strong> Gemini AI reads a pruned database schema, generates SQL + UI layout JSON, user confirms before execution</li>
+        <li><strong>5 widget types:</strong> Metric cards, bar charts, line charts, pie charts, data tables — composed dynamically</li>
+        <li><strong>Safety layers:</strong> System prompt guardrails → regex validation → Postgres function validation → read-only execution</li>
+        <li><strong>Voice input:</strong> Ask questions by speaking — Web Speech API transcription</li>
+    </ul>
+
+    <h3 style="margin-top: 24px;">AI Work Order Creator</h3>
+    <p>Paste an email, upload a PDF, or record audio — the AI extracts structured work order data and walks you through a step-by-step wizard. One click creates the full work order with tasks, checklists, tech assignments, and an auto-generated PDF.</p>
+
+    <div class="screenshot wide">
+        <span class="screenshot-label">[ Screenshot: AI WO Creator — multimodal input + step wizard ]</span>
+    </div>
+
+    <ul>
+        <li><strong>Multimodal input:</strong> Text paste, file upload (PDF/images), audio recording — all analyzed together</li>
+        <li><strong>Smart matching:</strong> Fuzzy matches extracted client/PM/tech names against existing database records</li>
+        <li><strong>Full injection:</strong> Creates WO + tasks + checklists + tags + assignments + PDF in one transaction</li>
+    </ul>
+
+    <div class="page-footer">
+        <span>Aakash Sanghvi — aakashsanghvi.com</span>
+        <span>Page 5</span>
+    </div>
+</div>
+
+<!-- PAGE 6: OUTCOMES & TECH -->
+<div class="page">
+    <div class="section-number">05 — Outcomes</div>
+    <h2>Impact & Scale</h2>
+
+    <div class="metrics-row">
+        <div class="metric">
+            <div class="metric-value">20+</div>
+            <div class="metric-label">Modules Built</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">6+</div>
+            <div class="metric-label">User Roles</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">30+</div>
+            <div class="metric-label">Dev Sessions</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">1</div>
+            <div class="metric-label">Developer</div>
+        </div>
+    </div>
+
+    <h3>Hard Problems Solved</h3>
+    <div class="card-grid">
+        <div class="card">
+            <h4>Status-Based UI Locking</h4>
+            <p>A ternary permission chain that controls what's editable at each WO status. Different statuses unlock/lock different parts of the UI for different roles.</p>
+        </div>
+        <div class="card">
+            <h4>Multi-Office Filtering</h4>
+            <p>A single global selector that filters every module (WOs, calendar, billing, timesheets, people) — without being a permission boundary.</p>
+        </div>
+        <div class="card">
+            <h4>Realtime Collaboration</h4>
+            <p>Supabase realtime subscriptions across tasks, assignments, comments, and day notes. Office updates appear on field tech phones instantly.</p>
+        </div>
+        <div class="card">
+            <h4>Designing for the Field</h4>
+            <p>Building for users who aren't technical — field techs on phones in the sun, office staff who live in spreadsheets, clients who just want their files.</p>
+        </div>
+    </div>
+
+    <div class="section-number" style="margin-top: 28px;">Tech Stack</div>
+    <h3>Built With</h3>
+    <div class="tech-row">
+        <span class="tech-pill">Next.js 15</span>
+        <span class="tech-pill">React</span>
+        <span class="tech-pill">TypeScript</span>
+        <span class="tech-pill">Tailwind CSS</span>
+        <span class="tech-pill">Supabase</span>
+        <span class="tech-pill">PostgreSQL</span>
+        <span class="tech-pill">Supabase Realtime</span>
+        <span class="tech-pill">Supabase RLS</span>
+        <span class="tech-pill">Google Gemini AI</span>
+        <span class="tech-pill">Vercel</span>
+        <span class="tech-pill">Resend</span>
+        <span class="tech-pill">React Email</span>
+        <span class="tech-pill">Recharts</span>
+        <span class="tech-pill">jsPDF</span>
+        <span class="tech-pill">Web Speech API</span>
+    </div>
+
+    <div style="margin-top: 36px; padding: 28px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; text-align: center;">
+        <h3 style="margin-bottom: 6px;">Want to talk about this project?</h3>
+        <p style="margin-bottom: 0; color: var(--text-dim);">aakashsanghvi.com — aakash@aakashsanghvi.com</p>
+    </div>
+
+    <div class="page-footer">
+        <span>Aakash Sanghvi — aakashsanghvi.com</span>
+        <span>Page 6</span>
+    </div>
+</div>
+
+</body>
+</html>

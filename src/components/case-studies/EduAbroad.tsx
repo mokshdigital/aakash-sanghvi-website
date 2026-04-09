@@ -172,7 +172,7 @@ export default function EduAbroad() {
                         <span className="text-xs font-bold uppercase tracking-wider block" style={{ color: 'var(--color-accent)' }}>Student Experience</span>
                         <h3 className="text-3xl font-bold">Seamless Digital Onboarding</h3>
                         <div className="space-y-4 text-lg leading-relaxed" style={{ color: 'var(--color-text-muted)' }}>
-                            <p>We replaced paper forms with <strong className="text-white">WhatsApp OTP verification</strong>. Students could instantly view matched universities, book IELTS demos, and take scholarship tests—all from their phones.</p>
+                            <p>We replaced paper forms with <strong className="text-white">WhatsApp OTP verification</strong>. Students could instantly view matched universities, book IELTS demos, and take scholarship tests, all from their phones.</p>
                         </div>
                         <ul className="space-y-3 pt-4">
                             {['WhatsApp OTP Verification', 'Automated Scholarship Scoring', 'Instant Slot Booking'].map((item, i) => (
