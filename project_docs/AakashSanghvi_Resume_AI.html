@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Aakash Sanghvi — Resume</title>
+<style>
+  /* ===== FONTS ===== */
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  /* ===== PAGE SETUP ===== */
+  @page {
+    size: Letter;
+    margin: 0;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 8.5in;
+    margin: 0 auto;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 9.5pt;
+    line-height: 1.45;
+    color: #e4e4e7;
+    background: #09090b;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* ===== THEME TOKENS ===== */
+  :root {
+    --bg: #09090b;
+    --bg-elevated: #18181b;
+    --bg-card: #111113;
+    --text: #fafafa;
+    --text-muted: #a1a1aa;
+    --text-dim: #71717a;
+    --border: #27272a;
+    --border-light: #3f3f46;
+    --accent: #818cf8;
+    --accent-bright: #a5b4fc;
+    --gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+  }
+
+  /* ===== PAGE CONTAINERS ===== */
+  .page {
+    width: 8.5in;
+    min-height: 11in;
+    max-height: 11in;
+    padding: 0.5in 0.6in 0.45in 0.6in;
+    background: var(--bg);
+    overflow: hidden;
+    position: relative;
+    page-break-after: always;
+  }
+  .page:last-child { page-break-after: auto; }
+
+  /* Subtle noise texture overlay */
+  .page::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+
+  /* ===== HEADER ===== */
+  .header { text-align: center; margin-bottom: 0.28in; position: relative; }
+
+  .header h1 {
+    font-size: 26pt;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    margin-bottom: 4pt;
+  }
+
+  .header .tagline {
+    font-size: 10pt;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8pt;
+  }
+
+  .header .contact-row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6pt 16pt;
+    font-size: 8.5pt;
+    color: var(--text-muted);
+  }
+  .header .contact-row span { white-space: nowrap; }
+  .header .contact-row .sep { color: var(--border-light); }
+  .header .contact-row a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .divider-gradient {
+    height: 2px;
+    background: var(--gradient);
+    border: none;
+    border-radius: 2px;
+    margin: 0.15in 0 0.2in 0;
+    opacity: 0.7;
+  }
+
+  /* ===== SECTION TITLES ===== */
+  .section-title {
+    font-size: 9pt;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.12in;
+    padding-bottom: 4pt;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ===== SUMMARY ===== */
+  .summary {
+    font-size: 9.5pt;
+    line-height: 1.55;
+    color: var(--text-muted);
+    margin-bottom: 0.2in;
+    padding: 0.12in 0.16in;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    border-left: 3px solid #6366f1;
+  }
+  .summary strong { color: var(--text); font-weight: 600; }
+
+  /* ===== SKILLS GRID ===== */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 8pt;
+    margin-bottom: 0.22in;
+  }
+  .skill-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 7pt 9pt;
+  }
+  .skill-box .skill-label {
+    font-size: 7.5pt;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 3pt;
+  }
+  .skill-box .skill-items {
+    font-size: 8pt;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  /* ===== WORK EXPERIENCE ===== */
+  .job { margin-bottom: 0.15in; }
+  .job:last-child { margin-bottom: 0; }
+
+  .job-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 1pt;
+  }
+  .job-title {
+    font-size: 10pt;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .job-title .role {
+    color: var(--accent-bright);
+    font-weight: 600;
+  }
+  .job-date {
+    font-size: 8pt;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-dim);
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-left: 8pt;
+  }
+
+  .job-location {
+    font-size: 8pt;
+    color: var(--text-dim);
+    margin-bottom: 4pt;
+  }
+
+  .job ul {
+    list-style: none;
+    padding: 0;
+  }
+  .job ul li {
+    position: relative;
+    padding-left: 12pt;
+    margin-bottom: 2pt;
+    font-size: 9pt;
+    color: #d4d4d8;
+    line-height: 1.45;
+  }
+  .job ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: #6366f1;
+    font-size: 8pt;
+  }
+  .job ul li strong { color: var(--text); font-weight: 600; }
+
+  .tools-used {
+    font-size: 7.5pt;
+    color: var(--text-dim);
+    margin-top: 3pt;
+    padding-left: 12pt;
+    font-style: italic;
+  }
+
+  /* ===== EDUCATION ===== */
+  .edu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 5pt;
+  }
+  .edu-item .degree {
+    font-size: 9.5pt;
+    color: var(--text);
+    font-weight: 600;
+  }
+  .edu-item .degree .school {
+    font-weight: 400;
+    color: var(--text-muted);
+  }
+  .edu-item .gpa {
+    font-size: 8pt;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+
+  /* ===== PROJECTS ===== */
+  .project {
+    margin-bottom: 0.17in;
+    padding: 0.1in 0.14in;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+  .project:last-child { margin-bottom: 0; }
+
+  .project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 2pt;
+  }
+  .project-name {
+    font-size: 10.5pt;
+    font-weight: 800;
+    color: var(--text);
+  }
+  .project-role {
+    font-size: 8pt;
+    color: var(--accent);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .project-subtitle {
+    font-size: 8.5pt;
+    color: var(--text-dim);
+    margin-bottom: 5pt;
+  }
+
+  .project-metrics {
+    display: flex;
+    gap: 12pt;
+    margin-bottom: 6pt;
+    flex-wrap: wrap;
+  }
+  .metric {
+    display: flex;
+    align-items: baseline;
+    gap: 3pt;
+  }
+  .metric-val {
+    font-size: 11pt;
+    font-weight: 900;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .metric-label {
+    font-size: 7pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-dim);
+  }
+
+  .project ul {
+    list-style: none;
+    padding: 0;
+  }
+  .project ul li {
+    position: relative;
+    padding-left: 12pt;
+    margin-bottom: 2pt;
+    font-size: 8.5pt;
+    color: #d4d4d8;
+    line-height: 1.4;
+  }
+  .project ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: #8b5cf6;
+    font-size: 8pt;
+  }
+  .project ul li strong { color: var(--text); font-weight: 600; }
+
+  .tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4pt;
+    margin-top: 6pt;
+  }
+  .tech-tag {
+    font-size: 6.5pt;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 2pt 6pt;
+    border-radius: 3px;
+    background: rgba(99, 102, 241, 0.12);
+    color: var(--accent-bright);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    white-space: nowrap;
+  }
+
+  /* ===== FOOTER ===== */
+  .page-footer {
+    position: absolute;
+    bottom: 0.3in;
+    left: 0.6in;
+    right: 0.6in;
+    display: flex;
+    justify-content: space-between;
+    font-size: 7pt;
+    color: var(--text-dim);
+  }
+  .page-footer a { color: var(--accent); text-decoration: none; }
+
+  /* ===== PRINT ===== */
+  @media print {
+    html, body { width: 8.5in; background: #09090b; }
+    .page {
+      page-break-after: always;
+      page-break-inside: avoid;
+    }
+    .page:last-child { page-break-after: auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- PAGE 1: HEADER + SUMMARY + SKILLS + EXPERIENCE               -->
+<!-- ============================================================ -->
+<div class="page">
+
+  <div class="header">
+    <h1>Aakash Sanghvi</h1>
+    <div class="tagline">Product Manager &bull; UX Strategist &bull; AI Developer</div>
+    <div class="contact-row">
+      <span><a href="mailto:connect@aakashsanghvi.com">connect@aakashsanghvi.com</a></span>
+      <span class="sep">|</span>
+      <span><a href="https://aakashsanghvi.com">aakashsanghvi.com</a></span>
+      <span class="sep">|</span>
+      <span><a href="https://linkedin.com/in/aakashsanghvi">linkedin.com/in/aakashsanghvi</a></span>
+      <span class="sep">|</span>
+      <span>Burnaby, BC &bull; Open to Relocation</span>
+    </div>
+  </div>
+
+  <hr class="divider-gradient" />
+
+  <div class="summary">
+    <strong>MBA-logic. UX-driven. AI speed.</strong> — Full-stack product builder with 7+ years spanning business development, marketing strategy, UX design, and AI-powered software engineering. I build products people actually use — from enterprise SaaS platforms (20+ modules, solo build) to EdTech systems serving 5,000+ paid users. Equally effective leading teams, coaching students, pitching to boards, or shipping production code.
+  </div>
+
+  <div class="section-title">Core Competencies</div>
+  <div class="skills-grid">
+    <div class="skill-box">
+      <div class="skill-label">AI & Engineering</div>
+      <div class="skill-items">Next.js, React, TypeScript, Supabase, PostgreSQL, Google Gemini AI, LLM Integration, Vercel</div>
+    </div>
+    <div class="skill-box">
+      <div class="skill-label">Product & UX</div>
+      <div class="skill-items">UX Research, Information Architecture, Prototyping, Design Systems, Figma, Usability Testing</div>
+    </div>
+    <div class="skill-box">
+      <div class="skill-label">Marketing & Growth</div>
+      <div class="skill-items">SEO/SEM, Meta & Google Ads, Social Media Strategy, Campaign Analytics, Content Strategy</div>
+    </div>
+    <div class="skill-box">
+      <div class="skill-label">Business & Leadership</div>
+      <div class="skill-items">P&L Management, B2B Partnerships, Team Leadership, Board Reporting, Grant Writing, Process Redesign</div>
+    </div>
+  </div>
+
+  <div class="section-title">Work Experience</div>
+
+  <div class="job">
+    <div class="job-header">
+      <div class="job-title">Katzie Development Corporation <span class="role">— Interim General Manager</span></div>
+      <div class="job-date">Jan 2025 – Aug 2025</div>
+    </div>
+    <div class="job-location">Langley, B.C.</div>
+    <ul>
+      <li>Managed <strong>$5M+ project portfolio</strong> — liaising with First Nations, Archaeology Branch, municipalities, general contractors, and clients across contracts, scheduling, invoicing, and permitting</li>
+      <li>Led a cross-functional <strong>team of 7</strong> (Archaeology/Field Tech, Marketing & Project Coordination, Operations)</li>
+      <li>Created executive reports for the CEO and board: strategic plans, revenue projections, quarterly performance</li>
+      <li>Drove <strong>process redesign</strong> — introduced Asana for project management and a new POS system with online reservations and payments for the tourism business</li>
+    </ul>
+  </div>
+
+  <div class="job">
+    <div class="job-header">
+      <div class="job-title">Katzie Development Corporation <span class="role">— Business Development Manager</span></div>
+      <div class="job-date">Sep 2024 – Jan 2025</div>
+    </div>
+    <div class="job-location">Langley, B.C.</div>
+    <ul>
+      <li>Conducted research, competitive analysis, and stakeholder consultations to identify key growth opportunities</li>
+      <li>Delivered impactful board presentations detailing market gaps, opportunities, timelines, and funding strategies</li>
+      <li>Secured a <strong>$7,500 provincial grant</strong> to initiate hydroponics/greenhouse needs assessment</li>
+      <li>Applied for Canada Summer Jobs, projected to fund <strong>~$20,000 in wages</strong> for Xwum employees</li>
+    </ul>
+  </div>
+
+  <div class="job">
+    <div class="job-header">
+      <div class="job-title">KEDC (K'awat'si) <span class="role">— Marketing Coordinator</span></div>
+      <div class="job-date">Feb 2024 – Aug 2024</div>
+    </div>
+    <div class="job-location">Port Hardy, B.C.</div>
+    <ul>
+      <li>Managed social media across <strong>4 business lines</strong> on Instagram, Facebook, and LinkedIn</li>
+      <li>Ran high-budget digital ad campaigns on Meta and Google; optimized SEO with measurable results</li>
+      <li>Implemented new website designs, improving user experience and accessibility</li>
+    </ul>
+    <div class="tools-used">WordPress Elementor, Meta Ads, Google Ads, Google Analytics, Canva, Figma</div>
+  </div>
+
+  <div class="page-footer">
+    <span>Aakash Sanghvi — Resume</span>
+    <span><a href="https://aakashsanghvi.com">aakashsanghvi.com</a></span>
+    <span>Page 1 of 3</span>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- PAGE 2: EXPERIENCE (CONT.) + EDUCATION                       -->
+<!-- ============================================================ -->
+<div class="page">
+
+  <div class="section-title">Work Experience (continued)</div>
+
+  <div class="job">
+    <div class="job-header">
+      <div class="job-title">University Canada West <span class="role">— Marketing Coach</span></div>
+      <div class="job-date">Jan 2023 – Mar 2025</div>
+    </div>
+    <div class="job-location">Vancouver, B.C.</div>
+    <ul>
+      <li>Coached <strong>400+ students</strong> in Marketing Management, Digital Marketing, and e-Commerce — covering Technical SEO, SEM, Social Media Marketing, Web Design (WordPress & Shopify)</li>
+      <li>Designed and developed internal communication pages and website assets</li>
+      <li>Built curriculum materials bridging theory with hands-on digital tools</li>
+    </ul>
+    <div class="tools-used">Figma, Canva, HTML, CSS, JavaScript, McGraw-Hill Connect, MS Teams</div>
+  </div>
+
+  <div class="job">
+    <div class="job-header">
+      <div class="job-title">ESPI Visa Consultants Pvt. Ltd. <span class="role">— Business Development Manager</span></div>
+      <div class="job-date">Apr 2020 – Dec 2021</div>
+    </div>
+    <div class="job-location">India (c/o MCC)</div>
+    <ul>
+      <li>Counselled <strong>1,000+ students</strong> for IELTS/PTE tests; achieved <strong>300+ student visas</strong> for USA, Canada, and UK institutions</li>
+      <li>Designed digital campaigns on Meta and Google — drove <strong>3X engagement</strong> and <strong>20,000+ leads</strong></li>
+      <li>Led a <strong>24-member team</strong> to develop a SaaS Learning Management System and a 200+ video lesson library</li>
+      <li>Generated business by onboarding <strong>18 B2B partners</strong>, enrolling 5,000+ students on the IELTS portal</li>
+    </ul>
+  </div>
+
+  <div class="job">
+    <div class="job-header">
+      <div class="job-title">M Square Media (MSM) Canada <span class="role">— Marketing Manager</span></div>
+      <div class="job-date">Oct 2018 – Mar 2020</div>
+    </div>
+    <div class="job-location">India — representing North American colleges</div>
+    <ul>
+      <li><strong>B2B Network:</strong> Built and managed a network of <strong>800+ educational agents</strong>, enhancing student recruitment pipelines through strategic partnerships across India</li>
+      <li><strong>Student Engagement:</strong> Led <strong>100+ spot evaluations</strong> and counselled <strong>700+ students</strong> through recruitment agencies</li>
+      <li><strong>Media & Events:</strong> Developed strategic media plans; coordinated <strong>60+ seminars</strong> and large-scale educational fairs, increasing brand visibility and enrollments</li>
+    </ul>
+  </div>
+
+  <div class="section-title" style="margin-top: 0.22in;">Education</div>
+
+  <div class="edu-item">
+    <div class="degree"><strong>MBA</strong>, University Canada West, Vancouver <span class="school">— Marketing &amp; e-Commerce</span></div>
+    <div class="gpa">GPA 3.81 / 4.0</div>
+  </div>
+  <div class="edu-item">
+    <div class="degree"><strong>Diploma, User Experience Design</strong>, BrainStation, Vancouver</div>
+    <div class="gpa"></div>
+  </div>
+  <div class="edu-item">
+    <div class="degree"><strong>BBA (IT)</strong>, Symbiosis International University, India</div>
+    <div class="gpa">GPA 3.7 / 4.0</div>
+  </div>
+
+  <div class="section-title" style="margin-top: 0.25in;">Technical Skills</div>
+  <div class="tech-tags" style="gap: 5pt;">
+    <span class="tech-tag">Next.js 15</span>
+    <span class="tech-tag">React 19</span>
+    <span class="tech-tag">TypeScript</span>
+    <span class="tech-tag">Tailwind CSS</span>
+    <span class="tech-tag">Supabase</span>
+    <span class="tech-tag">PostgreSQL</span>
+    <span class="tech-tag">Google Gemini AI</span>
+    <span class="tech-tag">LLM Integration</span>
+    <span class="tech-tag">GraphQL</span>
+    <span class="tech-tag">Headless WordPress</span>
+    <span class="tech-tag">Figma</span>
+    <span class="tech-tag">GSAP</span>
+    <span class="tech-tag">Framer Motion</span>
+    <span class="tech-tag">Vercel</span>
+    <span class="tech-tag">Git</span>
+    <span class="tech-tag">Supabase Realtime</span>
+    <span class="tech-tag">Row Level Security</span>
+    <span class="tech-tag">Zod</span>
+    <span class="tech-tag">REST APIs</span>
+    <span class="tech-tag">ISR / SSR / SSG</span>
+    <span class="tech-tag">Responsive Design</span>
+    <span class="tech-tag">SEO Optimization</span>
+    <span class="tech-tag">Meta Ads</span>
+    <span class="tech-tag">Google Ads</span>
+    <span class="tech-tag">Google Analytics</span>
+    <span class="tech-tag">Canva</span>
+    <span class="tech-tag">Shopify</span>
+    <span class="tech-tag">Asana</span>
+    <span class="tech-tag">Prompt Engineering</span>
+  </div>
+
+  <div class="page-footer">
+    <span>Aakash Sanghvi — Resume</span>
+    <span><a href="https://aakashsanghvi.com">aakashsanghvi.com</a></span>
+    <span>Page 2 of 3</span>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- PAGE 3: FEATURED PROJECTS / PORTFOLIO                        -->
+<!-- ============================================================ -->
+<div class="page">
+
+  <div class="section-title">Featured Projects &amp; Portfolio</div>
+
+  <!-- FieldOps OS -->
+  <div class="project">
+    <div class="project-header">
+      <div class="project-name">FieldOps OS</div>
+      <div class="project-role">Solo Developer &amp; Product Owner</div>
+    </div>
+    <div class="project-subtitle">Confidential Enterprise SaaS — Specialty Construction &bull; 2025–2026</div>
+    <div class="project-metrics">
+      <div class="metric"><span class="metric-val">20+</span> <span class="metric-label">Modules</span></div>
+      <div class="metric"><span class="metric-val">6+</span> <span class="metric-label">User Roles</span></div>
+      <div class="metric"><span class="metric-val">30+</span> <span class="metric-label">Iterations</span></div>
+      <div class="metric"><span class="metric-val">1</span> <span class="metric-label">Developer</span></div>
+    </div>
+    <ul>
+      <li>Architected and built a full enterprise operating system from scratch — work orders (9-status pipeline), calendar dispatch, timesheets with two-tier approval, billing/invoicing, RBAC with granular permissions, and a client portal</li>
+      <li>Integrated <strong>Google Gemini AI</strong> for natural-language report generation (AI → SQL → charts) and a multimodal work order creator accepting email, PDF, and audio inputs</li>
+      <li>Implemented <strong>Supabase Realtime</strong> for live collaboration and Row Level Security for multi-tenant data isolation</li>
+    </ul>
+    <div class="tech-tags">
+      <span class="tech-tag">Next.js 15</span>
+      <span class="tech-tag">TypeScript</span>
+      <span class="tech-tag">Supabase</span>
+      <span class="tech-tag">PostgreSQL</span>
+      <span class="tech-tag">Gemini AI</span>
+      <span class="tech-tag">Realtime</span>
+      <span class="tech-tag">RLS</span>
+      <span class="tech-tag">Vercel</span>
+    </div>
+  </div>
+
+  <!-- EduStation -->
+  <div class="project">
+    <div class="project-header">
+      <div class="project-name">EduStation</div>
+      <div class="project-role">Product Lead &amp; Architect</div>
+    </div>
+    <div class="project-subtitle">EdTech SaaS — Crisis Pivot &bull; Concept to Revenue in 60 Days</div>
+    <div class="project-metrics">
+      <div class="metric"><span class="metric-val">5,000+</span> <span class="metric-label">Paid Users</span></div>
+      <div class="metric"><span class="metric-val">20+</span> <span class="metric-label">B2B Partners</span></div>
+      <div class="metric"><span class="metric-val">60</span> <span class="metric-label">Days to Revenue</span></div>
+      <div class="metric"><span class="metric-val">100%</span> <span class="metric-label">Core Retention</span></div>
+    </div>
+    <ul>
+      <li>Led pandemic pivot of a $10M physical education business to digital — designed multi-tenant SaaS with adaptive learning engine, white-label B2B model, and 200+ video lesson library</li>
+      <li>Shipped MVP in 60 days; scaled to 5,000+ paid users and 20+ regional B2B partners</li>
+    </ul>
+    <div class="tech-tags">
+      <span class="tech-tag">SaaS Architecture</span>
+      <span class="tech-tag">Multi-Tenant</span>
+      <span class="tech-tag">Headless CMS</span>
+      <span class="tech-tag">Adaptive Learning</span>
+      <span class="tech-tag">B2B</span>
+    </div>
+  </div>
+
+  <!-- HomeBudget AI -->
+  <div class="project">
+    <div class="project-header">
+      <div class="project-name">HomeBudget AI</div>
+      <div class="project-role">UX Designer &amp; Developer</div>
+    </div>
+    <div class="project-subtitle">Personal Finance App &bull; Live at myhomebudget.io &bull; 4 Weeks</div>
+    <ul>
+      <li>Built a full-stack personal finance tracker with AI-powered receipt scanning, dashboards, and customizable budgets — shipped solo in 4 weeks and used daily</li>
+    </ul>
+    <div class="tech-tags">
+      <span class="tech-tag">Next.js 15</span>
+      <span class="tech-tag">Supabase Auth</span>
+      <span class="tech-tag">Framer Motion</span>
+      <span class="tech-tag">shadcn/ui</span>
+    </div>
+  </div>
+
+  <!-- EEIS -->
+  <div class="project">
+    <div class="project-header">
+      <div class="project-name">Express Entry Immigration Services</div>
+      <div class="project-role">Lead Full-Stack Developer</div>
+    </div>
+    <div class="project-subtitle">Headless WordPress + Next.js 14 &bull; 99/100 SEO &bull; A+ Security Audit</div>
+    <ul>
+      <li>Migrated legacy WordPress site to a headless architecture with ISR (60s revalidation), end-to-end TypeScript, content sanitization pipeline, and responsive mobile-first design</li>
+    </ul>
+    <div class="tech-tags">
+      <span class="tech-tag">Next.js 14</span>
+      <span class="tech-tag">GraphQL</span>
+      <span class="tech-tag">WordPress</span>
+      <span class="tech-tag">ISR</span>
+      <span class="tech-tag">Zod</span>
+    </div>
+  </div>
+
+  <!-- EduAbroad + UCW -->
+  <div class="project" style="display: flex; gap: 14pt;">
+    <div style="flex: 1;">
+      <div class="project-name" style="font-size: 9.5pt;">EduAbroad Expo Manager</div>
+      <div class="project-subtitle">No-Code Event Tech &bull; 10-Day Sprint</div>
+      <ul>
+        <li>Built a live event platform in 10 days serving <strong>2,000+ students</strong> and <strong>50+ universities</strong> across 4 cities with zero downtime</li>
+      </ul>
+    </div>
+    <div style="flex: 1; border-left: 1px solid var(--border); padding-left: 14pt;">
+      <div class="project-name" style="font-size: 9.5pt;">UCW Peer Tutoring Service</div>
+      <div class="project-subtitle">UX Case Study &bull; Lead UX Designer</div>
+      <ul>
+        <li>Redesigned booking flow achieving <strong>60% faster task completion</strong> and <strong>40% drop-off reduction</strong> through research-driven IA overhaul</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>Aakash Sanghvi — Resume</span>
+    <span><a href="https://aakashsanghvi.com">aakashsanghvi.com</a></span>
+    <span>Page 3 of 3</span>
+  </div>
+</div>
+
+</body>
+</html>

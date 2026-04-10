@@ -72,8 +72,8 @@ export default function WorkWithMePage() {
                     {/* Contact Info Fallback */}
                     <div className="text-center space-y-4 pt-8 border-t border-white/10">
                         <p className="text-sm font-medium uppercase tracking-widest text-white/40">Or email me directly</p>
-                        <a href="mailto:hello@aakashsanghvi.com" className="text-2xl font-light hover:text-white/80 transition-colors">
-                            hello@aakashsanghvi.com
+                        <a href="mailto:connect@aakashsanghvi.com" className="text-2xl font-light hover:text-white/80 transition-colors">
+                            connect@aakashsanghvi.com
                         </a>
                     </div>
 

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Aakash Sanghvi — Resume (ATS)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  @page { size: Letter; margin: 0; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 8.5in; margin: 0 auto;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-size: 9.5pt; line-height: 1.5;
+    color: #1a1a1a; background: #fff;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page {
+    width: 8.5in; min-height: 11in; max-height: 11in;
+    padding: 0.5in 0.65in 0.45in 0.65in;
+    background: #fff; overflow: hidden; position: relative;
+    page-break-after: always;
+  }
+  .page:last-child { page-break-after: auto; }
+
+  /* Header */
+  .header { text-align: center; margin-bottom: 0.12in; }
+  .header h1 { font-size: 22pt; font-weight: 800; letter-spacing: -0.02em; color: #111; margin-bottom: 4pt; }
+  .header .tagline { font-size: 10pt; font-weight: 600; color: #444; margin-bottom: 6pt; }
+  .header .contact { font-size: 8.5pt; color: #555; }
+  .header .contact a { color: #111; text-decoration: none; }
+
+  .divider { height: 1.5px; border: none; background: #111; margin: 0.12in 0 0.16in 0; }
+
+  /* Section titles */
+  .section-title {
+    font-size: 9pt; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
+    color: #111; margin-bottom: 0.1in; padding-bottom: 3pt;
+    border-bottom: 1.5px solid #111;
+  }
+
+  /* Summary */
+  .summary { font-size: 9.5pt; line-height: 1.6; color: #333; margin-bottom: 0.18in; }
+  .summary strong { color: #111; }
+
+  /* Project blocks */
+  .project { margin-bottom: 0.16in; }
+  .project:last-child { margin-bottom: 0; }
+  .project-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1pt; }
+  .project-name { font-size: 10.5pt; font-weight: 800; color: #111; }
+  .project-role { font-size: 8.5pt; color: #555; font-weight: 600; }
+  .project-sub { font-size: 8.5pt; color: #666; margin-bottom: 4pt; }
+  .project-metrics-inline { font-size: 8.5pt; color: #333; margin-bottom: 4pt; font-weight: 600; }
+  .project-link { font-size: 8pt; color: #555; margin-top: 3pt; }
+  .project-link a { color: #333; text-decoration: none; }
+
+  /* Bullet lists */
+  ul { list-style: none; padding: 0; }
+  ul li {
+    position: relative; padding-left: 12pt; margin-bottom: 3pt;
+    font-size: 9pt; color: #333; line-height: 1.5;
+  }
+  ul li::before { content: '•'; position: absolute; left: 0; color: #111; font-weight: 700; }
+  ul li strong { color: #111; font-weight: 600; }
+
+  /* Tech line */
+  .tech-line { font-size: 8pt; color: #555; margin-top: 3pt; }
+  .tech-line strong { color: #333; font-weight: 600; }
+
+  /* One-liner references */
+  .ref-line { font-size: 9pt; color: #333; margin-bottom: 4pt; padding-left: 12pt; position: relative; }
+  .ref-line::before { content: '•'; position: absolute; left: 0; color: #111; font-weight: 700; }
+  .ref-line strong { color: #111; font-weight: 700; }
+
+  /* Jobs */
+  .job { margin-bottom: 0.14in; }
+  .job:last-child { margin-bottom: 0; }
+  .job-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1pt; }
+  .job-title { font-size: 9.5pt; font-weight: 700; color: #111; }
+  .job-date { font-size: 8pt; color: #555; }
+  .job-loc { font-size: 8pt; color: #666; margin-bottom: 3pt; }
+
+  /* Education */
+  .edu { margin-bottom: 5pt; }
+  .edu-row { display: flex; justify-content: space-between; align-items: baseline; }
+  .edu .degree { font-size: 9.5pt; font-weight: 600; color: #111; }
+  .edu .school { font-weight: 400; color: #555; }
+  .edu .gpa { font-size: 8pt; color: #555; }
+
+  /* Footer */
+  .page-footer {
+    position: absolute; bottom: 0.3in; left: 0.65in; right: 0.65in;
+    display: flex; justify-content: space-between;
+    font-size: 7pt; color: #999;
+  }
+
+  @media print {
+    html, body { width: 8.5in; }
+    .page { page-break-after: always; page-break-inside: avoid; }
+    .page:last-child { page-break-after: auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== PAGE 1 ===== -->
+<div class="page">
+  <div class="header">
+    <h1>Aakash Sanghvi</h1>
+    <div class="tagline">AI Product Builder | Business Solutions | Digital Transformation</div>
+    <div class="contact">
+      <a href="mailto:connect@aakashsanghvi.com">connect@aakashsanghvi.com</a> &nbsp;|&nbsp; <a href="https://aakashsanghvi.com">aakashsanghvi.com</a> &nbsp;|&nbsp; Vancouver, BC
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <div class="summary">
+    Full-stack product builder combining an MBA in marketing, a UX design diploma, and 3 years of AI engineering. I help companies build <strong>AI-powered business solutions</strong> and drive <strong>digital transformation</strong> — from enterprise SaaS platforms to EdTech systems serving thousands. Solo-built a 20-module enterprise platform with AI, now live with 40+ users.
+  </div>
+
+  <div class="section-title">Featured Project</div>
+
+  <div class="project">
+    <div class="project-head">
+      <div class="project-name">FieldOps OS</div>
+      <div class="project-role">Sole Developer & Product Owner</div>
+    </div>
+    <div class="project-sub">Enterprise SaaS — Vancouver-based specialty construction company (40+ years in business) — Live in Production</div>
+    <div class="project-metrics-inline">20+ Modules &nbsp;|&nbsp; 40+ Active Users &nbsp;|&nbsp; 6+ User Roles (RBAC) &nbsp;|&nbsp; Solo Build</div>
+    <ul>
+      <li>Went <strong>on-site to shadow field technicians and office staff</strong>, identified pain points first-hand, and designed solutions around their real workflows — then returned to deliver hands-on training across all user roles</li>
+      <li>Work orders (9-status pipeline), calendar dispatch, timesheets with two-tier approval, billing/invoicing, and role-based access control across 6+ distinct user roles</li>
+      <li>Built a <strong>Client Portal</strong> — an external-facing dashboard giving clients real-time visibility into active work orders, project status, and billing without needing internal access</li>
+      <li><strong>Multimodal AI Work Order Creator</strong> — accepts email threads, PDF attachments, and voice recordings; Google Gemini extracts structured work order data automatically</li>
+    </ul>
+    <div class="tech-line"><strong>Stack:</strong> Next.js 15, TypeScript, Supabase, PostgreSQL, Google Gemini AI, Realtime Sync, Row Level Security, Vercel</div>
+    <div class="project-link"><a href="https://aakashsanghvi.com/projects/fieldops-os-enterprise-platform">aakashsanghvi.com/projects/fieldops-os-enterprise-platform</a></div>
+  </div>
+
+  <div class="section-title" style="margin-top: 0.18in;">More Projects</div>
+
+  <div class="project">
+    <div class="project-head">
+      <div class="project-name">UCW Peer Tutoring Service</div>
+      <div class="project-role">Lead UX & Product Designer</div>
+    </div>
+    <div class="project-sub">UX Case Study — Live in Production — Redesigning a university booking system within Moodle LMS constraints</div>
+    <div class="project-metrics-inline">60% Faster Booking &nbsp;|&nbsp; 40% Less Drop-off &nbsp;|&nbsp; 4-Step Guided Flow</div>
+    <ul>
+      <li>Conducted <strong>user research</strong> with students and tutors to map pain points — a single overwhelming page with no progress indicators was causing 40% abandonment</li>
+      <li>Redesigned the information architecture into a <strong>4-step guided flow</strong>, reducing task completion from 5 minutes to 2 minutes within Moodle LMS constraints</li>
+    </ul>
+    <div class="project-link"><a href="https://aakashsanghvi.com/projects/ucw-tutor-booking-ux-case-study">aakashsanghvi.com/projects/ucw-tutor-booking-ux-case-study</a></div>
+  </div>
+
+  <div class="project">
+    <div class="project-head">
+      <div class="project-name">EduStation</div>
+      <div class="project-role">Product Lead & Architect</div>
+    </div>
+    <div class="project-sub">EdTech SaaS — Pandemic Crisis Pivot — Concept to Revenue in 60 Days</div>
+    <div class="project-metrics-inline">5,000+ Paid Users &nbsp;|&nbsp; 20+ B2B Partners &nbsp;|&nbsp; 60 Days to Revenue</div>
+    <ul>
+      <li>Led the pandemic pivot of a physical education business to digital — designed multi-tenant SaaS architecture with white-label B2B distribution and 200+ video lesson library</li>
+    </ul>
+    <div class="project-link"><a href="https://aakashsanghvi.com/projects/edustation">aakashsanghvi.com/projects/edustation</a></div>
+  </div>
+
+  <div style="margin-top: 0.12in;">
+    <div class="ref-line"><strong>EduAbroad Expo Manager</strong> — No-code event platform built in 10 days. 2,000+ students, 50+ universities, 4 cities, zero downtime.</div>
+    <div class="ref-line"><strong>Express Entry Immigration Services</strong> — Headless WordPress → Next.js 14 migration. 99/100 SEO, A+ security audit, 60s ISR.</div>
+    <div class="ref-line"><strong>AG Fashion Hub</strong> — Headless WordPress + GraphQL storefront. 100% client autonomy via custom digital manual.</div>
+  </div>
+
+  <div class="page-footer">
+    <span>Aakash Sanghvi</span>
+    <span>1 / 2</span>
+  </div>
+</div>
+
+<!-- ===== PAGE 2 ===== -->
+<div class="page">
+
+  <div class="section-title">Work Experience</div>
+
+  <div class="job">
+    <div class="job-head">
+      <div class="job-title">Katzie Development Corporation — BDM → Interim General Manager</div>
+      <div class="job-date">Sep 2024 – Aug 2025</div>
+    </div>
+    <div class="job-loc">Langley, B.C. — First Nations Economic Development</div>
+    <ul>
+      <li>Managed a <strong>$5M+ project portfolio</strong> and a team of 7 across archaeology, marketing, and operations — delivering CEO and board-level reporting on plans, revenue, and quarterly performance</li>
+      <li>Secured a <strong>$7,500 provincial grant</strong> through research, competitive analysis, and stakeholder presentations to the board</li>
+      <li>Drove <strong>process redesign</strong>: introduced Asana for project management and a new POS system with online reservations for the tourism business</li>
+    </ul>
+  </div>
+
+  <div class="job">
+    <div class="job-head">
+      <div class="job-title">KEDC (K'awat'si) — Marketing Coordinator</div>
+      <div class="job-date">Feb – Aug 2024</div>
+    </div>
+    <div class="job-loc">Port Hardy, B.C.</div>
+    <ul>
+      <li>Managed social media and digital ad campaigns across <strong>4 business lines</strong>; redesigned websites improving UX and accessibility</li>
+    </ul>
+  </div>
+
+  <div class="job">
+    <div class="job-head">
+      <div class="job-title">University Canada West — Marketing Coach</div>
+      <div class="job-date">Jan 2023 – Mar 2025</div>
+    </div>
+    <div class="job-loc">Vancouver, B.C.</div>
+    <ul>
+      <li>Coached <strong>400+ students</strong> in Digital Marketing, SEO/SEM, Social Media Strategy, and Web Design (WordPress & Shopify)</li>
+    </ul>
+  </div>
+
+  <div class="job">
+    <div class="job-head">
+      <div class="job-title">M Square Media Canada — Marketing Manager</div>
+      <div class="job-date">Oct 2018 – Mar 2020</div>
+    </div>
+    <div class="job-loc">India — representing North American colleges</div>
+    <ul>
+      <li>Built a network of <strong>800+ educational agents</strong>; coordinated <strong>60+ seminars</strong> and large-scale fairs; counselled <strong>700+ students</strong></li>
+    </ul>
+  </div>
+
+  <div class="section-title" style="margin-top: 0.22in;">Education</div>
+
+  <div class="edu">
+    <div class="edu-row">
+      <div class="degree"><strong>MBA</strong> — University Canada West, Vancouver <span class="school">(Marketing & e-Commerce)</span></div>
+      <div class="gpa">3.81 / 4.0</div>
+    </div>
+  </div>
+  <div class="edu">
+    <div class="edu-row">
+      <div class="degree"><strong>Diploma, User Experience Design</strong> — BrainStation, Vancouver</div>
+      <div class="gpa"></div>
+    </div>
+  </div>
+  <div class="edu">
+    <div class="edu-row">
+      <div class="degree"><strong>BBA (IT)</strong> — Symbiosis International University, India</div>
+      <div class="gpa">3.7 / 4.0</div>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top: 0.22in;">Technical Skills</div>
+  <div style="font-size: 9pt; color: #333; line-height: 1.6;">
+    <strong>AI & Engineering:</strong> Next.js, React, TypeScript, Supabase, PostgreSQL, Google Gemini AI, LLM Integration, Vercel<br />
+    <strong>Product & UX:</strong> UX Research, Information Architecture, Prototyping, Usability Testing, Figma<br />
+    <strong>Marketing & Business:</strong> SEO/SEM, Meta & Google Ads, Digital Strategy, B2B Partnerships, Team Leadership
+  </div>
+
+  <div class="page-footer">
+    <span>Aakash Sanghvi</span>
+    <span>2 / 2</span>
+  </div>
+</div>
+
+</body>
+</html>

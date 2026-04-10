@@ -7,7 +7,7 @@ export default function Footer() {
             <div className="container mx-auto px-6">
                 <h2 className="text-2xl font-bold mb-6">Let&apos;s Build Something Amazing.</h2>
                 <div className="flex justify-center gap-6 mb-8">
-                    <a href="mailto:aakashsanghvi2791@gmail.com"
+                    <a href="mailto:connect@aakashsanghvi.com"
                         className="text-slate-400 hover:text-white transition-colors">Email</a>
                     <a href="https://linkedin.com/in/aakashsanghvi" target="_blank" rel="noopener noreferrer"
                         className="text-slate-400 hover:text-white transition-colors">LinkedIn</a>
