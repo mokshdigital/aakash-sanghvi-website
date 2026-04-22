@@ -1,11 +1,13 @@
 
 import type { Metadata, Viewport } from 'next';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import './globals.css';
 import { inter, playfair, jetbrains } from './fonts';
 import Navigation from '@/components/Navigation';
 import { PersonSchema, WebSiteSchema } from '@/components/JsonLd';
 
 const BASE_URL = 'https://aakashsanghvi.com';
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 
 export const viewport: Viewport = {
   themeColor: '#09090b',
@@ -125,6 +127,7 @@ export default function RootLayout({
         <Navigation />
         {children}
       </body>
+      {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
     </html>
   );
 }
