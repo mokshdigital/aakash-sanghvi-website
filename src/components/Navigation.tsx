@@ -31,6 +31,7 @@ export default function Navigation() {
     }, [isMenuOpen]);
 
     const navLinks = [
+        { href: '/experience', label: 'Experience' },
         { href: '/projects', label: 'Projects' },
         { href: '/playground', label: 'Playground' },
         { href: '/work-with-me', label: 'Work With Me' },

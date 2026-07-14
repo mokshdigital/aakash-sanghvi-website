@@ -31,6 +31,7 @@ export function PersonSchema() {
         ],
         sameAs: [
             'https://www.linkedin.com/in/aakashsanghvi/',
+            'https://github.com/mokshdigital',
         ],
     };
 
