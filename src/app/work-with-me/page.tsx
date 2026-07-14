@@ -40,7 +40,7 @@ export default function WorkWithMePage() {
                     {/* Header */}
                     <div className="text-center space-y-6">
                         <span className="inline-block text-xs font-medium uppercase tracking-[0.2em] gradient-text">
-                            Not accepting new projects
+                            Accepting New Projects.
                         </span>
                         <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-[1.1]">
                             Let's build something <br />
