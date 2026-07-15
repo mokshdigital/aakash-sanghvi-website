@@ -111,10 +111,12 @@ export default function ExperiencePage() {
                                     <span aria-hidden="true">↗</span>
                                 </a>
                                 <a
-                                    href="mailto:connect@aakashsanghvi.com?subject=Request%20for%20Aakash%20Sanghvi%27s%20resume"
+                                    href="/AakashSanghvi_Resume.pdf"
+                                    download="AakashSanghvi_Resume.pdf"
+                                    type="application/pdf"
                                     className="inline-flex items-center justify-center rounded-full border border-white/15 px-7 py-3.5 font-semibold text-zinc-300 transition-colors hover:bg-white/5 hover:text-white"
                                 >
-                                    Request current résumé
+                                    Download current résumé
                                 </a>
                             </div>
                         </div>
