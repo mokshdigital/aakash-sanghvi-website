@@ -60,7 +60,7 @@ const PROJECT_SCHEMA_DATA: Record<string, {
         title: 'FieldOps OS',
         description: 'A confidential enterprise field operations platform built from scratch as sole developer and product owner. Replaced fragmented spreadsheet workflows with a unified SaaS covering work orders, dispatch, timesheets, billing, RBAC, realtime sync, and AI-powered work order generation and natural language reporting.',
         skills: ['Enterprise SaaS', 'Next.js 15', 'Supabase', 'PostgreSQL', 'AI Integration', 'RBAC', 'Realtime Sync', 'Field Service Management', 'AI Report Generation', 'Multimodal AI'],
-        image: '/images/field-os/desktop-hero.png',
+        image: '/images/field-os/desktop-hero-anonymized.png',
         datePublished: '2025-01-01',
     },
 };

@@ -289,7 +289,7 @@ export default async function HomePage() {
                                 </div>
                                 <div className="flex-1 h-full relative bg-neutral-950 overflow-hidden">
                                     <Image
-                                        src="/images/field-os/desktop-hero.png"
+                                        src="/images/field-os/desktop-hero-anonymized.png"
                                         alt="FieldOps OS Dashboard"
                                         fill
                                         className="object-cover object-top"
@@ -319,7 +319,7 @@ export default async function HomePage() {
                                 </div>
                                 <div className="w-full h-full relative bg-neutral-950 overflow-hidden">
                                     <Image
-                                        src="/images/field-os/mobile-hero.jpeg"
+                                        src="/images/field-os/mobile-hero-anonymized.jpeg"
                                         alt="FieldOps OS Mobile"
                                         fill
                                         className="object-cover"
