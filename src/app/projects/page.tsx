@@ -1,7 +1,5 @@
 import { createClient } from '@/utils/supabase/server';
-import ProjectCard, { Project } from '@/components/ProjectCard';
 import ProjectsGrid from '@/components/ProjectsGrid';
-import Link from 'next/link';
 import type { Metadata } from 'next';
 import { ProjectsCollectionSchema } from '@/components/JsonLd';
 
@@ -33,14 +31,6 @@ export default async function ProjectsPage() {
         <div data-theme="dark" className="min-h-screen flex flex-col" style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-text)' }}>
             {/* JSON-LD Structured Data for Projects Collection */}
             <ProjectsCollectionSchema />
-
-            {/* Navigation */}
-            <nav className="fixed top-0 left-0 right-0 z-50 px-6 lg:px-12 py-6 flex justify-between items-center backdrop-blur-md bg-black/50 border-b border-white/5">
-                <Link href="/" className="text-xl font-bold tracking-tight">Aakash Sanghvi</Link>
-                <Link href="/" className="text-sm font-medium hover:text-white/70 transition-colors">
-                    ← Back to Home
-                </Link>
-            </nav>
 
             <main className="flex-grow pt-24 md:pt-32 px-6 lg:px-12 pb-16 md:pb-24">
                 <div className="max-w-6xl mx-auto space-y-16">

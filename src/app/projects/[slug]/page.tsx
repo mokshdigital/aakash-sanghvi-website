@@ -1,7 +1,5 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
-import { createClient } from '@/utils/supabase/server';
-import Link from 'next/link';
 import EduStation from '@/components/case-studies/EduStation';
 import EduAbroad from '@/components/case-studies/EduAbroad';
 import HomeBudget from '@/components/case-studies/HomeBudget';
@@ -62,7 +60,7 @@ const PROJECT_SCHEMA_DATA: Record<string, {
         title: 'FieldOps OS',
         description: 'A confidential enterprise field operations platform built from scratch as sole developer and product owner. Replaced fragmented spreadsheet workflows with a unified SaaS covering work orders, dispatch, timesheets, billing, RBAC, realtime sync, and AI-powered work order generation and natural language reporting.',
         skills: ['Enterprise SaaS', 'Next.js 15', 'Supabase', 'PostgreSQL', 'AI Integration', 'RBAC', 'Realtime Sync', 'Field Service Management', 'AI Report Generation', 'Multimodal AI'],
-        image: '/images/field-os/desktop-hero.png',
+        image: '/images/field-os/desktop-hero-anonymized.png',
         datePublished: '2025-01-01',
     },
 };
@@ -222,19 +220,6 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                 </>
             )}
 
-            {/* Navigation */}
-            <nav className="fixed top-0 left-0 right-0 z-50 px-6 lg:px-12 py-6 flex justify-between items-center backdrop-blur-md bg-black/50 border-b border-white/5">
-                <Link href="/" className="text-xl font-bold tracking-tight">Aakash Sanghvi</Link>
-                <div className="flex gap-6">
-                    <Link href="/projects" className="text-sm font-medium hover:text-white/70 transition-colors">
-                        All Projects
-                    </Link>
-                    <Link href="/" className="text-sm font-medium hover:text-white/70 transition-colors">
-                        Back to Home
-                    </Link>
-                </div>
-            </nav>
-
             <main className="flex-grow">
                 {renderCaseStudy()}
             </main>
@@ -261,4 +246,3 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         </div>
     );
 }
-

@@ -28,6 +28,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 0.9,
         },
         {
+            url: `${BASE_URL}/experience`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.9,
+        },
+        {
             url: `${BASE_URL}/work-with-me`,
             lastModified: new Date(),
             changeFrequency: 'monthly',

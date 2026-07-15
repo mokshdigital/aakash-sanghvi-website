@@ -206,7 +206,7 @@ export default function FieldOpsPlatform() {
                         <div className="rounded-2xl border border-white/10 overflow-hidden shadow-2xl hover:-translate-y-2 transition-transform duration-500">
                             <div className="aspect-video w-full bg-neutral-950 relative">
                                 <Image
-                                    src="/images/field-os/desktop-hero.png"
+                                    src="/images/field-os/desktop-hero-anonymized.png"
                                     alt="Desktop Dispatch Board"
                                     fill
                                     className="object-cover object-top"
@@ -217,7 +217,7 @@ export default function FieldOpsPlatform() {
                         <div className="rounded-2xl border border-white/10 overflow-hidden shadow-2xl hover:-translate-y-2 transition-transform duration-500">
                             <div className="aspect-video w-full bg-neutral-950 relative">
                                 <Image
-                                    src="/images/field-os/mobile-hero.jpeg"
+                                    src="/images/field-os/mobile-hero-anonymized.jpeg"
                                     alt="Mobile Tech Dashboard"
                                     fill
                                     className="object-cover"
